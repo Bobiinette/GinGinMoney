@@ -3,6 +3,13 @@
 
 typedef struct ComposanteConnexe ComposanteConnexe;
 
-ComposanteConnexe constructeurComposanteConnexe(Case emplacementInitial);
+ComposanteConnexe initComposanteConnexe();
+ComposanteConnexe constructeurComposanteConnexe(Case emplacementInitial, Case **grille);
+void destructeurComposanteConnexe(ComposanteConnexe *cc);
+ListeCase voisinsConnexes(Case emplacementInitial);
+static int **tableauTestAppartenance(int taille);
+static int grilleTeste(int **tab, int taille)
+static void destructeurTableauTest(int **tab, int taille);
+ListeComposanteConnexe ListeComposanteConnexeGrille(Case **grille, int tailleGrille);
 
 #endif
