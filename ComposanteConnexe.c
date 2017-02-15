@@ -84,17 +84,12 @@ static int **tableauTestAppartenance(int taille) {
 	return res;
 }
 
-static int grilleTeste(int **tab, int taille) {/* ça sert à rien lolooololololololol*/
-	int i = 0;
-	int j = 0;
-	for(i = 0; i < taille; i ++) {
-		for(j = 0; j < taille; j ++) {
-			if(tab[i][j] == 0) {
-				return 0;
-			}
-		}
+static int **completeGrilleTest(ListeCase aCompleter, int **grilleTest) {
+	while(!estVideListeCase(aCompleter)) {
+		grilleTest[getXCase(*getValeurListeCase(aCompleter))][getYCase(*getValeurListeCase(aCompleter))] = 1;
+		aCompleter = getSuivantListeCase(aCompleter);
 	}
-	return 1;
+	return grilleTest;
 }
 
 static void destructeurTableauTest(int **tab, int taille) {
@@ -116,8 +111,35 @@ ListeComposanteConnexe ListeComposanteConnexeGrille(Case **grille, int tailleGri
 	for(i = 0; i < tailleGrille; i ++) {
 		for(j = 0; j < tailleGrille; j ++) {
 			if(tabTest[i][j] == 0) {
-				/*ajout à liste composante connexe*/
+				res = constructeurComposanteConnexe(grille[i][j], grille);
+				tabTest = completeGrilleTest(res.cases, tabTest);
 			}
 		}
 	}
+
+	return res;
 }
+
+int estIndentique(ComposanteConnexe cc1, ComposanteConnexe cc2) {
+	if(estVideListeCase(cc1.cases)) {
+		return 0;
+	}
+
+	while(!estVideListeCase(cc1.cases)) {
+		if(estVideListeCase(cc2.cases)) {
+			return 0;
+		}
+		else {
+			if(getXCase(*getValeurListeCase(cc1.cases))!=getXCase(*getValeurListeCase(cc2.cases))) {
+				return 0;
+			}
+			if(getYCase(*getValeurListeCase(cc1.cases))!=getYCase(*getValeurListeCase(cc2.cases))) {
+				return 0;
+			}
+		}
+		cc1.cases = getSuivantListeCase(cc1.cases);
+		cc2.cases = getSuivantListeCase(cc2.cases);
+	}
+	return 1;
+}
+
