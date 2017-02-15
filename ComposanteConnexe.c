@@ -2,6 +2,9 @@
 #import "ListeComposanteConnexe.h"
 #import "Grille.h"
 
+/**
+*/
+
 struct ComposanteConnexe {
 	Couleur couleur;
 	ListeComposanteConnexe listeVoisins;
