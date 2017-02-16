@@ -13,7 +13,9 @@ ListeCase voisinsConnexes(Case emplacementInitial);
 static int **tableauTestAppartenance(int taille);
 static int grilleTeste(int **tab, int taille)
 static void destructeurTableauTest(int **tab, int taille);
-ListeComposanteConnexe ListeComposanteConnexeGrille(Case **grille, int tailleGrille);
+ListeComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrille);
 int estIndentique(ComposanteConnexe cc1, ComposanteConnexe cc2);
+static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille);
+ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, ListeComposanteConnexe listeCC, Case **grille);
 
 #endif
