@@ -74,8 +74,23 @@ ListeCase concatenationListeCase(ListeCase l, ListeCase m){
 }
 
 void supprimeElementListeCase(Case *c, ListeCase *l){
-  if (getValeurListeCase(l)=c){
-    liberationCase(c);
-    l=l->suivant;
+  ListeCase temp = l;
+  ListeCase res = l;
+  if (testListeCaseVide(l)){
+    printf("impossible de supprimer car aucun element");
+    return NULL;
+  }
+  else {
+    while(!testListeCaseVide(l)){
+      if(getValeurListeCase(res)==c){
+        liberationCase(res);
+        l=l->suivant;
+      }
+      else{
+        l=l->suivant;
+        res=res->suivant;
+      }
+    }
+    printf("l'element recherche n'est pas dans la liste");
   }
 }
