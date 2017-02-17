@@ -1,0 +1,15 @@
+
+
+typedef struct t_ListeComposanteConnexe CelluleComposanteConnexe;
+typedef CelluleComposanteConnexe *ListeComposanteConnexe;
+
+ListeComposanteConnexe initListeComposanteConnexe(void);
+int estVideListeComposanteConnexe(ListeComposanteConnexe l);
+ListeComposanteConnexe constructeurListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe c);
+int longeurListeComposanteConnexe(ListeComposanteConnexe l);
+int testVictoire(ListeComposanteConnexe l);
+ComposanteConnexe getValeurListeComposanteConnexe(ListeComposanteConnexe l);
+ListeComposanteConnexe getSuivantListeComposanteConnexe(ListeComposanteConnexe l);
+void destructeurListeComposanteConnexe(ListeComposanteConnexe l);
+ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe element);
+void supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe element);
