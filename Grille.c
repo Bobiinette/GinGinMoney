@@ -12,22 +12,27 @@ struct t_case{
   Couleur couleur;
 };
 
+/*@requires Récupère l'abscisse de la case considérée*/
 int getXCase(Case test){
   return test.x;
 }
 
+/*@requires Récupère l'ordonnée de la case considérée*/
 int getYCase(Case test){
   return test.y;
 }
 
+/*@requires Récupère la couleur de la case considérée*/
 int getCouleurCase(Case test){
   return test.couleur;
 }
 
+/*@requires Change la couleur de la case considérée par la couleur en paramètre*/
 void setCouleur(Case * test, Couleur c){
   test->couleur=c;
 }
 
+/*@requires Initialise un tableau vide de taille n*/
 Case ** tableauVide(int n){
   int i;
   Case ** res=calloc(n,sizeof(Case *));
@@ -39,16 +44,18 @@ Case ** tableauVide(int n){
 }
 
 
-/*void liberationGrille(Case ** tab){
-  int i;
+/*@requires Libère l'espace mémoire occupé par la grille*/
+void liberationGrille(Case ** tab, int taille){
+  int i,j;
 
-  int len=sizeof(tab);
-  for (i=0;i<
-  free(tab);
-}*/
+  for (i=0;i<taille;i++){
+    for (j=0;j<taille;j++)
+      free(tab[i][j]);
+  }
+}
 
 
-/*Fonction de remplissage aléatoire du tableau*/
+/*@requires Renvoie une couleur aléatoirement*/
 static Couleur aleatoire(){
   Couleur res;
 
@@ -56,7 +63,7 @@ static Couleur aleatoire(){
   return res;
 }
 
-
+/*@requires Fonction de remplissage aléatoire du tableau*/
 Couleur ** remplissageAleatoire(int n){
   Couleur ** res=tableauVide(n);
   int i,j;
@@ -70,7 +77,7 @@ Couleur ** remplissageAleatoire(int n){
 }
 
 
-/*Fonction de remplissage du tableau à partir d'un fichier*/
+/*@requires Fonction de remplissage du tableau à partir d'un fichier*/
 static void erreurOuverture(int check){
   if (check){
     perror("Erreur ouverture du fichier.\n");
@@ -78,46 +85,75 @@ static void erreurOuverture(int check){
   }
 }
 
-static void erreurLecture(int check){
+
+/*@requires Vérifie la longueur des chaines de caractères dans le fichier*/
+static void erreurLongueur(int check){
   if (check){
-    perror("Erreur lecture du fichier.\n");
+    perror("Erreur longueur de la chaîne de caractères dans le fichier.\n");
     exit(EXIT_FAILURE);
   }
 }
 
 
-/*Le fichier contient des chaines de caractères contenant un retour à la ligne au bout de chaque ligne*/
-Couleur ** remplissageFichier(FILE * text){
+/*@requires Vérifie qu'on n'est pas à la fin du fichier*/
+static void erreurFinFichier(int check){
+  if (check){
+    perror("Erreur fin du fichier : tableau non remplie.\n");
+    exit(EXIT_FAILURE);
+  }
+}
+
+
+/*@requires Vérifie que la couleur existe*/
+static void checkCouleur(char buff){
+  int check;  /*1 si buff est bien une couleur, 0 sinon*/
+
+  check = (buff!=B || buff!=V || buff!=R);
+  check = (check || buff!=J || buff!=M || buff!=G);
+
+  if (!check){
+    perror("Erreur couleur inexistante.\n");
+    exit(EXIT_FAILURE);
+  }
+}
+
+
+/*@requires Le fichier contient des chaines de caractères contenant un retour à la ligne au bout de chaque ligne
+  @ensures Crée un tableau de couleur à partir d'un fichier*/
+Couleur ** remplissageFichier(char * text){
   FILE * fichier=NULL;
   int lecture;  /*lecture caractère par caractère dans le fichier*/
   char buff;
-  int k=0; /*variable permettant de déterminer la longueur de la première ligne et de déduire la taille*/
+  int k=0; /*variable permettant de déterminer la longueur de la première ligne et d'en déduire la taille*/
   int taille;  /*taille de la grille*/
   int i,j;
   Couleur ** res;
 
-  fichier=fopen(text,O_RDONLY);
+  fichier=fopen(text,"r");
   erreurOuverture(fichier==NULL);
 
   do{  /*remplissage de la première ligne*/
-    lecture=read(fichier,&buff,sizeof(buff));
-    erreurLecture(lecture<0);
-    res[0][k]=buff;  /*remplissage de la première ligne*/
-    k++;  /*à la fin de la boucle, i sera la taille de la grille*/
+    buff=fgetc(fichier);
+    checkCouleur(buff); /*vérifie si la couleur existe*/
+    if (buff!="\n")
+      res[0][k]=buff;  /*remplissage de la première ligne*/
+    k++;  /*à la fin de la boucle, k sera la taille de la grille*/
   } while (buff!="\n");
   
   taille=k;
 
   for (i=1;i<taille;i++){ /*remplissage du reste du tableau*/
     for (j=0;j<taille;j++){ 
-      lecture=read(fichier,&buff,sizeof(buff));
-      erreurLecture(lecture<0);
+      buff=fgetc(fichier);
+      erreurLongueur(buff=="\n");  /*vérifie la longueur de la chaine de caractères en cours de lecture*/
+      erreurFinFichier(buff==EOF); /*vérifie qu'on n'est pas à la fin du fichier*/
+      checkCouleur(buff);  /*vérifie si la couleur existe*/
       res[i][j]=buff;
     }
-  }  /*traiter le cas "/n" à la fin de la ligne*/
+    fgetc(fichier);  /*lit le caractère "\n" après chaque fin de ligne*/
+  }
 
+  fclose(fichier);
   return res;
 }
-
-
 
