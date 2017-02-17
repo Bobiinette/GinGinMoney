@@ -30,12 +30,17 @@ ListeComposanteConnexe constructeurListeComposanteConnexe(ListeComposanteConnexe
   return compoconnexe;
 }
 
+void destructeurCelluleListeComposanteConnexe(CelluleComposanteConnexe *c) {
+  destructeurComposanteConnexe(*c);
+  free(c);
+}
+
 void destructeurListeComposanteConnexe(ListeComposanteConnexe l){
   ComposanteConnexe cc;
   while (!estVideListeComposanteConnexe(l)){
-    cc=getValeurListeComposanteConnexe(l);
-    l=getSuivantListeComposanteConnexe(l);
-    destructeurComposanteConnexe(cc);
+    cc=l->composantec;
+    l=l->suivant;
+    destructeurCelluleListeComposanteConnexe(&cc);
   }
   free(l);
 }
@@ -69,14 +74,19 @@ ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe
 }
 
 void supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe element){
-  ListeComposanteConnexe res;
-  res=initListeComposanteConnexe();
+  ListeComposanteConnexe res,res2;
   if (rechercheElementListeComposanteConnexe(*l,element)!=NULL){
+    res=initListeComposanteConnexe();
     while (!estVideListeComposanteConnexe(*l)){
       if(element!==*l->composantec){
         res=constructeurListeComposanteConnexe(res,*l->composantec);
+        *l=*l->suivant;
       }
-      *l=*l->suivant;
+      else {
+        res2=*l->suivant;
+        destructeurCelluleListeComposanteConnexe(&(*l->composantec));
+        *l=constructeurListeComposanteConnexe(res2->suivant,res2->composantec);
+      }
     }
     while (!estVideListeComposanteConnexe(res)){
       l=constructeur(*l,res->composantec);
