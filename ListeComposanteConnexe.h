@@ -10,6 +10,7 @@ int longeurListeComposanteConnexe(ListeComposanteConnexe l);
 int testVictoire(ListeComposanteConnexe l);
 ComposanteConnexe getValeurListeComposanteConnexe(ListeComposanteConnexe l);
 ListeComposanteConnexe getSuivantListeComposanteConnexe(ListeComposanteConnexe l);
+void destructeurCelluleListeComposanteConnexe(CelluleComposanteConnexe *c);
 void destructeurListeComposanteConnexe(ListeComposanteConnexe l);
 ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe element);
 void supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe element);
