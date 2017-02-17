@@ -108,8 +108,8 @@ static void erreurFinFichier(int check){
 static void checkCouleur(char buff){
   int check;  /*1 si buff est bien une couleur, 0 sinon*/
 
-  check = (buff!=B || buff!=V || buff!=R);
-  check = (check || buff!=J || buff!=M || buff!=G);
+  check = (buff==B || buff==V || buff==R);
+  check = (check || buff==J || buff==M || buff==G);
 
   if (!check){
     perror("Erreur couleur inexistante.\n");
