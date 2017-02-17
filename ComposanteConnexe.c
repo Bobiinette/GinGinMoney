@@ -52,9 +52,27 @@ ComposanteConnexe constructeurComposanteConnexe(Case emplacementInitial, Case **
 }
 
 void destructeurComposanteConnexe(ComposanteConnexe *cc) {
-	destructeurListeComposanteConnexe(cc->listeVoisins);
-	destructeurListeCase(cc->listeCase);
+	if(cc != NULL) {
+		if(!estVideListeCase(cc->listeVoisins)) {
+			destructeurListeComposanteConnexe(cc->listeVoisins);
+		}
+		if(!estVideListeComposanteConnexe(cc->listeCase)) {
+			destructeurListeCase(cc->listeCase);
+		}
+	}
 	cc = NULL;
+}
+
+ListeCase getCasesComposanteConnexe(ComposanteConnexe cc) {
+	return cc.cases;
+}
+
+ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe cc) {
+	return cc.listeVoisins;
+}
+
+Couleur getCouleurComposanteConnexe(ComposanteConnexe cc) {
+	return cc.couleur;
 }
 
 ListeCase voisinsConnexes(Case depart, Case **grille) {
@@ -179,10 +197,46 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille) 
 	return res;
 }
 
-ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, ListeComposanteConnexe listeCC, Case **grille) {
-	ListeComposanteConnexe composatesVoisines = initListeComposanteConnexe();
+static void supprimeCasesDansListe(listeCase casesAEnlever, listeCase *listeATronquer) {
+	while(!estVideListeCase(casesAEnlever)) {
+		supprimeElementListeCase(getValeurListeCase(casesAEnlever), *listeATronquer);
+		casesAEnlever = getSuivantListeCase(casesAEnlever);
+	}
+}
+
+ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille) {
+	ListeComposanteConnexe composantesVoisines = initListeComposanteConnexe();
 	ListeCase casesVoisines = initListeCase();
 
 	casesVoisines = casesVoisines(casesComposanteConnexe, grille);
-	
+
+	while(!estVideListeCase(casesVoisines)) {
+		composantesVoisines = constructeurListeComposanteConnexe(constructeurComposanteConnexe(*getValeurListeCase(casesVoisines)), composantesVoisines);
+		supprimeCasesDansListe(composantesVoisines.cases, &casesVoisines);
+		casesVoisines = getSuivantListeCase(casesVoisines);
+	}
+
+	return composantesVoisines;
+}
+
+ComposanteConnexe changementCouleur(ComposanteConnexe ccInitiale, ListeComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
+	ccInitiale.couleur = nouvelleCouleur;
+	ComposanteConnexe tmp = initComposanteConnexe();
+
+	while(!estVideListeComposanteConnexe(ccInitiale.listeVoisins)) {
+		tmp = getValeurListeComposanteConnexe(cc.listeVoisins);
+		if(tmp.couleur == nouvelleCouleur) {
+			ccInitiale.listeCase = concatenationListeCase(ccInitiale.listeCase, tmp.cases);
+			tmp =*rechercheComposanteConnexe(tmp, *toutesComposantesConnexes);
+
+			while(!estVideListeComposanteConnexe(tmp.listeVoisins)) { /*Tout ceci devient extrèmement bizarre, il va falloir commenter tout ça au plus vite*/
+				if(!estPresentComposanteConnexe(getValeurListeComposanteConnexe(tmp.listeVoisins)), ccInitiale.listeVoisins) {
+					ccInitiale.listeVoisins = constructeurListeComposanteConnexe(getValeurListeComposanteConnexe(tmp.listeVoisins), ccInitiale.listeVoisins);
+				}
+			}
+
+			supprimeElementListeComposanteConnexe(tmp, *toutesComposantesConnexes);
+		}
+	}
+	return ccInitiale;
 }
