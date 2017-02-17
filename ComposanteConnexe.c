@@ -46,17 +46,17 @@ ComposanteConnexe constructeurComposanteConnexe(Case emplacementInitial, Case **
 
 		destructeurCelluleListeCase(aDetruire);		
 
-	} while(!estVideListeCase(listeCasesPossibles));
+	} while(!testListeCaseVide(listeCasesPossibles));
 
 	return res;
 }
 
 void destructeurComposanteConnexe(ComposanteConnexe *cc) {
 	if(cc != NULL) {
-		if(!estVideListeCase(cc->listeVoisins)) {
+		if(!estVideListeComposanteConnexe(cc->listeVoisins)) {
 			destructeurListeComposanteConnexe(cc->listeVoisins);
 		}
-		if(!estVideListeComposanteConnexe(cc->listeCase)) {
+		if(!testListeCaseVide(cc->listeCase)) {
 			destructeurListeCase(cc->listeCase);
 		}
 	}
@@ -111,7 +111,7 @@ static int **tableauTestAppartenance(int taille) {
 }
 
 static int **completeGrilleTest(ListeCase aCompleter, int **grilleTest) {
-	while(!estVideListeCase(aCompleter)) {
+	while(!testListeCaseVide(aCompleter)) {
 		grilleTest[getXCase(*getValeurListeCase(aCompleter))][getYCase(*getValeurListeCase(aCompleter))] = 1;
 		aCompleter = getSuivantListeCase(aCompleter);
 	}
@@ -147,12 +147,12 @@ ListeComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGri
 }
 
 int estIndentique(ComposanteConnexe cc1, ComposanteConnexe cc2) {
-	if(estVideListeCase(cc1.cases)) {
+	if(testListeCaseVide(cc1.cases)) {
 		return 0;
 	}
 
-	while(!estVideListeCase(cc1.cases)) {
-		if(estVideListeCase(cc2.cases)) {
+	while(!testListeCaseVide(cc1.cases)) {
+		if(testListeCaseVide(cc2.cases)) {
 			return 0;
 		}
 		else {
@@ -174,7 +174,7 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille) 
 	Case *tmp = NULL;
 	int x = 0;
 	int y = 0;
-	while(!estVideListeCase(casesComposanteConnexe)) {
+	while(!testListeCaseVide(casesComposanteConnexe)) {
 		tmp = getValeurListeCase(casesComposanteConnexe);
 		x = getXCase(*tmp);
 		y = getYCase(*tmp);
@@ -198,7 +198,7 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille) 
 }
 
 static void supprimeCasesDansListe(listeCase casesAEnlever, listeCase *listeATronquer) {
-	while(!estVideListeCase(casesAEnlever)) {
+	while(!testListeCaseVide(casesAEnlever)) {
 		supprimeElementListeCase(getValeurListeCase(casesAEnlever), *listeATronquer);
 		casesAEnlever = getSuivantListeCase(casesAEnlever);
 	}
@@ -210,7 +210,7 @@ ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposa
 
 	casesVoisines = casesVoisines(casesComposanteConnexe, grille);
 
-	while(!estVideListeCase(casesVoisines)) {
+	while(!testListeCaseVide(casesVoisines)) {
 		composantesVoisines = constructeurListeComposanteConnexe(constructeurComposanteConnexe(*getValeurListeCase(casesVoisines)), composantesVoisines);
 		supprimeCasesDansListe(composantesVoisines.cases, &casesVoisines);
 		casesVoisines = getSuivantListeCase(casesVoisines);
@@ -220,11 +220,12 @@ ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposa
 }
 
 ComposanteConnexe changementCouleur(ComposanteConnexe ccInitiale, ListeComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
+	ListeComposanteConnexe save = ccInitiale.listeVoisins;
 	ccInitiale.couleur = nouvelleCouleur;
 	ComposanteConnexe tmp = initComposanteConnexe();
 
 	while(!estVideListeComposanteConnexe(ccInitiale.listeVoisins)) {
-		tmp = getValeurListeComposanteConnexe(cc.listeVoisins);
+		tmp = getValeurListeComposanteConnexe(ccInitiale.listeVoisins);
 		if(tmp.couleur == nouvelleCouleur) {
 			ccInitiale.listeCase = concatenationListeCase(ccInitiale.listeCase, tmp.cases);
 			tmp =*rechercheComposanteConnexe(tmp, *toutesComposantesConnexes);
@@ -236,7 +237,9 @@ ComposanteConnexe changementCouleur(ComposanteConnexe ccInitiale, ListeComposant
 			}
 
 			supprimeElementListeComposanteConnexe(tmp, *toutesComposantesConnexes);
+			ccInitiale.listeVoisins = getSuivantListeComposanteConnexe(ccInitiale.listeVoisins);
 		}
 	}
+	ccInitiale.listeVoisins = save; 
 	return ccInitiale;
 }

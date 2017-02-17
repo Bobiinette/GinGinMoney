@@ -22,5 +22,6 @@ int estIndentique(ComposanteConnexe cc1, ComposanteConnexe cc2);
 static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille);
 static void supprimeCasesDansListe(listeCase casesAEnlever, listeCase *listeATronquer) ;
 ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, ListeComposanteConnexe listeCC, Case **grille);
+ComposanteConnexe changementCouleur(ComposanteConnexe ccInitiale, ListeComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur);
 
 #endif
