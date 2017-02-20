@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "Cases.h"
 
-typedef struct t_listeCase {
+struct t_listeCase {
   Case *c;
   struct t_listeCase *suivant;
-} CelluleCase, *ListeCase;
+};
 
 ListeCase initListeCase(void){
   return NULL;
@@ -20,6 +20,7 @@ ListeCase constructeurListeCase(Case *d, ListeCase l){
   e=(CelluleCase *)malloc(sizeof(CelluleCase));
   e->c=d;
   e->suivant=l;
+  return e;
 }
 
 Case* getValeurListeCase(ListeCase l){
@@ -66,7 +67,7 @@ ListeCase concatenationListeCase(ListeCase l, ListeCase m){
     while(l->suivant!=NULL){
       l=l->suivant;
     }
-    m=l->suivant;
+    l->suivant = m;
   }
   l = temporaire;
   return l;
@@ -81,7 +82,8 @@ void supprimeElementListeCase(Case *c, ListeCase *l){
   }
   else {
     if((*l)->c == c) {
-      destructeurCelluleListeCase(*l);
+      *l = (*l)->suivant;
+      destructeurCelluleListeCase(temp);
     }
     else {
         while(!testListeCaseVide((*l)->suivant)){
@@ -94,7 +96,7 @@ void supprimeElementListeCase(Case *c, ListeCase *l){
           *l = (*l)->suivant;
         }
       }
+      *l = temp;
     }
   }
-  *l = temp;
 }

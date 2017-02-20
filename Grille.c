@@ -26,7 +26,7 @@ int getCouleurCase(Case *test){
 }
 
 /*@requires Change la couleur de la case considérée par la couleur en paramètre*/
-void setCouleur(Case * test, Couleur c){
+void setCouleur(Case *test, Couleur c){
   test->couleur=c;
 }
 
