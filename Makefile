@@ -2,7 +2,7 @@ CC = gcc
 APPLI = grille
 LIBRARIES = -lm
 CFLAGS = -Wall -Wextra -ansi
-SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c
+SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c main.c
 OBJ = ${SRC: .c = .o}
 
 .c.o:

@@ -5,10 +5,10 @@
 /*! \class t_listeCase Cases.h "inc/Cases.h"
  *  \brief Structure de liste de cases.
  */
-typedef struct t_listeCase {
+struct t_listeCase {
   Case *c;
   struct t_listeCase *suivant;
-} CelluleCase, *ListeCase;
+};
 
 /*! \fn ListeCase initListeCase(void)
  *  \brief initialise une liste de cases.
@@ -116,7 +116,7 @@ ListeCase concatenationListeCase(ListeCase l, ListeCase m){
     while(l->suivant!=NULL){
       l=l->suivant;
     }
-    l->suivant=m;
+    l->suivant = m;
   }
   l = temporaire;
   return l;
@@ -137,7 +137,8 @@ void supprimeElementListeCase(Case *c, ListeCase *l){
   }
   else {
     if((*l)->c == c) {
-      destructeurCelluleListeCase(*l);
+      *l = (*l)->suivant;
+      destructeurCelluleListeCase(temp);
     }
     else {
         while(!testListeCaseVide((*l)->suivant)){
@@ -150,7 +151,7 @@ void supprimeElementListeCase(Case *c, ListeCase *l){
           *l = (*l)->suivant;
         }
       }
+      *l = temp;
     }
   }
-  *l = temp;
 }

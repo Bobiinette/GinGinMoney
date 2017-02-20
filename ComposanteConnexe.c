@@ -139,7 +139,7 @@ ListeComposanteConnexe listeComposanteConnexeGrille(Case ***grille, int tailleGr
 		for(j = 0; j < tailleGrille; j ++) {
 			if(tabTest[i][j] == 0) {
 				cc = constructeurComposanteConnexe(grille[i][j], grille);
-				res = constructeurListeComposanteConnexe(res, cc);
+				res = constructeurListeComposanteConnexe(res, &cc);
 				tabTest = completeGrilleTest(cc.cases, tabTest);
 			}
 		}
@@ -148,25 +148,25 @@ ListeComposanteConnexe listeComposanteConnexeGrille(Case ***grille, int tailleGr
 	return res;
 }
 
-int estIndentique(ComposanteConnexe cc1, ComposanteConnexe cc2) {
-	if(testListeCaseVide(cc1.cases)) {
+int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
+	if(testListeCaseVide(cc1->cases)) {
 		return 0;
 	}
 
-	while(!testListeCaseVide(cc1.cases)) {
-		if(testListeCaseVide(cc2.cases)) {
+	while(!testListeCaseVide(cc1->cases)) {
+		if(testListeCaseVide(cc2->cases)) {
 			return 0;
 		}
 		else {
-			if(getXCase(getValeurListeCase(cc1.cases))!=getXCase(getValeurListeCase(cc2.cases))) {
+			if(getXCase(getValeurListeCase(cc1->cases))!=getXCase(getValeurListeCase(cc2->cases))) {
 				return 0;
 			}
-			if(getYCase(getValeurListeCase(cc1.cases))!=getYCase(getValeurListeCase(cc2.cases))) {
+			if(getYCase(getValeurListeCase(cc1->cases))!=getYCase(getValeurListeCase(cc2->cases))) {
 				return 0;
 			}
 		}
-		cc1.cases = getSuivantListeCase(cc1.cases);
-		cc2.cases = getSuivantListeCase(cc2.cases);
+		cc1->cases = getSuivantListeCase(cc1->cases);
+		cc2->cases = getSuivantListeCase(cc2->cases);
 	}
 	return 1;
 }
@@ -206,42 +206,145 @@ static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATro
 	}
 }
 
-ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case ***grille) {
+ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case ***grille, TabComposanteConnexe tabCC) {
 	ListeComposanteConnexe composantesVoisines = initListeComposanteConnexe();
 	ListeCase casesVoisinesCC = initListeCase();
+	ComposanteConnexe *cc = NULL;
 
 	casesVoisinesCC = casesVoisines(casesComposanteConnexe, grille);
 
 	while(!testListeCaseVide(casesVoisinesCC)) {
-		composantesVoisines = constructeurListeComposanteConnexe(composantesVoisines, constructeurComposanteConnexe(getValeurListeCase(casesVoisinesCC), grille));
-		supprimeCasesDansListe(getValeurListeComposanteConnexe(composantesVoisines).cases, &casesVoisinesCC);
+		cc = rechercheElementTabComposanteConnexeAvecCase(getValeurListeCase(casesVoisinesCC), tabCC);
+		composantesVoisines = constructeurListeComposanteConnexe(composantesVoisines, cc);
+		supprimeCasesDansListe(getValeurListeComposanteConnexe(composantesVoisines)->cases, &casesVoisinesCC);
 		casesVoisinesCC = getSuivantListeCase(casesVoisinesCC);
 	}
 
 	return composantesVoisines;
 }
 
-ComposanteConnexe changementCouleur(ComposanteConnexe ccInitiale, ListeComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
-	ListeComposanteConnexe save = ccInitiale.listeVoisins;
-	ccInitiale.couleur = nouvelleCouleur;
-	ComposanteConnexe tmp = initComposanteConnexe();
+ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
+	ListeComposanteConnexe save = ccInitiale->listeVoisins;
+	ccInitiale->couleur = nouvelleCouleur;
+	ComposanteConnexe *tmp = NULL;
+	ListeComposanteConnexe saveTmp = initListeComposanteConnexe();
 
-	while(!estVideListeComposanteConnexe(ccInitiale.listeVoisins)) {
-		tmp = getValeurListeComposanteConnexe(ccInitiale.listeVoisins);
-		if(tmp.couleur == nouvelleCouleur) {
-			ccInitiale.cases = concatenationListeCase(ccInitiale.cases, tmp.cases);
-			tmp = *rechercheElementListeComposanteConnexe(*toutesComposantesConnexes, tmp);
+	while(!estVideListeComposanteConnexe(ccInitiale->listeVoisins)) {
+		tmp = getValeurListeComposanteConnexe(ccInitiale->listeVoisins);
+		if(tmp->couleur == nouvelleCouleur) {
+			ccInitiale->cases = concatenationListeCase(ccInitiale->cases, tmp->cases);
+			tmp = rechercheElementTabComposanteConnexe(tmp, *toutesComposantesConnexes);
+			saveTmp = tmp->listeVoisins;
 
-			while(!estVideListeComposanteConnexe(tmp.listeVoisins)) { /*Tout ceci devient extrèmement bizarre, il va falloir commenter tout ça au plus vite*/
-				if(!estPresentComposanteConnexe(getValeurListeComposanteConnexe(tmp.listeVoisins)), ccInitiale.listeVoisins) {
-					ccInitiale.listeVoisins = constructeurListeComposanteConnexe(getValeurListeComposanteConnexe(tmp.listeVoisins), ccInitiale.listeVoisins);
+			while(!estVideListeComposanteConnexe(tmp->listeVoisins)) { /*Tout ceci devient extrèmement bizarre, il va falloir commenter tout ça au plus vite*/
+				if(rechercheElementListeComposanteConnexe(ccInitiale->listeVoisins, getValeurListeComposanteConnexe(tmp->listeVoisins)) == NULL) {
+					ccInitiale->listeVoisins = constructeurListeComposanteConnexe(ccInitiale->listeVoisins, getValeurListeComposanteConnexe(tmp->listeVoisins));
 				}
+				tmp->listeVoisins = getSuivantListeComposanteConnexe(tmp->listeVoisins);
 			}
 
-			supprimeElementListeComposanteConnexe(tmp, *toutesComposantesConnexes);
-			ccInitiale.listeVoisins = getSuivantListeComposanteConnexe(ccInitiale.listeVoisins);
+			tmp->listeVoisins = saveTmp;
+			supprimeElementTabComposanteConnexe(toutesComposantesConnexes, *tmp);
+			ccInitiale->listeVoisins = getSuivantListeComposanteConnexe(ccInitiale->listeVoisins);
 		}
 	}
-	ccInitiale.listeVoisins = save; 
+	ccInitiale->listeVoisins = save;
 	return ccInitiale;
 }
+
+/*=====================================================Tab composante connexe==================================*/
+
+struct t_CelluleTabComposanteConnexe {
+	ComposanteConnexe composanteConnexe;
+	struct t_CelluleTabComposanteConnexe *suivant;
+};
+
+TabComposanteConnexe initTabComposanteConnexe() {
+	return NULL;
+}
+
+int estVideTabComposanteConnexe(TabComposanteConnexe tabCC) {
+	return (tabCC == NULL);
+}
+
+TabComposanteConnexe constructeurTabComposanteConnexe(ComposanteConnexe cc, TabComposanteConnexe tabCC) {
+	CelluleTabComposanteConnexe *cell;
+ 	cell=(CelluleTabComposanteConnexe *)malloc(sizeof(CelluleTabComposanteConnexe));
+ 	cell->composanteConnexe = cc;
+ 	cell->suivant = tabCC;
+  return cell;
+}
+
+void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell) {
+	destructeurComposanteConnexe(&(cell->composanteConnexe));
+	free(cell);
+}
+
+void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
+	TabComposanteConnexe tmp = initTabComposanteConnexe();
+	while(!estVideTabComposanteConnexe(tabCC)) {
+		tmp = tabCC;
+		tabCC = tabCC->suivant;
+		destructeurCelluleTabComposanteConnexe(tmp);
+	}
+}
+
+int testVictoire(TabComposanteConnexe tabCC) {
+	return (longueurTabComposanteConnexe(tabCC)==1);
+}
+
+int longueurTabComposanteConnexe(TabComposanteConnexe tabCC) {
+	int longeur = 0;
+	while (!estVideTabComposanteConnexe(tabCC)){
+	  longeur = longeur + 1;
+	  tabCC = tabCC->suivant;
+	}
+	return longeur;
+}
+
+void supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element) {
+    TabComposanteConnexe tmp = initTabComposanteConnexe();
+    TabComposanteConnexe save = initTabComposanteConnexe();
+    save = *tabCC;
+
+    if(estIdentique(&((*tabCC)->composanteConnexe), &element)) {
+        *tabCC = (*tabCC)->suivant;
+        destructeurCelluleTabComposanteConnexe(save);
+    }
+    else {
+        while (!estVideTabComposanteConnexe((*tabCC)->suivant)){
+            if(estIdentique(&element, &((*tabCC)->suivant)->composanteConnexe)){
+                tmp = (*tabCC)->suivant;
+                (*tabCC)->suivant = ((*tabCC)->suivant)->suivant;
+                destructeurCelluleTabComposanteConnexe(tmp);
+            }
+            *tabCC = (*tabCC)->suivant;
+        }
+        *tabCC = save;
+    }
+}
+
+static int estDansComposanteConnexe(Case *c, ComposanteConnexe cc) {
+	return estPresentDansListeCase(c, cc.cases);
+}
+
+ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComposanteConnexe tabCC) {
+	ComposanteConnexe *cc = NULL;
+	while(!estVideTabComposanteConnexe(tabCC)) {
+		if(estDansComposanteConnexe(c, tabCC->composanteConnexe)) {
+			cc = &(tabCC->composanteConnexe);
+			return cc;
+		}
+	}
+	return cc;
+}
+
+ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC) {
+	while(!estVideTabComposanteConnexe(tabCC)) {
+		if(estIdentique(cc, &(tabCC->composanteConnexe))) {
+			return &(tabCC->composanteConnexe);
+		}
+	}
+	return NULL;
+}
+
