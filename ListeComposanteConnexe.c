@@ -1,10 +1,11 @@
+#include <stdlib.h>
+
 #include "ListeComposanteConnexe.h"
-#include "ComposanteConnexe.h"
 
 struct t_ListeComposanteConnexe{
   ComposanteConnexe composantec;
   struct ListeComposanteConnexe *suivant;
-}
+};
 
 ListeComposanteConnexe initListeComposanteConnexe(void){
   return NULL;
@@ -64,8 +65,8 @@ int testVictoire(ListeComposanteConnexe l){
 
 
 ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe element){
-  while(!(estVideListeComposanteConnexe(l)){
-    if(estIdentique(element,l->composantec))){
+  while(!(estVideListeComposanteConnexe(l))){
+    if(estIdentique(element,l->composantec)){
       return &(l->composantec);
     }
     l=l->suivant;

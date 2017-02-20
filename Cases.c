@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Cases.h"
-#include "Grille.h"
 
 typedef struct t_listeCase {
   Case *c;
-  struct liste *suivant;
+  struct t_listeCase *suivant;
 } CelluleCase, *ListeCase;
 
 ListeCase initListeCase(void){
@@ -31,15 +30,15 @@ ListeCase getSuivantListeCase(ListeCase l){
   return l->suivant;
 }
 
-void liberationCase(CelluleCase *c){
+void destructeurCelluleListeCase(CelluleCase *c){
   free(c);
 }
 
-void liberationListeCase(ListeCase l){
+void destructeurListeCase(ListeCase l){
   ListeCase ret;
   while(!testListeCaseVide(l)){
     ret=l->suivant;
-    liberationCase(l);
+    destructeurCelluleListeCase(l);
     l=ret;
   }
 }
@@ -47,7 +46,7 @@ void liberationListeCase(ListeCase l){
 int estPresentDansListeCase(Case *c, ListeCase l){
   int res=0;
   while(!testListeCaseVide(l)){
-    if(getValeurListeCase(l)=c){
+    if(l->c == c){
       res=1;
     }
     else{
@@ -74,23 +73,28 @@ ListeCase concatenationListeCase(ListeCase l, ListeCase m){
 }
 
 void supprimeElementListeCase(Case *c, ListeCase *l){
-  ListeCase temp = l;
-  ListeCase res = l;
-  if (testListeCaseVide(l)){
-    printf("impossible de supprimer car aucun element");
-    return NULL;
+  ListeCase temp = *l;
+  ListeCase nouveauSuivant = initListeCase();
+  if (testListeCaseVide(*l)){
+    printf("Impossible de supprimer car aucun element");
+    return;
   }
   else {
-    while(!testListeCaseVide(l)){
-      if(getValeurListeCase(res)==c){
-        liberationCase(res);
-        l=l->suivant;
-      }
-      else{
-        l=l->suivant;
-        res=res->suivant;
+    if((*l)->c == c) {
+      destructeurCelluleListeCase(*l);
+    }
+    else {
+        while(!testListeCaseVide((*l)->suivant)){
+        if(((*l)->suivant)->c == c){
+          nouveauSuivant = ((*l)->suivant)->suivant;
+          destructeurCelluleListeCase((*l)->suivant);
+          (*l)->suivant = nouveauSuivant;
+        }
+        else{
+          *l = (*l)->suivant;
+        }
       }
     }
-    printf("l'element recherche n'est pas dans la liste");
   }
+  *l = temp;
 }

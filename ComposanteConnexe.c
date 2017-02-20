@@ -1,6 +1,6 @@
-#import "ComposanteConnexe.h"
-#import "ListeComposanteConnexe.h"
-#import "Grille.h"
+#include <stdlib.h>
+
+#include "ComposanteConnexe.h"
 
 /**
 */
@@ -9,7 +9,7 @@ struct ComposanteConnexe {
 	Couleur couleur;
 	ListeComposanteConnexe listeVoisins;
 	ListeCase cases;
-}
+};
 
 ComposanteConnexe initComposanteConnexe() {
 	ComposanteConnexe res;
@@ -19,26 +19,26 @@ ComposanteConnexe initComposanteConnexe() {
 	return res;
 }
 
-ComposanteConnexe constructeurComposanteConnexe(Case emplacementInitial, Case **grille) {
+ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case ***grille) {/*Problèmes aux bord, manque int taille aeazurzrzuirifvbvfgaigvaeiogve*/
 	ComposanteConnexe res = initComposanteConnexe();
 	res.couleur = getCouleurCase(emplacementInitial);
 	ListeCase listeCasesPossibles = initListeCase();
-	listeCasesPossibles = constructeurListeCase(&emplacementInitial, listeCasesPossibles);
+	listeCasesPossibles = constructeurListeCase(emplacementInitial, listeCasesPossibles);
 
-	ListeCase aDetruire = NULL;
-	ListeCase voisinsPossibles = NULL;
+	ListeCase aDetruire = initListeCase();
+	ListeCase voisinsPossibles = initListeCase();
 	do {
 		aDetruire = listeCasesPossibles;
 		listeCasesPossibles = getSuivantListeCase(listeCasesPossibles);
-		res.cases = constructeurListeCase(*getValeurListeCase(aDetruire), res.cases);
-		voisinsPossibles = voisinsConnexes(*getValeurListeCase(aDetruire), grille);
+		res.cases = constructeurListeCase(getValeurListeCase(aDetruire), res.cases);
+		voisinsPossibles = voisinsConnexes(getValeurListeCase(aDetruire), grille);
 
 		destructeurCelluleListeCase(aDetruire);
 
 		aDetruire = voisinsPossibles;
 		
-		while(voisinsPossibles != NULL) {
-			if(!estPresentCaseDansListe(getValeurListeCase(voisinsPossibles), res.cases)) {
+		while(!testListeCaseVide(voisinsPossibles)) {
+			if(!estPresentDansListeCase(getValeurListeCase(voisinsPossibles), res.cases)) {
 				listeCasesPossibles = constructeurListeCase(getValeurListeCase(voisinsPossibles), listeCasesPossibles);
 			}
 			voisinsPossibles = getSuivantListeCase(voisinsPossibles);
@@ -56,26 +56,26 @@ void destructeurComposanteConnexe(ComposanteConnexe *cc) {
 		if(!estVideListeComposanteConnexe(cc->listeVoisins)) {
 			destructeurListeComposanteConnexe(cc->listeVoisins);
 		}
-		if(!testListeCaseVide(cc->listeCase)) {
-			destructeurListeCase(cc->listeCase);
+		if(!testListeCaseVide(cc->cases)) {
+			destructeurListeCase(cc->cases);
 		}
 	}
 	cc = NULL;
 }
 
-ListeCase getCasesComposanteConnexe(ComposanteConnexe cc) {
-	return cc.cases;
+ListeCase getCasesComposanteConnexe(ComposanteConnexe *cc) {
+	return cc->cases;
 }
 
-ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe cc) {
-	return cc.listeVoisins;
+ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc) {
+	return cc->listeVoisins;
 }
 
-Couleur getCouleurComposanteConnexe(ComposanteConnexe cc) {
-	return cc.couleur;
+Couleur getCouleurComposanteConnexe(ComposanteConnexe *cc) {
+	return cc->couleur;
 }
 
-ListeCase voisinsConnexes(Case depart, Case **grille) {
+ListeCase voisinsConnexes(Case *depart, Case ***grille) {/*AAAaaaaaaaaaaaaaahhhhhhhhhh problèmes au bords*/
 	ListeCase res = initListeCase();
 	int x = 0;
 	int y = 0;
@@ -83,17 +83,17 @@ ListeCase voisinsConnexes(Case depart, Case **grille) {
 	x = getXCase(depart);
 	y = getYCase(depart);
 
-	if(getCouleurCase(grille[x + 1][y]) == getCouleurCase(emplacementInitial)) {
-		res = constructeurListeCase(&grille[x + 1][y], res);
+	if(getCouleurCase(grille[x + 1][y]) == getCouleurCase(depart)) {
+		res = constructeurListeCase(grille[x + 1][y], res);
 	}
-	if(getCouleurCase(grille[x - 1][y]) == getCouleurCase(emplacementInitial)) {
-		res = constructeurListeCase(&grille[x - 1][y], res);
+	if(getCouleurCase(grille[x - 1][y]) == getCouleurCase(depart)) {
+		res = constructeurListeCase(grille[x - 1][y], res);
 	}
-	if(getCouleurCase(grille[x][y + 1]) == getCouleurCase(emplacementInitial)) {
-		res = constructeurListeCase(&grille[x][y + 1], res);
+	if(getCouleurCase(grille[x][y + 1]) == getCouleurCase(depart)) {
+		res = constructeurListeCase(grille[x][y + 1], res);
 	}
-	if(getCouleurCase(grille[x][y] - 1) == getCouleurCase(emplacementInitial)) {
-		res = constructeurListeCase(&grille[x][y - 1], res);
+	if(getCouleurCase(grille[x][y - 1]) == getCouleurCase(depart)) {
+		res = constructeurListeCase(grille[x][y - 1], res);
 	}
 
 	return res;
@@ -112,7 +112,7 @@ static int **tableauTestAppartenance(int taille) {
 
 static int **completeGrilleTest(ListeCase aCompleter, int **grilleTest) {
 	while(!testListeCaseVide(aCompleter)) {
-		grilleTest[getXCase(*getValeurListeCase(aCompleter))][getYCase(*getValeurListeCase(aCompleter))] = 1;
+		grilleTest[getXCase(getValeurListeCase(aCompleter))][getYCase(getValeurListeCase(aCompleter))] = 1;
 		aCompleter = getSuivantListeCase(aCompleter);
 	}
 	return grilleTest;
@@ -128,8 +128,9 @@ static void destructeurTableauTest(int **tab, int taille) {
 	tab = NULL;
 }
 
-ListeComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrille) {
+ListeComposanteConnexe listeComposanteConnexeGrille(Case ***grille, int tailleGrille) {
 	ListeComposanteConnexe res = NULL;
+	ComposanteConnexe cc = initComposanteConnexe();
 	int **tabTest = tableauTestAppartenance(tailleGrille);
 	int i = 0;
 	int j = 0;
@@ -137,8 +138,9 @@ ListeComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGri
 	for(i = 0; i < tailleGrille; i ++) {
 		for(j = 0; j < tailleGrille; j ++) {
 			if(tabTest[i][j] == 0) {
-				res = constructeurComposanteConnexe(grille[i][j], grille);
-				tabTest = completeGrilleTest(res.cases, tabTest);
+				cc = constructeurComposanteConnexe(grille[i][j], grille);
+				res = constructeurListeComposanteConnexe(res, cc);
+				tabTest = completeGrilleTest(cc.cases, tabTest);
 			}
 		}
 	}
@@ -156,10 +158,10 @@ int estIndentique(ComposanteConnexe cc1, ComposanteConnexe cc2) {
 			return 0;
 		}
 		else {
-			if(getXCase(*getValeurListeCase(cc1.cases))!=getXCase(*getValeurListeCase(cc2.cases))) {
+			if(getXCase(getValeurListeCase(cc1.cases))!=getXCase(getValeurListeCase(cc2.cases))) {
 				return 0;
 			}
-			if(getYCase(*getValeurListeCase(cc1.cases))!=getYCase(*getValeurListeCase(cc2.cases))) {
+			if(getYCase(getValeurListeCase(cc1.cases))!=getYCase(getValeurListeCase(cc2.cases))) {
 				return 0;
 			}
 		}
@@ -169,27 +171,27 @@ int estIndentique(ComposanteConnexe cc1, ComposanteConnexe cc2) {
 	return 1;
 }
 
-static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille) {
+static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case ***grille) {
 	ListeCase res = initListeCase();
 	Case *tmp = NULL;
 	int x = 0;
 	int y = 0;
 	while(!testListeCaseVide(casesComposanteConnexe)) {
 		tmp = getValeurListeCase(casesComposanteConnexe);
-		x = getXCase(*tmp);
-		y = getYCase(*tmp);
+		x = getXCase(tmp);
+		y = getYCase(tmp);
 
-		if(!estPresentCaseDansListe(&grille[x + 1][y], casesComposanteConnexe)) {
-			res = constructeurListeCase(&grille[x + 1][y], res);
+		if(!estPresentDansListeCase(grille[x + 1][y], casesComposanteConnexe)) {
+			res = constructeurListeCase(grille[x + 1][y], res);
 		}
-		if(!estPresentCaseDansListe(&grille[x - 1][y], casesComposanteConnexe)) {
-			res = constructeurListeCase(&grille[x - 1][y], res);
+		if(!estPresentDansListeCase(grille[x - 1][y], casesComposanteConnexe)) {
+			res = constructeurListeCase(grille[x - 1][y], res);
 		}
-		if(!estPresentCaseDansListe(&grille[x][y + 1], casesComposanteConnexe)) {
-			res = constructeurListeCase(&grille[x][y + 1], res);
+		if(!estPresentDansListeCase(grille[x][y + 1], casesComposanteConnexe)) {
+			res = constructeurListeCase(grille[x][y + 1], res);
 		}
-		if(!estPresentCaseDansListe(&grille[x][y - 1], casesComposanteConnexe)) {
-			res = constructeurListeCase(&grille[x][y - 1], res);
+		if(!estPresentDansListeCase(grille[x][y - 1], casesComposanteConnexe)) {
+			res = constructeurListeCase(grille[x][y - 1], res);
 		}
 
 		casesComposanteConnexe = getSuivantListeCase(casesComposanteConnexe);
@@ -197,23 +199,23 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille) 
 	return res;
 }
 
-static void supprimeCasesDansListe(listeCase casesAEnlever, listeCase *listeATronquer) {
+static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATronquer) {
 	while(!testListeCaseVide(casesAEnlever)) {
-		supprimeElementListeCase(getValeurListeCase(casesAEnlever), *listeATronquer);
+		supprimeElementListeCase(getValeurListeCase(casesAEnlever), listeATronquer);
 		casesAEnlever = getSuivantListeCase(casesAEnlever);
 	}
 }
 
-ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille) {
+ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case ***grille) {
 	ListeComposanteConnexe composantesVoisines = initListeComposanteConnexe();
-	ListeCase casesVoisines = initListeCase();
+	ListeCase casesVoisinesCC = initListeCase();
 
-	casesVoisines = casesVoisines(casesComposanteConnexe, grille);
+	casesVoisinesCC = casesVoisines(casesComposanteConnexe, grille);
 
-	while(!testListeCaseVide(casesVoisines)) {
-		composantesVoisines = constructeurListeComposanteConnexe(constructeurComposanteConnexe(*getValeurListeCase(casesVoisines)), composantesVoisines);
-		supprimeCasesDansListe(composantesVoisines.cases, &casesVoisines);
-		casesVoisines = getSuivantListeCase(casesVoisines);
+	while(!testListeCaseVide(casesVoisinesCC)) {
+		composantesVoisines = constructeurListeComposanteConnexe(composantesVoisines, constructeurComposanteConnexe(getValeurListeCase(casesVoisinesCC), grille));
+		supprimeCasesDansListe(getValeurListeComposanteConnexe(composantesVoisines).cases, &casesVoisinesCC);
+		casesVoisinesCC = getSuivantListeCase(casesVoisinesCC);
 	}
 
 	return composantesVoisines;
@@ -227,8 +229,8 @@ ComposanteConnexe changementCouleur(ComposanteConnexe ccInitiale, ListeComposant
 	while(!estVideListeComposanteConnexe(ccInitiale.listeVoisins)) {
 		tmp = getValeurListeComposanteConnexe(ccInitiale.listeVoisins);
 		if(tmp.couleur == nouvelleCouleur) {
-			ccInitiale.listeCase = concatenationListeCase(ccInitiale.listeCase, tmp.cases);
-			tmp =*rechercheComposanteConnexe(tmp, *toutesComposantesConnexes);
+			ccInitiale.cases = concatenationListeCase(ccInitiale.cases, tmp.cases);
+			tmp = *rechercheElementListeComposanteConnexe(*toutesComposantesConnexes, tmp);
 
 			while(!estVideListeComposanteConnexe(tmp.listeVoisins)) { /*Tout ceci devient extrèmement bizarre, il va falloir commenter tout ça au plus vite*/
 				if(!estPresentComposanteConnexe(getValeurListeComposanteConnexe(tmp.listeVoisins)), ccInitiale.listeVoisins) {
