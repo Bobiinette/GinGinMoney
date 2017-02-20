@@ -5,7 +5,7 @@
 typedef struct t_ListeComposanteConnexe{
     ComposanteConnexe *composantec;
     struct t_ListeComposanteConnexe *suivant;
-} CelluleComposanteConnexe, *ListeComposanteConnexe;
+};
 
 ListeComposanteConnexe initListeComposanteConnexe(void){
     return NULL;
