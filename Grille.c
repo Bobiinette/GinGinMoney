@@ -12,27 +12,27 @@ struct t_case{
   Couleur couleur;
 };
 
-/*@requires Récupère l'abscisse de la case considérée*/
+/**\brief Récupère l'abscisse de la case considérée**/
 int getXCase(Case test){
   return test.x;
 }
 
-/*@requires Récupère l'ordonnée de la case considérée*/
+/**\brief Récupère l'ordonnée de la case considérée**/
 int getYCase(Case test){
   return test.y;
 }
 
-/*@requires Récupère la couleur de la case considérée*/
+/**\brief Récupère la couleur de la case considérée**/
 int getCouleurCase(Case test){
   return test.couleur;
 }
 
-/*@requires Change la couleur de la case considérée par la couleur en paramètre*/
+/**\brief Change la couleur de la case considérée par la couleur en paramètre**/
 void setCouleur(Case * test, Couleur c){
   test->couleur=c;
 }
 
-/*@requires Initialise un tableau vide de taille n*/
+/**\brief Initialise un tableau vide de taille n**/
 Case ** tableauVide(int n){
   int i;
   Case ** res=calloc(n,sizeof(Case *));
@@ -44,7 +44,7 @@ Case ** tableauVide(int n){
 }
 
 
-/*@requires Libère l'espace mémoire occupé par la grille*/
+/**\brief Libère l'espace mémoire occupé par la grille**/
 void liberationGrille(Case ** tab, int taille){
   int i,j;
 
@@ -55,7 +55,7 @@ void liberationGrille(Case ** tab, int taille){
 }
 
 
-/*@requires Renvoie une couleur aléatoirement*/
+/**\brief Renvoie une couleur aléatoirement**/
 static Couleur aleatoire(){
   Couleur res;
 
@@ -63,7 +63,7 @@ static Couleur aleatoire(){
   return res;
 }
 
-/*@requires Fonction de remplissage aléatoire du tableau*/
+/**\brief Fonction de remplissage aléatoire du tableau**/
 Couleur ** remplissageAleatoire(int n){
   Couleur ** res=tableauVide(n);
   int i,j;
@@ -77,7 +77,7 @@ Couleur ** remplissageAleatoire(int n){
 }
 
 
-/*@requires Fonction de remplissage du tableau à partir d'un fichier*/
+/**\brief Fonction de remplissage du tableau à partir d'un fichier**/
 static void erreurOuverture(int check){
   if (check){
     perror("Erreur ouverture du fichier.\n");
@@ -86,7 +86,7 @@ static void erreurOuverture(int check){
 }
 
 
-/*@requires Vérifie la longueur des chaines de caractères dans le fichier*/
+/**\brief Vérifie la longueur des chaines de caractères dans le fichier**/
 static void erreurLongueur(int check){
   if (check){
     perror("Erreur longueur de la chaîne de caractères dans le fichier.\n");
@@ -95,7 +95,7 @@ static void erreurLongueur(int check){
 }
 
 
-/*@requires Vérifie qu'on n'est pas à la fin du fichier*/
+/**\brief Vérifie qu'on n'est pas à la fin du fichier**/
 static void erreurFinFichier(int check){
   if (check){
     perror("Erreur fin du fichier : tableau non remplie.\n");
@@ -104,7 +104,7 @@ static void erreurFinFichier(int check){
 }
 
 
-/*@requires Vérifie que la couleur existe*/
+/**\brief Vérifie que la couleur existe**/
 static void checkCouleur(char buff){
   int check;  /*1 si buff est bien une couleur, 0 sinon*/
 
@@ -118,8 +118,7 @@ static void checkCouleur(char buff){
 }
 
 
-/*@requires Le fichier contient des chaines de caractères contenant un retour à la ligne au bout de chaque ligne
-  @ensures Crée un tableau de couleur à partir d'un fichier*/
+/**\brief Crée un tableau de couleur à partir d'un fichier. Le fichier doit contenir des chaines de caractères contenant un retour à la ligne au bout de chaque ligne**/
 Couleur ** remplissageFichier(char * text){
   FILE * fichier=NULL;
   int lecture;  /*lecture caractère par caractère dans le fichier*/
