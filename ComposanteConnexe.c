@@ -2,24 +2,45 @@
 
 #include "ComposanteConnexe.h"
 
-/**
-*/
+/**\file ComposanteConnexe.c
+ *\brief Gestion des composantes connexes.
+ *		Module permettant la gestion des composantes connexes, et d'une liste de composante connexe (sans pointeurs).
+ */
+
+/**\struct ComposanteConnexe ComposanteConnexe.h
+ *\brief Structure de composante connexe.
+ */
 
 struct ComposanteConnexe {
-	Couleur couleur;
-	ListeComposanteConnexe listeVoisins;
-	ListeCase cases;
+	Couleur couleur; /**< Couleur de la composante connexe*/
+	ListeComposanteConnexe listeVoisins; /**< La liste des voisins de la composante connexe*/
+	ListeCase cases; /**< La liste des cases qui composent la composantes connexes*/
 };
+
+/**\fn CompoanteConnexe initComposanteConnexe (void)
+ *\brief Initialise une composante connexe à NULL
+ *\param void
+ *\return ComposanteConnexe initialisée à NULL, et couleur bleu
+ */
 
 ComposanteConnexe initComposanteConnexe() {
 	ComposanteConnexe res;
-	res.couleur = 0;
-	res.listeVoisins = initListeComposanteConnexe();/*Possiblement NULL*/
-	res.cases = initListeCase();/*Possiblemet NULL*/
+	res.couleur = B;
+	res.listeVoisins = initListeComposanteConnexe();
+	res.cases = initListeCase();
 	return res;
 }
 
-ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case ***grille) {/*Problèmes aux bord, manque int taille aeazurzrzuirifvbvfgaigvaeiogve*/
+/**\fn ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case ***grille, int taille)
+ *\brief Constructeur d'une composante connexe. Permet de créer une composante connxe à partir d'une case et de la grille. Ne crée pas la liste des voisins de la composante connexe.
+ *		Voir aussi voisinsConnexes().
+ *\param emplacementInitial Pointeur vers la case à partir de laquelle on veut créer une composante connexe.
+ *\param grille Pointeur vers la grille de jeu. La grille doit-être non NULL.
+ *\param taille Taille de la grille de jeu.
+ *\return ComposanteConnexe initialisée avec ses cases et sa couleur, mais pas ses composantes connexes voisines.
+ */
+
+ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case ***grille, int taille) {
 	ComposanteConnexe res = initComposanteConnexe();
 	res.couleur = getCouleurCase(emplacementInitial);
 	ListeCase listeCasesPossibles = initListeCase();
@@ -31,7 +52,7 @@ ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case *
 		aDetruire = listeCasesPossibles;
 		listeCasesPossibles = getSuivantListeCase(listeCasesPossibles);
 		res.cases = constructeurListeCase(getValeurListeCase(aDetruire), res.cases);
-		voisinsPossibles = voisinsConnexes(getValeurListeCase(aDetruire), grille);
+		voisinsPossibles = voisinsConnexes(getValeurListeCase(aDetruire), grille, taille);
 
 		destructeurCelluleListeCase(aDetruire);
 
@@ -51,6 +72,12 @@ ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case *
 	return res;
 }
 
+/**\fn void destructeurComposanteConnexe(ComposanteConnexe *cc)
+ *\brief Destructeur d'une composante connexe, libère la mémoire.
+ *\param cc Pointeur vers la composante connexe à détruire.
+ *\return void
+ */
+
 void destructeurComposanteConnexe(ComposanteConnexe *cc) {
 	if(cc != NULL) {
 		if(!estVideListeComposanteConnexe(cc->listeVoisins)) {
@@ -63,19 +90,45 @@ void destructeurComposanteConnexe(ComposanteConnexe *cc) {
 	cc = NULL;
 }
 
+/**\fn ListeCase getCasesComposanteConnexe(ComposanteConnexe *cc)
+ *\brief Getter pour obtenir les cases qui composent la composante connexe.
+ *\param cc La composante dont on veut la liste des cases qui la compose.
+ *\return La liste des cases qui composent la composante connexe.
+ */
+
 ListeCase getCasesComposanteConnexe(ComposanteConnexe *cc) {
 	return cc->cases;
 }
+
+/**\fn ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc)
+ *\brief Getter pour obtenir les voisins de la composante connexe.
+ *\param cc La composante dont on veut la liste des voisins.
+ *\return La liste des voisins la composante connexe.
+ */
 
 ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc) {
 	return cc->listeVoisins;
 }
 
+/**\fn Couleur getCouleurComposanteConnexe(ComposanteConnexe *cc)
+ *\brief Getter pour obtenir la couleur de la composante connexe.
+ *\param cc La composante dont on veut la couleur.
+ *\return La couleur de la composante connexe.
+ */
+
 Couleur getCouleurComposanteConnexe(ComposanteConnexe *cc) {
 	return cc->couleur;
 }
 
-ListeCase voisinsConnexes(Case *depart, Case ***grille) {/*AAAaaaaaaaaaaaaaahhhhhhhhhh problèmes au bords*/
+/**\fn ListeCase voisinsConnexes(Case *depart, Case ***grille, int taille)
+ *\brief Fonction pour obtenir la liste de toutes les cases voisines de même couleur d'une case passée en paramètre.
+ *\param depart Pointeur vers la case dont ont veut toutes les cases voisines de même couleur.
+ *\param grille Pointeur vers la grille de jeu, non NULL.
+ *\param taille La taille de la grille de jeu.
+ *\return La liste des cases voisines de la case depart de même couleur.
+ */
+
+ListeCase voisinsConnexes(Case *depart, Case ***grille, int taille) {
 	ListeCase res = initListeCase();
 	int x = 0;
 	int y = 0;
@@ -83,16 +136,16 @@ ListeCase voisinsConnexes(Case *depart, Case ***grille) {/*AAAaaaaaaaaaaaaaahhhh
 	x = getXCase(depart);
 	y = getYCase(depart);
 
-	if(getCouleurCase(grille[x + 1][y]) == getCouleurCase(depart)) {
+	if(x < taille && getCouleurCase(grille[x + 1][y]) == getCouleurCase(depart)) {
 		res = constructeurListeCase(grille[x + 1][y], res);
 	}
-	if(getCouleurCase(grille[x - 1][y]) == getCouleurCase(depart)) {
+	if(x > 0 && getCouleurCase(grille[x - 1][y]) == getCouleurCase(depart)) {
 		res = constructeurListeCase(grille[x - 1][y], res);
 	}
-	if(getCouleurCase(grille[x][y + 1]) == getCouleurCase(depart)) {
+	if(y < taille && getCouleurCase(grille[x][y + 1]) == getCouleurCase(depart)) {
 		res = constructeurListeCase(grille[x][y + 1], res);
 	}
-	if(getCouleurCase(grille[x][y - 1]) == getCouleurCase(depart)) {
+	if(y > 0 && getCouleurCase(grille[x][y - 1]) == getCouleurCase(depart)) {
 		res = constructeurListeCase(grille[x][y - 1], res);
 	}
 
@@ -128,26 +181,6 @@ static void destructeurTableauTest(int **tab, int taille) {
 	tab = NULL;
 }
 
-ListeComposanteConnexe listeComposanteConnexeGrille(Case ***grille, int tailleGrille) {
-	ListeComposanteConnexe res = NULL;
-	ComposanteConnexe cc = initComposanteConnexe();
-	int **tabTest = tableauTestAppartenance(tailleGrille);
-	int i = 0;
-	int j = 0;
-
-	for(i = 0; i < tailleGrille; i ++) {
-		for(j = 0; j < tailleGrille; j ++) {
-			if(tabTest[i][j] == 0) {
-				cc = constructeurComposanteConnexe(grille[i][j], grille);
-				res = constructeurListeComposanteConnexe(res, &cc);
-				tabTest = completeGrilleTest(cc.cases, tabTest);
-			}
-		}
-	}
-
-	return res;
-}
-
 int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
 	if(testListeCaseVide(cc1->cases)) {
 		return 0;
@@ -171,7 +204,7 @@ int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
 	return 1;
 }
 
-static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case ***grille) {
+static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case ***grille, int taille) {
 	ListeCase res = initListeCase();
 	Case *tmp = NULL;
 	int x = 0;
@@ -181,16 +214,16 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case ***grille)
 		x = getXCase(tmp);
 		y = getYCase(tmp);
 
-		if(!estPresentDansListeCase(grille[x + 1][y], casesComposanteConnexe)) {
+		if(x < taille && !estPresentDansListeCase(grille[x + 1][y], casesComposanteConnexe)) {
 			res = constructeurListeCase(grille[x + 1][y], res);
 		}
-		if(!estPresentDansListeCase(grille[x - 1][y], casesComposanteConnexe)) {
+		if(x > 0 && !estPresentDansListeCase(grille[x - 1][y], casesComposanteConnexe)) {
 			res = constructeurListeCase(grille[x - 1][y], res);
 		}
-		if(!estPresentDansListeCase(grille[x][y + 1], casesComposanteConnexe)) {
+		if(y < taille && !estPresentDansListeCase(grille[x][y + 1], casesComposanteConnexe)) {
 			res = constructeurListeCase(grille[x][y + 1], res);
 		}
-		if(!estPresentDansListeCase(grille[x][y - 1], casesComposanteConnexe)) {
+		if(y > 0 && !estPresentDansListeCase(grille[x][y - 1], casesComposanteConnexe)) {
 			res = constructeurListeCase(grille[x][y - 1], res);
 		}
 
@@ -206,12 +239,12 @@ static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATro
 	}
 }
 
-ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case ***grille, TabComposanteConnexe tabCC) {
+ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case ***grille, int taille, TabComposanteConnexe tabCC) {
 	ListeComposanteConnexe composantesVoisines = initListeComposanteConnexe();
 	ListeCase casesVoisinesCC = initListeCase();
 	ComposanteConnexe *cc = NULL;
 
-	casesVoisinesCC = casesVoisines(casesComposanteConnexe, grille);
+	casesVoisinesCC = casesVoisines(casesComposanteConnexe, grille, taille);
 
 	while(!testListeCaseVide(casesVoisinesCC)) {
 		cc = rechercheElementTabComposanteConnexeAvecCase(getValeurListeCase(casesVoisinesCC), tabCC);
@@ -287,6 +320,26 @@ void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
 		tabCC = tabCC->suivant;
 		destructeurCelluleTabComposanteConnexe(tmp);
 	}
+}
+
+TabComposanteConnexe listeComposanteConnexeGrille(Case ***grille, int tailleGrille) {
+	TabComposanteConnexe res = NULL;
+	ComposanteConnexe cc = initComposanteConnexe();
+	int **tabTest = tableauTestAppartenance(tailleGrille);
+	int i = 0;
+	int j = 0;
+
+	for(i = 0; i < tailleGrille; i ++) {
+		for(j = 0; j < tailleGrille; j ++) {
+			if(tabTest[i][j] == 0) {
+				cc = constructeurComposanteConnexe(grille[i][j], grille, tailleGrille);
+				res = constructeurTabComposanteConnexe(cc, res);
+				tabTest = completeGrilleTest(cc.cases, tabTest);
+			}
+		}
+	}
+
+	return res;
 }
 
 int testVictoire(TabComposanteConnexe tabCC) {

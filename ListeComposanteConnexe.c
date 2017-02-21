@@ -6,8 +6,8 @@
  *  \brief Structure de Liste de Composantes connexes
 */
 struct t_ListeComposanteConnexe{
-  ComposanteConnexe composantec;
-  struct ListeComposanteConnexe *suivant;
+  ComposanteConnexe *composantec;
+  struct t_ListeComposanteConnexe *suivant;
 };
 /*! \fn ListeComposanteConnexe initListeComposanteConnexe(void)
  *  \brief Permet d'initialiser une ListeComposanteConnexe
