@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "Cases.h"
 
-/*! \class t_listeCase Cases.h "inc/Cases.h"
+/*! \struct ListeCase Cases.h
  *  \brief Structure de liste de cases.
  */
 struct t_listeCase {
