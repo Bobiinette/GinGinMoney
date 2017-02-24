@@ -22,7 +22,6 @@ static Couleur aleatoire();
 
 Case ** remplissageAleatoire(int n, Case **tab);
 
-
 static void erreurOuverture(int check);
 
 static void erreurLongueur(int check);
@@ -31,6 +30,14 @@ static void erreurFinFichier(int check);
 
 static void checkCouleur(char buff);
 
-Couleur ** remplissageFichier(char * text);
+Case ** remplissageFichier(char * text, int taille);
+
+Case *** pointeurVersGrille(Case **grille, int taille);
+
+void destructeurPointeurVersGrille(Case *** grille, int taille);
+
+Case * getCaseGrille(Case ** grille, int i, int j);
+
+Couleur conversionCharCouleur(char c);
 
 #endif

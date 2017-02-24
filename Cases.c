@@ -92,6 +92,7 @@ int estPresentDansListeCase(Case *c, ListeCase l){
   while(!testListeCaseVide(l)){
     if(l->c == c){
       res=1;
+      return res;
     }
     else{
       l=l->suivant;
