@@ -1,3 +1,8 @@
+#ifndef CASES_H
+#define CASES_H
+
+#include "Grille.h"
+
 typedef struct t_listeCase CelluleCase;
 typedef CelluleCase *ListeCase;
 
@@ -11,12 +16,14 @@ Case* getValeurListeCase(ListeCase l);
 
 ListeCase getSuivantListeCase(ListeCase l);
 
-void liberationCase(CelluleCase *c);
+void destructeurCelluleListeCase(CelluleCase *c);
 
-void liberationListeCase(ListeCase l);
+void destructeurListeCase(ListeCase l);
 
 int estPresentDansListeCase(Case *c, ListeCase l);
 
 ListeCase concatenationListeCase(ListeCase l, ListeCase m);
 
 void supprimeElementListeCase(Case *c, ListeCase *l);
+
+#endif

@@ -1,34 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <cunit.h>
 
-enum Couleur {B,V,R,J,M,G};
+#include "Grille.h"
 
-
-struct t_case{
+struct Case{
   int x;
   int y;
   Couleur couleur;
 };
 
 /**\brief Récupère l'abscisse de la case considérée**/
-int getXCase(Case test){
-  return test.x;
+int getXCase(Case *test){
+  return test->x;
 }
 
 /**\brief Récupère l'ordonnée de la case considérée**/
-int getYCase(Case test){
-  return test.y;
+int getYCase(Case *test){
+  return test->y;
 }
 
 /**\brief Récupère la couleur de la case considérée**/
-int getCouleurCase(Case test){
-  return test.couleur;
+int getCouleurCase(Case *test){
+  return test->couleur;
 }
 
 /**\brief Change la couleur de la case considérée par la couleur en paramètre**/
-void setCouleur(Case * test, Couleur c){
+void setCouleur(Case *test, Couleur c){
   test->couleur=c;
 }
 
@@ -46,12 +44,12 @@ Case ** tableauVide(int n){
 
 /**\brief Libère l'espace mémoire occupé par la grille**/
 void liberationGrille(Case ** tab, int taille){
-  int i,j;
+  int i;
 
   for (i=0;i<taille;i++){
-    for (j=0;j<taille;j++)
-      free(tab[i][j]);
+      free(tab[i]);
   }
+  free(tab);
 }
 
 
@@ -64,16 +62,15 @@ static Couleur aleatoire(){
 }
 
 /**\brief Fonction de remplissage aléatoire du tableau**/
-Couleur ** remplissageAleatoire(int n){
-  Couleur ** res=tableauVide(n);
+Case ** remplissageAleatoire(int n, Case **tab){
   int i,j;
 
   for (i=0;i<n;i++){
     for (j=0;j<n;j++){
-      res[i][j]=aleatoire();
+      (tab[i][j]).couleur = aleatoire();
     }
   }
-  return res;
+  return tab;
 }
 
 
@@ -134,17 +131,17 @@ Couleur ** remplissageFichier(char * text){
   do{  /*remplissage de la première ligne*/
     buff=fgetc(fichier);
     checkCouleur(buff); /*vérifie si la couleur existe*/
-    if (buff!="\n")
+    if (buff!='\n')
       res[0][k]=buff;  /*remplissage de la première ligne*/
     k++;  /*à la fin de la boucle, k sera la taille de la grille*/
-  } while (buff!="\n");
-  
+  } while (buff!='\n');
+
   taille=k;
 
   for (i=1;i<taille;i++){ /*remplissage du reste du tableau*/
-    for (j=0;j<taille;j++){ 
+    for (j=0;j<taille;j++){
       buff=fgetc(fichier);
-      erreurLongueur(buff=="\n");  /*vérifie la longueur de la chaine de caractères en cours de lecture*/
+      erreurLongueur(buff=='\n');  /*vérifie la longueur de la chaine de caractères en cours de lecture*/
       erreurFinFichier(buff==EOF); /*vérifie qu'on n'est pas à la fin du fichier*/
       checkCouleur(buff);  /*vérifie si la couleur existe*/
       res[i][j]=buff;
@@ -155,4 +152,3 @@ Couleur ** remplissageFichier(char * text){
   fclose(fichier);
   return res;
 }
-
