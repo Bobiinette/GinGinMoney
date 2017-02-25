@@ -17,6 +17,7 @@ void testCreationTabComposanteConnexe() {
 	CU_ASSERT(estVideTabComposanteConnexe(tabCC));
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	CU_ASSERT(!estVideTabComposanteConnexe(tabCC));
+	tabCC = creeVoisins(tabCC, grille, taille);
 
 	printf("Fini\n");
 	printf("Nombre de composantes connexes : %d", longueurTabComposanteConnexe(tabCC));

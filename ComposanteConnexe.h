@@ -13,6 +13,7 @@ typedef CelluleTabComposanteConnexe *TabComposanteConnexe;
 
 static ComposanteConnexe initComposanteConnexe();
 static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case **grille, int taille);
+ComposanteConnexe * creeComposanteConnexe(Case * emplacementInitial, Case **grille, int taille);
 void destructeurComposanteConnexe(ComposanteConnexe *cc);
 ListeCase getCasesComposanteConnexe(ComposanteConnexe *cc);
 ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc);
@@ -25,7 +26,7 @@ static void destructeurTableauTest(int **tab, int taille);
 int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2);
 static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille);
 static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATronquer);
-ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC);
+static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC);
 ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur);
 
 /*======================================================Tab composante connexe=============================================*/
@@ -37,6 +38,7 @@ void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell);
 void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC);
 
 TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrille);
+TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille);
 int testVictoire(TabComposanteConnexe tabCC);
 int longueurTabComposanteConnexe(TabComposanteConnexe tabCC);
 void supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element);
