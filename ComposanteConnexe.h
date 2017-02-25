@@ -38,7 +38,7 @@ void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell);
 void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC);
 
 TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrille);
-TabComposanteConnexe creeVoisins(TabComposanteConnexe *tabCC, Case **grille, int taille);
+TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille);
 int testVictoire(TabComposanteConnexe tabCC);
 int longueurTabComposanteConnexe(TabComposanteConnexe tabCC);
 void supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element);

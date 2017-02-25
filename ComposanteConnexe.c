@@ -82,8 +82,9 @@ static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial,
  */
 
 ComposanteConnexe * creeComposanteConnexe(Case * emplacementInitial, Case **grille, int taille) {
-	ComposanteConnexe cc = constructeurComposanteConnexe(emplacementInitial, grille, taille);
-	return &cc;
+	ComposanteConnexe *cc = NULL;
+	*cc = constructeurComposanteConnexe(emplacementInitial, grille, taille);
+	return cc;
 }
 
 /**\fn void destructeurComposanteConnexe(ComposanteConnexe *cc)
@@ -308,14 +309,22 @@ static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase cases
 	ListeComposanteConnexe composantesVoisines = initListeComposanteConnexe();
 	ListeCase casesVoisinesCC = initListeCase();
 	ComposanteConnexe *cc = NULL;
+	ListeCase aDetruire = initListeCase();
 
 	casesVoisinesCC = casesVoisines(casesComposanteConnexe, grille, taille);
 
 	while(!testListeCaseVide(casesVoisinesCC)) {
 		cc = rechercheElementTabComposanteConnexeAvecCase(getValeurListeCase(casesVoisinesCC), tabCC);
 		composantesVoisines = constructeurListeComposanteConnexe(composantesVoisines, cc);
-		supprimeCasesDansListe(getValeurListeComposanteConnexe(composantesVoisines)->cases, &casesVoisinesCC);
+		if(cc != NULL) {
+			supprimeCasesDansListe(cc->cases, &casesVoisinesCC);
+		}
+		aDetruire = casesVoisinesCC;
 		casesVoisinesCC = getSuivantListeCase(casesVoisinesCC);
+	}
+	
+	if(!testListeCaseVide(aDetruire)) {
+		destructeurListeCase(aDetruire);
 	}
 
 	return composantesVoisines;
@@ -469,7 +478,8 @@ TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrill
 TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille) {
 	TabComposanteConnexe save = tabCC;
 	while(!estVideTabComposanteConnexe(tabCC)) {
-		(tabCC->composanteConnexe).voisins = definieComposantesConnexesVoisines((tabCC->composanteConnexe).cases, grille, taille, tabCC);
+		(tabCC->composanteConnexe).listeVoisins = definieComposantesConnexesVoisines((tabCC->composanteConnexe).cases, grille, taille, tabCC);
+		tabCC = tabCC->suivant;
 	}
 	tabCC = save;
 	return tabCC;
@@ -554,6 +564,7 @@ ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComp
 			cc = &(tabCC->composanteConnexe);
 			return cc;
 		}
+		tabCC = tabCC->suivant;
 	}
 	return cc;
 }
