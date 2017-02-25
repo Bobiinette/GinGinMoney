@@ -79,9 +79,10 @@ void destructeurListeCase(ListeCase l){
   ListeCase ret;
   while(!testListeCaseVide(l)){
     ret=l->suivant;
-    destructeurCelluleListeCase(l);
+    destructeurCelluleListeCase(l); 
     l=ret;
   }
+  l = NULL;
 }
 
 /*! \fn int estPresentDansListeCase(Case *c, ListeCase l)

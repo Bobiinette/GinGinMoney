@@ -312,14 +312,22 @@ static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase cases
 	ListeComposanteConnexe composantesVoisines = initListeComposanteConnexe();
 	ListeCase casesVoisinesCC = initListeCase();
 	ComposanteConnexe *cc = NULL;
+	ListeCase aDetruire = initListeCase();
 
 	casesVoisinesCC = casesVoisines(casesComposanteConnexe, grille, taille);
 
 	while(!testListeCaseVide(casesVoisinesCC)) {
 		cc = rechercheElementTabComposanteConnexeAvecCase(getValeurListeCase(casesVoisinesCC), tabCC);
 		composantesVoisines = constructeurListeComposanteConnexe(composantesVoisines, cc);
-		supprimeCasesDansListe(getValeurListeComposanteConnexe(composantesVoisines)->cases, &casesVoisinesCC);
+		if(cc != NULL) {
+			supprimeCasesDansListe(cc->cases, &casesVoisinesCC);
+		}
+		aDetruire = casesVoisinesCC;
 		casesVoisinesCC = getSuivantListeCase(casesVoisinesCC);
+	}
+	
+	if(!testListeCaseVide(aDetruire)) {
+		destructeurListeCase(aDetruire);
 	}
 
 	return composantesVoisines;
@@ -474,6 +482,7 @@ TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int 
 	TabComposanteConnexe save = tabCC;
 	while(!estVideTabComposanteConnexe(tabCC)) {
 		(tabCC->composanteConnexe).listeVoisins = definieComposantesConnexesVoisines((tabCC->composanteConnexe).cases, grille, taille, tabCC);
+		tabCC = tabCC->suivant;
 	}
 	tabCC = save;
 	return tabCC;
@@ -558,6 +567,7 @@ ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComp
 			cc = &(tabCC->composanteConnexe);
 			return cc;
 		}
+		tabCC = tabCC->suivant;
 	}
 	return cc;
 }
