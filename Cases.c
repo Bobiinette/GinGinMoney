@@ -55,7 +55,7 @@ Case* getValeurListeCase(ListeCase l){
  *  \return la liste sans son premier élément.
  */
 ListeCase getSuivantListeCase(ListeCase l){
-  if(testListeCaseVide(l)) {
+  if(!testListeCaseVide(l)) {
       return l->suivant;
   }
   return NULL;

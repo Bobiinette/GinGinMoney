@@ -58,7 +58,7 @@ static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial,
 		destructeurCelluleListeCase(aDetruire);
 
 		aDetruire = voisinsPossibles;
-		
+
 		while(!testListeCaseVide(voisinsPossibles)) {
 			if(!estPresentDansListeCase(getValeurListeCase(voisinsPossibles), res.cases)) {
 				listeCasesPossibles = constructeurListeCase(getValeurListeCase(voisinsPossibles), listeCasesPossibles);
@@ -83,9 +83,12 @@ static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial,
 
 ComposanteConnexe * creeComposanteConnexe(Case * emplacementInitial, Case **grille, int taille) {
 	ComposanteConnexe *cc = NULL;
+	cc = (ComposanteConnexe *)calloc(1, sizeof(ComposanteConnexe));
 	*cc = constructeurComposanteConnexe(emplacementInitial, grille, taille);
 	return cc;
 }
+
+
 
 /**\fn void destructeurComposanteConnexe(ComposanteConnexe *cc)
  *\brief Destructeur d'une composante connexe, libère la mémoire.
@@ -194,7 +197,7 @@ static int **tableauTestAppartenance(int taille) {
 static int **completeGrilleTest(ListeCase aCompleter, int **grilleTest) {
 	while(!testListeCaseVide(aCompleter)) {
 		grilleTest[getXCase(getValeurListeCase(aCompleter))][getYCase(getValeurListeCase(aCompleter))] = 1;
-		aCompleter = getSuivantListeCase(aCompleter);	
+		aCompleter = getSuivantListeCase(aCompleter);
 	}
 	return grilleTest;
 }
@@ -584,4 +587,3 @@ ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, T
 	}
 	return NULL;
 }
-
