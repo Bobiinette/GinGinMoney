@@ -87,10 +87,10 @@ void destructeurListeCase(ListeCase l){
  *  \param l une liste de cases.
  *  \return 1 si la case cherchée est dans la liste, 0 sinon.
  */
-int estPresentDansListeCase(Case *c, ListeCase l){
+int estPresentDansListeCase(Case *c1, ListeCase l){
   int res=0;
   while(!testListeCaseVide(l)){
-    if(l->c == c){
+    if(l->c == c1){
       res=1;
       return res;
     }
@@ -103,8 +103,8 @@ int estPresentDansListeCase(Case *c, ListeCase l){
 
 /*! \fn ListeCase concatenationListeCase(ListeCase l, ListeCase m)
  *  \brief une fonction qui permet de concaténer deux listes de cases.
- *  \param l une liste de cases.
- *  \param m une liste de cases.
+ *  \param l la liste de cases de début.
+ *  \param m la liste de cases de fin.
  *  \return la concatenation de deux listes.
  */
 ListeCase concatenationListeCase(ListeCase l, ListeCase m){
