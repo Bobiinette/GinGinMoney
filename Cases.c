@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include "Cases.h"
 
+/*! *\file Cases.c
+ *   \brief Gestion des listes de pointeurs de cases.
+ *		Module permettant la gestion des listes de pointeurs de cases.
+ */
+
 /*! \struct ListeCase Cases.h
  *  \brief Structure de liste de cases.
  */
@@ -79,7 +84,7 @@ void destructeurListeCase(ListeCase l){
   ListeCase ret;
   while(!testListeCaseVide(l)){
     ret=l->suivant;
-    destructeurCelluleListeCase(l); 
+    destructeurCelluleListeCase(l);
     l=ret;
   }
   l = NULL;
