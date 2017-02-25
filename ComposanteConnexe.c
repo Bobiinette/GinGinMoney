@@ -33,7 +33,7 @@ static ComposanteConnexe initComposanteConnexe() {
 }
 
 /**\fn ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case ***grille, int taille)
- *\brief Constructeur d'une composante connexe. Permet de créer une composante connxe à partir d'une case et de la grille. Ne crée pas la liste des voisins de la composante connexe.
+ *\brief Constructeur d'une composante connexe. Permet de créer une composante connexe à partir d'une case et de la grille. Ne crée pas la liste des voisins de la composante connexe.
  *		Voir aussi voisinsConnexes().
  *\param emplacementInitial Pointeur vers la case à partir de laquelle on veut créer une composante connexe.
  *\param grille Pointeur vers la grille de jeu. La grille doit-être non NULL.
@@ -66,10 +66,24 @@ static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial,
 			voisinsPossibles = getSuivantListeCase(voisinsPossibles);
 		}
 
-		destructeurCelluleListeCase(aDetruire);
+		destructeurListeCase(aDetruire);
 
 	} while(!testListeCaseVide(listeCasesPossibles));
 	return res;
+}
+
+/**\fn ComposanteConnexe creeComposanteConnexe(Case *emplacementInitial, Case ***grille, int taille)
+ *\brief Fonction retournant un ponteur vers une composante connexe qu'il crée. Permet de créer une composante connexe à partir d'une case et de la grille. Ne crée pas la liste des voisins de la composante connexe.
+ *		Utilie pour les tests unitaires.
+ *\param emplacementInitial Pointeur vers la case à partir de laquelle on veut créer une composante connexe.
+ *\param grille Pointeur vers la grille de jeu. La grille doit-être non NULL.
+ *\param taille Taille de la grille de jeu.
+ *\return ComposanteConnexe initialisée avec ses cases et sa couleur, mais pas ses composantes connexes voisines.
+ */
+
+ComposanteConnexe * creeComposanteConnexe(Case * emplacementInitial, Case **grille, int taille) {
+	ComposanteConnexe cc = constructeurComposanteConnexe(emplacementInitial, grille, taille);
+	return &cc;
 }
 
 /**\fn void destructeurComposanteConnexe(ComposanteConnexe *cc)
@@ -290,7 +304,7 @@ static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATro
  *\return La liste de toutes les composantes connexes voisines à la liste de cases passée en paramètre.
  */
 
-ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC) {
+static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC) {
 	ListeComposanteConnexe composantesVoisines = initListeComposanteConnexe();
 	ListeCase casesVoisinesCC = initListeCase();
 	ComposanteConnexe *cc = NULL;
@@ -412,6 +426,7 @@ void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
 		tmp = tabCC;
 		tabCC = tabCC->suivant;
 		destructeurCelluleTabComposanteConnexe(tmp);
+		free(tmp);
 	}
 }
 
@@ -442,6 +457,22 @@ TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrill
 	destructeurTableauTest(tabTest, tailleGrille);
 
 	return res;
+}
+
+/**\fn TabComposanteConnexe creeVoisins(TabComposanteConnexe *tabCC, Case **grille, int taille)
+ *\brief Crée la liste des voisins de chacune des composantes connes d'un TabComposanteConnexe
+ *\param tabCC Le TabComposanteConnexe à qui l'on veut créer les voisins  pour chacune des composantes connexes.
+ *\param grille La grille de jeu.
+ *\param taille La taille de la grille de jeu.
+ */
+
+TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille) {
+	TabComposanteConnexe save = tabCC;
+	while(!estVideTabComposanteConnexe(tabCC)) {
+		(tabCC->composanteConnexe).voisins = definieComposantesConnexesVoisines((tabCC->composanteConnexe).cases, grille, taille, tabCC);
+	}
+	tabCC = save;
+	return tabCC;
 }
 
 /**\fn int testVictoire(TabComposanteConnexe tabCC)
