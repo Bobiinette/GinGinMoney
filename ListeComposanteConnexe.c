@@ -107,11 +107,14 @@ int longeurListeComposanteConnexe(ListeComposanteConnexe l){
  *  \return Le pointeur vers l'élèment recherché si trouvé, Renvoie NULL sinon
 */
 ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element){
-    while(!(estVideListeComposanteConnexe(l))){
-        if(estIdentique(element,l->composantec)){
-            return l->composantec;
-        }
-        l=l->suivant;
+  ListeComposanteConnexe save = l;
+  ComposanteConnexe *cc = NULL;
+  while(!(estVideListeComposanteConnexe(save))){
+      if(estIdentique(save->composantec, element)){
+          cc = save->composantec;
+          return cc;
+      }
+      save=save->suivant;
     }
     return NULL;
 }

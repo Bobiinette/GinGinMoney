@@ -55,7 +55,10 @@ Case* getValeurListeCase(ListeCase l){
  *  \return la liste sans son premier élément.
  */
 ListeCase getSuivantListeCase(ListeCase l){
-  return l->suivant;
+  if(!testListeCaseVide(l)) {
+      return l->suivant;
+  }
+  return NULL;
 }
 
 /*! \fn void destructeurCelluleListeCase(CelluleCase *c)
