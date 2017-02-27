@@ -144,7 +144,7 @@ Case ** remplissageAleatoire(int n, Case **tab){
  */
 static void erreurOuverture(int check){
     if (check){
-        perror("Erreur ouverture du fichier.\n");
+        perror("Erreur ouverture du fichier. ");
         exit(EXIT_FAILURE);
     }
 }
@@ -156,7 +156,7 @@ static void erreurOuverture(int check){
  */
 static void erreurLongueur(int check){
     if (check){
-        perror("Erreur longueur de la chaîne de caractères dans le fichier.\n");
+        perror("Erreur longueur de la chaîne de caractères dans le fichier ");
         exit(EXIT_FAILURE);
     }
 }
@@ -168,7 +168,7 @@ static void erreurLongueur(int check){
  */
 static void erreurFinFichier(int check){
     if (check){
-        perror("Erreur fin du fichier : tableau non remplie.\n");
+        perror("Erreur fin du fichier : tableau non remplie ");
         exit(EXIT_FAILURE);
     }
 }
@@ -185,54 +185,9 @@ static void checkCouleur(char buff){
     check = (check || buff=='J' || buff=='M' || buff=='G');
 
     if (!check){
-        printf("Erreur couleur inexistante %c.\n", buff);
+        printf("Erreur couleur inexistante %c ", buff);
         exit(EXIT_FAILURE);
     }
-}
-
-
-/*! \fn Case ** remplissageFichier(char * text, int taille)
- *  \brief Fonction de remplissage aléatoire du tableau (le fichier doit contenir des chaines de caractères contenant un retour à la ligne au bout de chaque ligne)
- *  \param text donne le chemin d'accès au fichier
- *  \param taille est la taille de la future grille
- *  \return Renvoie la grille obtenue par lecture de fichier
- */
-Case ** remplissageFichier(char * text, int taille){
-    FILE * fichier=NULL;
-    char buff;
-    int i,j;
-    Case ** res = tableauVide(taille);
-
-    fichier=fopen(text,"r");
-    erreurOuverture(fichier==NULL);
-
-    for (i=0;i<taille;i++){
-        for (j=0;j<taille;j++){ 
-            buff=fgetc(fichier);
-            erreurLongueur(buff=='\n');    /*vérifie la longueur de la chaine de caractères en cours de lecture*/
-            erreurFinFichier(buff==EOF); /*vérifie qu'on n'est pas à la fin du fichier*/
-            if(buff!='\n') {
-                checkCouleur(buff);    /*vérifie si la couleur existe*/
-                res[i][j].couleur=conversionCharCouleur(buff);
-            }
-        }
-        fgetc(fichier);    /*lit le caractère "\n" après chaque fin de ligne*/
-    }
-
-    fclose(fichier);
-    return res;
-}
-
-
-/*! \fn Case * getCaseGrille(Case ** grille, int i, int j)
- *  \brief Renvoie un pointeur vers une case
- *  \param grille est la grille du jeu
- *  \param i est l'abscisse de la case
- *  \param j est l'ordonnée de la case
- *  \return renvoie un pointeur vers la case grille[i][j]
- */
-Case * getCaseGrille(Case ** grille, int i, int j) {
-    return &(grille[i][j]);
 }
 
 
@@ -273,4 +228,115 @@ Couleur conversionCharCouleur(char c) {
             break;
     }
     return couleur;
+}
+
+
+/*! \fn char conversionCouleurChar(int a)
+ *  \brief Transforme un entier en char
+ *  \param a est l'entier à transformer en type char
+ *  \return Renvoie le char correspondant
+ */
+char conversionEntierChar(int a) {
+    char tmp = 'B';
+    switch (a) {
+        case 0 :
+            tmp = 'B';
+            break;
+
+        case 1 :
+            tmp = 'V';
+            break;
+
+        case 2 :
+            tmp = 'R';
+            break;
+
+        case 3 :
+            tmp = 'J';
+            break;
+
+        case 4 :
+            tmp = 'M';
+            break;
+
+        case 5 :
+            tmp = 'G';
+            break;
+
+        default :
+            tmp = 'B';
+            break;
+    }
+    return tmp;
+}
+
+
+/*! \fn void creationFichier(int n, char * chemin)
+ *  \brief Ecrit dans le fichier mis en paramètre n suites de n lettres aléatoires (B,V,R,J,M,G)
+ *  \param n est la taille de la grille
+ *  \param chemin est le chemin où se trouve le fichier où contiendra les suites de chiffres
+ */
+void creationFichier(int n, char * chemin){
+	FILE * fichier=NULL;
+	int i,j;
+	int buff_int;
+	char buff_C;
+
+	fichier=fopen(chemin,"w+");
+	erreurOuverture(fichier==NULL);
+
+	for (i=0;i<n;i++){
+		for (j=0;j<n;j++){
+			buff_int=aleatoire();
+			buff_C=conversionEntierChar(buff_int);
+			fputc(buff_C,fichier);
+		}
+		fputc('\n',fichier);
+	}
+}
+			
+
+
+/*! \fn Case ** remplissageFichier(char * chemin, int taille)
+ *  \brief Fonction de remplissage aléatoire du tableau (le fichier doit contenir n suites de n chiffres aléatoires entre 0 et 5)
+ *  \param chemin donne le chemin d'accès au fichier
+ *  \param taille est la taille de la future grille
+ *  \return Renvoie la grille obtenue par lecture de fichier
+ */
+Case ** remplissageFichier(char * chemin, int taille){
+    FILE * fichier=NULL;
+    char buff;
+    int i,j;
+    Case ** res = tableauVide(taille);
+
+    fichier=fopen(chemin,"r");
+    erreurOuverture(fichier==NULL);
+
+    for (i=0;i<taille;i++){
+        for (j=0;j<taille;j++){ 
+            buff=fgetc(fichier);
+            erreurLongueur(buff=='\n');    /*vérifie la longueur de la chaine de caractères en cours de lecture*/
+            erreurFinFichier(buff==EOF); /*vérifie qu'on n'est pas à la fin du fichier*/
+            if(buff!='\n') {
+                checkCouleur(buff);    /*vérifie si la couleur existe*/
+                res[i][j].couleur=conversionCharCouleur(buff);
+            }
+        }
+        fgetc(fichier);    /*lit le caractère "\n" après chaque fin de ligne*/
+    }
+
+    fclose(fichier);
+    return res;
+}
+
+
+/*! \fn Case * getCaseGrille(Case ** grille, int i, int j)
+ *  \brief Renvoie un pointeur vers une case
+ *  \param grille est la grille du jeu
+ *  \param i est l'abscisse de la case
+ *  \param j est l'ordonnée de la case
+ *  \return renvoie un pointeur vers la case grille[i][j]
+ */
+Case * getCaseGrille(Case ** grille, int i, int j) {
+    return &(grille[i][j]);
 }
