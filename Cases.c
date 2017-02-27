@@ -40,7 +40,7 @@ int testListeCaseVide(ListeCase l){
  *  \return renvoie la case qui a été ajouté et le reste de la liste.
  */
 ListeCase constructeurListeCase(Case *d, ListeCase l){
-  CelluleCase *e;
+  CelluleCase *e = NULL;
   e=(CelluleCase *)malloc(sizeof(CelluleCase));
   e->c=d;
   e->suivant=l;
@@ -82,11 +82,12 @@ void destructeurCelluleListeCase(CelluleCase *c){
  *  \return ne renvoie rien.
  */
 void destructeurListeCase(ListeCase l){
-  ListeCase ret;
+  ListeCase ret = initListeCase();
   while(!testListeCaseVide(l)){
     ret=l->suivant;
     destructeurCelluleListeCase(l);
-    l=ret;
+    l = NULL;
+    l = ret;
   }
   l = NULL;
 }
@@ -113,15 +114,20 @@ int estPresentDansListeCase(Case *c1, ListeCase l){
 
 /*! \fn ListeCase concatenationListeCase(ListeCase l, ListeCase m)
  *  \brief une fonction qui permet de concaténer deux listes de cases.
+        Modifie le premier argument passé en paramètre.
  *  \param l la liste de cases de début.
  *  \param m la liste de cases de fin.
  *  \return la concatenation de deux listes.
  */
 ListeCase concatenationListeCase(ListeCase l, ListeCase m){
-  ListeCase temporaire = l;
+  ListeCase temporaire = NULL;
+  temporaire = l;
   if(testListeCaseVide(l)){
-    printf("concatenation impossible");
-    return NULL;
+    l = m;
+    return l;
+  }
+  else if(testListeCaseVide(m)) {
+    return l;
   }
   else{
     while(l->suivant!=NULL){
@@ -133,14 +139,15 @@ ListeCase concatenationListeCase(ListeCase l, ListeCase m){
   return l;
 }
 
-/*! \fn void supprimeElementListeCase(Case *c, ListeCase *l)
+/*! \fn void supprimeElementListeCase(Case *c, ListeCase l)
  *  \brief une fonction qui permet de supprimer un élément d'une liste et de libérer la mémoire qui y est allouée.
  *  \param c un pointeur de case.
- *  \param l un pointeur de liste.
+ *  \param l la liste dans laquelle on veut supprimer un élément.
  *  \return la liste moins l'élément qui a été supprimé.
  */
 ListeCase supprimeElementListeCase(Case *c, ListeCase l){
-  ListeCase temp = l;
+  ListeCase temp = initListeCase();
+  temp = l;
   ListeCase nouveauSuivant = initListeCase();
   if (testListeCaseVide(l)){
     printf("Impossible de supprimer car aucun element");
@@ -149,13 +156,15 @@ ListeCase supprimeElementListeCase(Case *c, ListeCase l){
     if(l->c == c) {
       l = l->suivant;
       destructeurCelluleListeCase(temp);
+      temp = NULL;
     }
     else {
         while(!testListeCaseVide(l->suivant)){
         if((l->suivant)->c == c){
-          nouveauSuivant = (l->suivant)->suivant;
-          destructeurCelluleListeCase(l->suivant);
-          l->suivant = nouveauSuivant;
+          nouveauSuivant = l->suivant;
+          l->suivant = (l->suivant)->suivant;
+          destructeurCelluleListeCase(nouveauSuivant);
+          nouveauSuivant = NULL;
         }
         else{
           l = l->suivant;
@@ -171,15 +180,19 @@ ListeCase supprimeElementListeCase(Case *c, ListeCase l){
  *\brief permet de savoir la longueur d'une liste case.
  *        Utile pour les tests unitaires.
  *\param l La liste de case dont on veut la longueur.
- *\return La longueur de la liste passée en parmètres.
+ *\return La longueur de la liste passée en paramètres.
  */
 
 int longueurListeCase(ListeCase l) {
   int taille = 0;
-  while(!testListeCaseVide(l)) {
-    taille += 1;
-    l = l->suivant;
+  if(l == NULL) {
+    return 0;
+  }
+  else {
+    while(!testListeCaseVide(l)) {
+      taille += 1;
+      l = l->suivant;
+    }
   }
   return taille;
-
 }

@@ -94,18 +94,17 @@ void testListe2(){
   verif=constructeurListeCase(c,verif);
   verif=constructeurListeCase(c2,verif);
   verif=constructeurListeCase(c3,verif);
-  CU_ASSERT(verificationEgaliteListe(concatenationListeCase(l2,l),verif));
+  CU_ASSERT(verificationEgaliteListe(concatenationListeCase(l2,l),verif));/*La liste l2 vaut à présent l2 + l, la liste l a été absorbée par la concaténation*/
 
   //Suppression d'un élément de la liste verif
-  supprimeElementListeCase(c2,&verif);
+  supprimeElementListeCase(c2,verif);
   ListeCase verif2=initListeCase();
   verif2=constructeurListeCase(c,verif2);
   verif2=constructeurListeCase(c3,verif2);
   CU_ASSERT(verificationEgaliteListe(verif2,verif));
 
-  destructeurListeCase(l);
+  destructeurListeCase(l2);
   destructeurListeCase(verif);
-  free(l2);
   destructeurListeCase(verif2);
   free(c);
   free(c3);

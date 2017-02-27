@@ -15,6 +15,6 @@ ListeComposanteConnexe getSuivantListeComposanteConnexe(ListeComposanteConnexe l
 void destructeurCelluleListeComposanteConnexe(CelluleComposanteConnexe *c);
 void destructeurListeComposanteConnexe(ListeComposanteConnexe l);
 ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element);
-void supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe *element);
+ListeComposanteConnexe supprimeElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element);
 
 #endif

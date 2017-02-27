@@ -40,15 +40,21 @@ void testCreationTabComposanteConnexe() {
 	while(!estVideTabComposanteConnexe(tabCC)) {
 		sommeCases += longueurListeCase(getCasesComposanteConnexe(getValeurTabComposanteConnexe(tabCC)));
 		CU_ASSERT(longueurListeCase(getCasesComposanteConnexe(getValeurTabComposanteConnexe(tabCC))) == tabCases[i]);
+		CU_ASSERT(getCouleurComposanteConnexe(getValeurTabComposanteConnexe(tabCC)) == tabCouleurs[i]);
 		CU_ASSERT(longueurListeComposanteConnexe(getComposantesVoisinesComposanteConnexe(getValeurTabComposanteConnexe(tabCC))) == tabVoisins[i]);
 		tabCC = getSuivantTabComposanteConnexe(tabCC);
 		i ++;
 	}
 
+	tabCC = save;
+
 	cc = getValeurTabComposanteConnexe(tabCC);
 
+	CU_ASSERT(longueurListeCase(getCasesComposanteConnexe(cc)) == 1);
+	CU_ASSERT(getCouleurComposanteConnexe(cc) == R);
 	cc = changementCouleur(cc, &tabCC, M);
-	CU_ASSERT(longueurListeCase(getCasesComposanteConnexe(getValeurTabComposanteConnexe(tabCC))) == 6);
+	CU_ASSERT(longueurListeCase(getCasesComposanteConnexe(cc)) == 6);
+	CU_ASSERT(getCouleurComposanteConnexe(cc) == M);
 
 	CU_ASSERT(sommeCases == taille * taille);
 	tabCC = save;

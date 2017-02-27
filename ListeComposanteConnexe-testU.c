@@ -20,7 +20,7 @@ void testCreationListeComposanteConnexe(){
   l = constructeurListeComposanteConnexe(l, d);
   CU_ASSERT(getValeurListeComposanteConnexe(l)==d); /*on regarde si la tête de la liste est bien celle du constructeur*/
   CU_ASSERT(getValeurListeComposanteConnexe(getSuivantListeComposanteConnexe(l))==c); /*on vérifie si le suivant du premier élément de la liste est bien celui donné*/
-  CU_ASSERT(longeurListeComposanteConnexe(l)==2); /*on teste si la longueur de la liste est exacte après l'ajout des deux éléments dans la liste */
+  CU_ASSERT(longueurListeComposanteConnexe(l)==2); /*on teste si la longueur de la liste est exacte après l'ajout des deux éléments dans la liste */
 
   destructeurListeComposanteConnexe(l);
   destructeurComposanteConnexe(c);
@@ -45,14 +45,14 @@ void testFonctionsDiversesListeComposanteConnexe(){
   l = constructeurListeComposanteConnexe(l, cc);
   l = constructeurListeComposanteConnexe(l, d);
   l = constructeurListeComposanteConnexe(l, e);
-  CU_ASSERT(longeurListeComposanteConnexe(l)==3); /*on teste la longueur de la liste*/
+  CU_ASSERT(longueurListeComposanteConnexe(l)==3); /*on teste la longueur de la liste*/
   CU_ASSERT(rechercheElementListeComposanteConnexe(l,cc)!=NULL); /*on vérifie si la composante connexe cc qui est dans la liste est bien trouvée par la fonction*/
   CU_ASSERT(rechercheElementListeComposanteConnexe(l,f)==NULL); /*on vérifie que la composante connexe f ne se trouvant pas dans la liste n'est pas trouvée par la fonction et renvoie bien NULL*/
-  supprimeElementListeComposanteConnexe(&l, d);
-  CU_ASSERT(longeurListeComposanteConnexe(l)==2); /*une composante connexe ayant été supprimée, on regarde si la longueur de la liste a été soustraite de 1*/
+  l = supprimeElementListeComposanteConnexe(l, d);
+  CU_ASSERT(longueurListeComposanteConnexe(l)==2); /*une composante connexe ayant été supprimée, on regarde si la longueur de la liste a été soustraite de 1*/
   CU_ASSERT(rechercheElementListeComposanteConnexe(l,copy)==NULL); /*on regarde si la composante connexe supprimée n'est pas trouvée par la fonction de recherche afin de vérifier si l'élément supprimé est bien celui choisi par la fonction*/
-  supprimeElementListeComposanteConnexe(&l, f);
-  CU_ASSERT(longeurListeComposanteConnexe(l)==2); /*on regarde si lorsqu'on veut supprimer un élément qui n'est pas dans la liste, celle-ci ne bouge pas, c'est-à-dire que la longueur de la liste est restée inchangée*/
+  l = supprimeElementListeComposanteConnexe(l, f);
+  CU_ASSERT(longueurListeComposanteConnexe(l)==2); /*on regarde si lorsqu'on veut supprimer un élément qui n'est pas dans la liste, celle-ci ne bouge pas, c'est-à-dire que la longueur de la liste est restée inchangée*/
 
   destructeurListeComposanteConnexe(l);
   destructeurComposanteConnexe(cc);

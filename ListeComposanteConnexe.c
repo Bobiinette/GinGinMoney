@@ -53,6 +53,9 @@ ListeComposanteConnexe getSuivantListeComposanteConnexe(ListeComposanteConnexe l
     if(!estVideListeComposanteConnexe(l)) {
         return l->suivant;
     }
+    else {
+        return NULL;
+    }
 }
 
 /*! \fn ListeComposanteConnexe constructeurListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *c)
@@ -75,6 +78,7 @@ ListeComposanteConnexe constructeurListeComposanteConnexe(ListeComposanteConnexe
 */
 void destructeurCelluleListeComposanteConnexe(CelluleComposanteConnexe *c) {
     free(c);
+    c = NULL;
 }
 
 /*! \fn void destructeurListeComposanteConnexe(ListeComposanteConnexe l)
@@ -87,6 +91,7 @@ void destructeurListeComposanteConnexe(ListeComposanteConnexe l){
         tmp = l;
         l = l->suivant;
         destructeurCelluleListeComposanteConnexe(tmp);
+        tmp = NULL;
     }
 }
 
@@ -112,40 +117,51 @@ int longueurListeComposanteConnexe(ListeComposanteConnexe l){
 */
 ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element){
   ComposanteConnexe *cc = NULL;
-  while(!(estVideListeComposanteConnexe(l))){
-      if(estIdentique(l->composantec, element)){
-          cc = l->composantec;
-          return cc;
-      }
-      l = l->suivant;
-    }
+  if(element == NULL) {
     return NULL;
+  }
+  if(estVideListeComposanteConnexe(l)) {
+    return NULL;
+  }
+  while(!(estVideListeComposanteConnexe(l))){
+    if(estIdentique(l->composantec, element)){
+        cc = l->composantec;
+        return cc;
+    }
+  l = l->suivant;
+  }
+return NULL;
 }
 
 /*! \fn void supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe *element)
  *  \brief Supprime un élément de ListeComposanteConnexe
- *  \param l pointeur vers la ListeComposanteConnexe dans laquelle on veut supprimer un élément
+ *  \param l la ListeComposanteConnexe dans laquelle on veut supprimer un élément
  *  \param element pointeur vers la  ComposanteConnexe que l'on veut supprimer
+ *  \return La liste de composante connexe avec l'élément supprimé
 */
-void supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe *element){
+ListeComposanteConnexe supprimeElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element){
     ListeComposanteConnexe tmp = initListeComposanteConnexe();
     ListeComposanteConnexe save = initListeComposanteConnexe();
-    save = *l;
-    if (rechercheElementListeComposanteConnexe(*l,element)!=NULL){
+    save = l;
+    if (rechercheElementListeComposanteConnexe(l,element)!=NULL){
 
-        if((*l)->composantec == element) {
-            *l = (*l)->suivant;
+        if(l->composantec == element) {
+            l = l->suivant;
             destructeurCelluleListeComposanteConnexe(save);
+            save = NULL;
         }
         else {
-            while (!estVideListeComposanteConnexe((*l)->suivant)){
-                if(element == ((*l)->suivant)->composantec){
-                    tmp = (*l)->suivant;
-                    (*l)->suivant = ((*l)->suivant)->suivant;
+            while (!estVideListeComposanteConnexe(l->suivant)){
+                if(element == (l->suivant)->composantec){
+                    tmp = l->suivant;
+                    l->suivant = (l->suivant)->suivant;
+                    destructeurCelluleListeComposanteConnexe(tmp);
+                    tmp = NULL;
                 }
-                *l = (*l)->suivant;
+                l = l->suivant;
             }
-            *l = save;
+            l = save;
         }
     }
+    return l;
 }

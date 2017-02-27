@@ -8,8 +8,7 @@ typedef CelluleTabComposanteConnexe *TabComposanteConnexe;
 #include "ListeComposanteConnexe.h"
 #include "Grille.h"
 #include "Cases.h"
-/**
-*/
+
 
 static ComposanteConnexe initComposanteConnexe();
 static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case **grille, int taille);

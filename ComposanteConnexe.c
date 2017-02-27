@@ -364,20 +364,24 @@ static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase cases
  */
 
 ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
-	ListeComposanteConnexe save = ccInitiale->listeVoisins;
+	if(ccInitiale == NULL) {
+		printf("Impossible de changer la couleur de NULL");
+		return NULL;
+	}
+	ListeComposanteConnexe aParcourir = ccInitiale->listeVoisins;
 	ccInitiale->couleur = nouvelleCouleur;
 	ComposanteConnexe *tmp = NULL;
 	ListeComposanteConnexe saveTmp = initListeComposanteConnexe();
 
-	while(!estVideListeComposanteConnexe(ccInitiale->listeVoisins)) {
-		tmp = getValeurListeComposanteConnexe(ccInitiale->listeVoisins);
+	while(!estVideListeComposanteConnexe(aParcourir)) {
+		tmp = getValeurListeComposanteConnexe(aParcourir);
 		if(tmp->couleur == nouvelleCouleur) {
 			ccInitiale->cases = concatenationListeCase(ccInitiale->cases, tmp->cases);
 			tmp = rechercheElementTabComposanteConnexe(tmp, *toutesComposantesConnexes);
 			saveTmp = tmp->listeVoisins;
 
 			while(!estVideListeComposanteConnexe(tmp->listeVoisins)) { /*Tout ceci devient extrèmement bizarre, il va falloir commenter tout ça au plus vite*/
-				if(rechercheElementListeComposanteConnexe(ccInitiale->listeVoisins, getValeurListeComposanteConnexe(tmp->listeVoisins)) == NULL) {
+				if(rechercheElementListeComposanteConnexe(aParcourir, getValeurListeComposanteConnexe(tmp->listeVoisins)) == NULL) {
 					ccInitiale->listeVoisins = constructeurListeComposanteConnexe(ccInitiale->listeVoisins, getValeurListeComposanteConnexe(tmp->listeVoisins));
 				}
 				tmp->listeVoisins = getSuivantListeComposanteConnexe(tmp->listeVoisins);
@@ -385,10 +389,9 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 
 			tmp->listeVoisins = saveTmp;
 			supprimeElementTabComposanteConnexe(toutesComposantesConnexes, *tmp);
-			ccInitiale->listeVoisins = getSuivantListeComposanteConnexe(ccInitiale->listeVoisins);
 		}
+		aParcourir = getSuivantListeComposanteConnexe(aParcourir);
 	}
-	ccInitiale->listeVoisins = save;
 	return ccInitiale;
 }
 
@@ -626,6 +629,7 @@ ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, T
 		if(estIdentique(cc, &(tabCC->composanteConnexe))) {
 			return &(tabCC->composanteConnexe);
 		}
+		tabCC = tabCC->suivant;
 	}
 	return NULL;
 }
