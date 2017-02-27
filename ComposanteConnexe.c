@@ -246,10 +246,18 @@ int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
 			return 0;
 		}
 		else {
-			if(getXCase(getValeurListeCase(cc1->cases))!=getXCase(getValeurListeCase(cc2->cases))) {
+			Case* val1;
+			Case* val2;
+			val1 = getValeurListeCase(cc1->cases);
+			val2 = getValeurListeCase(cc2->cases);
+			if(getXCase(val1)!=getXCase(val2)) {
+				free(val1);
+				free(val2);
 				return 0;
 			}
-			if(getYCase(getValeurListeCase(cc1->cases))!=getYCase(getValeurListeCase(cc2->cases))) {
+			if(getYCase(val1)!=getYCase(val2)) {
+				free(val1);
+				free(val2);
 				return 0;
 			}
 		}
