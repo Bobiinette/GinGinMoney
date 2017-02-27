@@ -127,7 +127,7 @@ Case ** remplissageFichier(char * text, int taille/*taille de la grille*/){/*On 
     FILE * fichier=NULL;
     int lecture;    /*lecture caractère par caractère dans le fichier*/
     char buff;
-    int k=0; /*variable permettant de déterminer la longueur de la première ligne et d'en déduire la taille*/ 
+    int k=0; /*variable permettant de déterminer la longueur de la première ligne et d'en déduire la taille*/
     int i,j;
     Case ** res = tableauVide(taille);
 
@@ -135,7 +135,7 @@ Case ** remplissageFichier(char * text, int taille/*taille de la grille*/){/*On 
     erreurOuverture(fichier==NULL);
 
     for (i=0;i<taille;i++){ /*remplissage du tableau*/
-        for (j=0;j<taille;j++){ 
+        for (j=0;j<taille;j++){
             buff=fgetc(fichier);
             erreurLongueur(buff=='\n');    /*vérifie la longueur de la chaine de caractères en cours de lecture*/
             erreurFinFichier(buff==EOF); /*vérifie qu'on n'est pas à la fin du fichier*/
@@ -213,4 +213,3 @@ Couleur conversionCharCouleur(char c) {
     }
     return couleur;
 }
-
