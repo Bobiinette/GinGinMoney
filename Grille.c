@@ -4,33 +4,78 @@
 
 #include "Grille.h"
 
+/*! \struct Case
+ *  \brief Structure de cases.
+ */
 struct Case{
     int x;
     int y;
     Couleur couleur;
 };
 
-/**\brief Récupère l'abscisse de la case considérée**/
+
+/*! \fn Case * constructeurCase(int x1, int y1, Couleur c)
+ *  \brief Construit une case à partir de coordonnées et d'une couleur données
+ *  \param x1 est l'abscisse de la case
+ *  \param y1 est l'ordonnée de la case
+ *  \param c est la couleur de la case
+ *  \return renvoie la case correspondante
+ */
+Case * constructeurCase(int x1, int y1, Couleur c){
+    Case * res;
+	res = (Case *)calloc(1,sizeof(Case));
+    res->x=x1;
+    res->y=y1;
+    res->couleur=c;
+    return res;
+}
+
+
+/*! \fn int getXCase(Case *test)
+ *  \brief Récupère l'abscisse de la case considérée
+ *  \param test est la case dont on veut connaitre l'abscisse
+ *  \return renvoie l'abscisse correspondante
+ */
 int getXCase(Case *test){
     return test->x;
 }
 
-/**\brief Récupère l'ordonnée de la case considérée**/
+
+/*! \fn int getYCase(Case *test)
+ *  \brief Récupère l'ordonnée de la case considérée
+ *  \param test est la case dont on veut connaitre l'ordonnée
+ *  \return renvoie l'ordonnée correspondante
+ */
 int getYCase(Case *test){
     return test->y;
 }
 
-/**\brief Récupère la couleur de la case considérée**/
+
+/*! \fn int getCouleurCase(Case *test)
+ *  \brief Récupère la couleur de la case considérée
+ *  \param test est la case dont on veut connaitre la couleur
+ *  \return renvoie la couleur correspondante
+ */
 int getCouleurCase(Case *test){
     return test->couleur;
 }
 
-/**\brief Change la couleur de la case considérée par la couleur en paramètre**/
+
+/*! \fn void setCouleur(Case *test, Couleur c)
+ *  \brief Change la couleur de la case considérée par la couleur en paramètre
+ *  \param test est la case dont on veut changer la couleur
+ *  \param c est la couleur que l'on souhaiterait mettre
+ */
 void setCouleur(Case *test, Couleur c){
     test->couleur=c;
 }
 
-/**\brief Initialise un tableau vide de taille n**/
+
+/*! \fn Case ** tableauVide(int n)
+ *  \brief Initialise un tableau vide de taille n
+ *  \param n est la taille du tableau
+ *  \return renvoie un tableau vide de taille n
+ */
 Case ** tableauVide(int n){
     int i;
     int j = 0;
@@ -48,7 +93,11 @@ Case ** tableauVide(int n){
 }
 
 
-/**\brief Libère l'espace mémoire occupé par la grille**/
+/*! \fn void liberationGrille(Case ** tab, int taille)
+ *  \brief Libère l'espace mémoire occupé par la grille
+ *  \param tab est la grille qui occupe la mémoire
+ *  \param taille est la taille de cette grille
+ */
 void liberationGrille(Case ** tab, int taille){
     int i;
 
@@ -59,7 +108,10 @@ void liberationGrille(Case ** tab, int taille){
 }
 
 
-/**\brief Renvoie une couleur aléatoirement**/
+/*! \fn static Couleur aleatoire()
+ *  \brief Renvoie une couleur aléatoirement
+ *  \return Une couleur aléatoire
+ */
 static Couleur aleatoire(){
     Couleur res;
 
@@ -67,7 +119,13 @@ static Couleur aleatoire(){
     return res;
 }
 
-/**\brief Fonction de remplissage aléatoire du tableau**/
+
+/*! \fn Case ** remplissageAleatoire(int n, Case **tab)
+ *  \brief Fonction de remplissage aléatoire du tableau
+ *  \param n est la taille du tableau
+ *  \param tab est la grille à remplir
+ *  \return renvoie une grille remplie par des couleurs aléatoires
+ */
 Case ** remplissageAleatoire(int n, Case **tab){
     int i,j;
 
@@ -80,7 +138,10 @@ Case ** remplissageAleatoire(int n, Case **tab){
 }
 
 
-/**\brief Fonction de remplissage du tableau à partir d'un fichier**/
+/*! \fn static void erreurOuverture(int check)
+ *  \brief Vérifie qu'il n'y a pas d'erreur d'ouverture du fichier : si ce n'est pas le cas, le programme s'arrête avec une erreur
+ *  \param check est la vérification à faire
+ */
 static void erreurOuverture(int check){
     if (check){
         perror("Erreur ouverture du fichier.\n");
@@ -89,7 +150,10 @@ static void erreurOuverture(int check){
 }
 
 
-/**\brief Vérifie la longueur des chaines de caractères dans le fichier**/
+/*! \fn static void erreurLongueur(int check)
+ *  \brief Vérifie la longueur des chaines de caractères dans le fichier : si ce n'est pas le cas, le programme s'arrête avec une erreur
+ *  \param check est la vérification à faire
+ */
 static void erreurLongueur(int check){
     if (check){
         perror("Erreur longueur de la chaîne de caractères dans le fichier.\n");
@@ -98,7 +162,10 @@ static void erreurLongueur(int check){
 }
 
 
-/**\brief Vérifie qu'on n'est pas à la fin du fichier**/
+/*! \fn static void erreurFinFichier(int check)
+ *  \brief Vérifie qu'on n'est pas à la fin du fichier : si ce n'est pas le cas, le programme s'arrête avec une erreur
+ *  \param check est la vérification à faire
+ */
 static void erreurFinFichier(int check){
     if (check){
         perror("Erreur fin du fichier : tableau non remplie.\n");
@@ -107,7 +174,10 @@ static void erreurFinFichier(int check){
 }
 
 
-/**\brief Vérifie que la couleur existe**/
+/*! \fn static void checkCouleur(char buff)
+ *  \brief Vérifie que la couleur existe : si ce n'est pas le cas, le programme s'arrête avec une erreur
+ *  \param buff est le caractère à vérifier
+ */
 static void checkCouleur(char buff){
     int check = 0;    /*1 si buff est bien une couleur, 0 sinon*/
 
@@ -121,21 +191,23 @@ static void checkCouleur(char buff){
 }
 
 
-/*@requires Le fichier contient des chaines de caractères contenant un retour à la ligne au bout de chaque ligne
-    @ensures Crée un tableau de couleur à partir d'un fichier*/
-Case ** remplissageFichier(char * text, int taille/*taille de la grille*/){/*On crée un tableau vide dans cette fonction!!!!!!!!!!!!!!*/
+/*! \fn Case ** remplissageFichier(char * text, int taille)
+ *  \brief Fonction de remplissage aléatoire du tableau (le fichier doit contenir des chaines de caractères contenant un retour à la ligne au bout de chaque ligne)
+ *  \param text donne le chemin d'accès au fichier
+ *  \param taille est la taille de la future grille
+ *  \return Renvoie la grille obtenue par lecture de fichier
+ */
+Case ** remplissageFichier(char * text, int taille){
     FILE * fichier=NULL;
-    int lecture;    /*lecture caractère par caractère dans le fichier*/
     char buff;
-    int k=0; /*variable permettant de déterminer la longueur de la première ligne et d'en déduire la taille*/
     int i,j;
     Case ** res = tableauVide(taille);
 
     fichier=fopen(text,"r");
     erreurOuverture(fichier==NULL);
 
-    for (i=0;i<taille;i++){ /*remplissage du tableau*/
-        for (j=0;j<taille;j++){
+    for (i=0;i<taille;i++){
+        for (j=0;j<taille;j++){ 
             buff=fgetc(fichier);
             erreurLongueur(buff=='\n');    /*vérifie la longueur de la chaine de caractères en cours de lecture*/
             erreurFinFichier(buff==EOF); /*vérifie qu'on n'est pas à la fin du fichier*/
@@ -151,35 +223,24 @@ Case ** remplissageFichier(char * text, int taille/*taille de la grille*/){/*On 
     return res;
 }
 
-Case *** pointeurVersGrille(Case **grille, int taille) {
-    int i = 0;
-    int j = 0;
-    Case ***pGrille = NULL;
-    pGrille = calloc(taille, sizeof(Case **));
-    for(i = 0; i < taille; i ++) {
-        pGrille[i] = calloc(taille, sizeof(Case *));
-        for(j = 0; j < taille; j ++) {
-            pGrille[i][j] = grille[i] + j;
-            printf("%d", getCouleurCase(pGrille[i][j]));
-        }
-        printf("\n");
-    }
-}
 
-void destructeurPointeurVersGrille(Case *** pGrille, int taille) {
-    int i = 0;
-    int j = 0;
-    for(i = 0; i < taille; i ++) {
-        free(pGrille[i]);
-    }
-    free(pGrille);
-    pGrille = NULL;
-}
-
+/*! \fn Case * getCaseGrille(Case ** grille, int i, int j)
+ *  \brief Renvoie un pointeur vers une case
+ *  \param grille est la grille du jeu
+ *  \param i est l'abscisse de la case
+ *  \param j est l'ordonnée de la case
+ *  \return renvoie un pointeur vers la case grille[i][j]
+ */
 Case * getCaseGrille(Case ** grille, int i, int j) {
     return &(grille[i][j]);
 }
 
+
+/*! \fn Couleur conversionCharCouleur(char c)
+ *  \brief Transforme un char en couleur
+ *  \param c est la couleur de type char à transformer en type Couleur
+ *  \return Renvoie la couleur correspondante
+ */
 Couleur conversionCharCouleur(char c) {
     Couleur couleur = B;
     switch (c) {

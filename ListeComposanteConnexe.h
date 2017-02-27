@@ -9,7 +9,7 @@ typedef CelluleComposanteConnexe *ListeComposanteConnexe;
 ListeComposanteConnexe initListeComposanteConnexe(void);
 int estVideListeComposanteConnexe(ListeComposanteConnexe l);
 ListeComposanteConnexe constructeurListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *c);
-int longeurListeComposanteConnexe(ListeComposanteConnexe l);
+int longueurListeComposanteConnexe(ListeComposanteConnexe l);
 ComposanteConnexe* getValeurListeComposanteConnexe(ListeComposanteConnexe l);
 ListeComposanteConnexe getSuivantListeComposanteConnexe(ListeComposanteConnexe l);
 void destructeurCelluleListeComposanteConnexe(CelluleComposanteConnexe *c);

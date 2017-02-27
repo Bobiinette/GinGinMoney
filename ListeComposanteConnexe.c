@@ -39,7 +39,9 @@ int estVideListeComposanteConnexe(ListeComposanteConnexe l){
  *  \return Premier élèment de ListeComposanteConnexe
 */
 ComposanteConnexe* getValeurListeComposanteConnexe(ListeComposanteConnexe l){
-    return l->composantec;
+    if(!estVideListeComposanteConnexe(l)) {
+        return l->composantec;
+    }
 }
 
 /*! \fn ComposanteConnexe getValeurListeComposanteConnexe(ListeComposanteConnexe l)
@@ -48,7 +50,9 @@ ComposanteConnexe* getValeurListeComposanteConnexe(ListeComposanteConnexe l){
  *  \return Queue de la ListeComposanteConnexe
 */
 ListeComposanteConnexe getSuivantListeComposanteConnexe(ListeComposanteConnexe l){
-    return l->suivant;
+    if(!estVideListeComposanteConnexe(l)) {
+        return l->suivant;
+    }
 }
 
 /*! \fn ListeComposanteConnexe constructeurListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *c)
@@ -86,12 +90,12 @@ void destructeurListeComposanteConnexe(ListeComposanteConnexe l){
     }
 }
 
-/*! \fn int longeurListeComposanteConnexe(ListeComposanteConnexe l)
+/*! \fn int longueurListeComposanteConnexe(ListeComposanteConnexe l)
  *  \brief Calcul la longueur de la ListeComposanteConnexe
  *  \param l la ListeComposanteConnexe dont on veut la longuer
  *  \return La longueur de la ListeComposanteConnexe l
 */
-int longeurListeComposanteConnexe(ListeComposanteConnexe l){
+int longueurListeComposanteConnexe(ListeComposanteConnexe l){
 	int longeur=0;
     while (!estVideListeComposanteConnexe(l)){
         longeur=longeur+1;
@@ -107,14 +111,13 @@ int longeurListeComposanteConnexe(ListeComposanteConnexe l){
  *  \return Le pointeur vers l'élèment recherché si trouvé, Renvoie NULL sinon
 */
 ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element){
-  ListeComposanteConnexe save = l;
   ComposanteConnexe *cc = NULL;
-  while(!(estVideListeComposanteConnexe(save))){
-      if(estIdentique(save->composantec, element)){
-          cc = save->composantec;
+  while(!(estVideListeComposanteConnexe(l))){
+      if(estIdentique(l->composantec, element)){
+          cc = l->composantec;
           return cc;
       }
-      save=save->suivant;
+      l = l->suivant;
     }
     return NULL;
 }
