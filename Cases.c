@@ -73,6 +73,7 @@ ListeCase getSuivantListeCase(ListeCase l){
  */
 void destructeurCelluleListeCase(CelluleCase *c){
   free(c);
+  c = NULL;
 }
 
 /*! \fn void destructeurListeCase(ListeCase l)
@@ -138,30 +139,47 @@ ListeCase concatenationListeCase(ListeCase l, ListeCase m){
  *  \param l un pointeur de liste.
  *  \return la liste moins l'élément qui a été supprimé.
  */
-void supprimeElementListeCase(Case *c, ListeCase *l){
-  ListeCase temp = *l;
+ListeCase supprimeElementListeCase(Case *c, ListeCase l){
+  ListeCase temp = l;
   ListeCase nouveauSuivant = initListeCase();
-  if (testListeCaseVide(*l)){
+  if (testListeCaseVide(l)){
     printf("Impossible de supprimer car aucun element");
-    return;
   }
   else {
-    if((*l)->c == c) {
-      *l = (*l)->suivant;
+    if(l->c == c) {
+      l = l->suivant;
       destructeurCelluleListeCase(temp);
     }
     else {
-        while(!testListeCaseVide((*l)->suivant)){
-        if(((*l)->suivant)->c == c){
-          nouveauSuivant = ((*l)->suivant)->suivant;
-          destructeurCelluleListeCase((*l)->suivant);
-          (*l)->suivant = nouveauSuivant;
+        while(!testListeCaseVide(l->suivant)){
+        if((l->suivant)->c == c){
+          nouveauSuivant = (l->suivant)->suivant;
+          destructeurCelluleListeCase(l->suivant);
+          l->suivant = nouveauSuivant;
         }
         else{
-          *l = (*l)->suivant;
+          l = l->suivant;
         }
       }
-      *l = temp;
+      l = temp;
     }
   }
+  return l;
+}
+
+/**\fn int longueurListeCase(ListeCase l)
+ *\brief permet de savoir la longueur d'une liste case.
+ *        Utile pour les tests unitaires.
+ *\param l La liste de case dont on veut la longueur.
+ *\return La longueur de la liste passée en parmètres.
+ */
+
+int longueurListeCase(ListeCase l) {
+  int taille = 0;
+  while(!testListeCaseVide(l)) {
+    taille += 1;
+    l = l->suivant;
+  }
+  return taille;
+
 }
