@@ -13,7 +13,7 @@ typedef CelluleTabComposanteConnexe *TabComposanteConnexe;
 
 static ComposanteConnexe initComposanteConnexe();
 static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial, Case **grille, int taille);
-ComposanteConnexe * creeComposanteConnexe(Case * emplacementInitial, Case **grille, int taille);
+ComposanteConnexe * creeComposanteConnexe(Case * emplacementInitial, Case **grille, int taille); /*Juste pour les testsU*/
 void destructeurComposanteConnexe(ComposanteConnexe *cc);
 ListeCase getCasesComposanteConnexe(ComposanteConnexe *cc);
 ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc);
@@ -25,7 +25,7 @@ static int grilleTeste(int **tab, int taille);
 static void destructeurTableauTest(int **tab, int taille);
 int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2);
 static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille);
-static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATronquer);
+static ListeCase supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase listeATronquer);
 static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC);
 ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur);
 
@@ -34,6 +34,8 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 TabComposanteConnexe initTabComposanteConnexe();
 int estVideTabComposanteConnexe(TabComposanteConnexe tabCC);
 TabComposanteConnexe constructeurTabComposanteConnexe(ComposanteConnexe cc, TabComposanteConnexe tabCC);
+ComposanteConnexe * getValeurTabComposanteConnexe(TabComposanteConnexe tabCC);
+TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC);
 void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell);
 void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC);
 

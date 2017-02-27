@@ -52,7 +52,11 @@ static ComposanteConnexe constructeurComposanteConnexe(Case *emplacementInitial,
 	do {
 		aDetruire = listeCasesPossibles;
 		listeCasesPossibles = getSuivantListeCase(listeCasesPossibles);
-		res.cases = constructeurListeCase(getValeurListeCase(aDetruire), res.cases);
+
+		if(!estPresentDansListeCase(getValeurListeCase(aDetruire), res.cases)) { /*Il ne faut pas rajouter des cases déjà présentes dans la liste*/
+			res.cases = constructeurListeCase(getValeurListeCase(aDetruire), res.cases);
+		}
+
 		voisinsPossibles = voisinsConnexes(getValeurListeCase(aDetruire), grille, taille);
 
 		destructeurCelluleListeCase(aDetruire);
@@ -227,7 +231,13 @@ static void destructeurTableauTest(int **tab, int taille) {
  */
 
 int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
-	if(testListeCaseVide(cc1->cases)) {
+	if(cc1 == NULL) {
+		return 0;
+	}
+	else if(cc2 == NULL) {
+		return 0;
+	}
+	else if(testListeCaseVide(cc1->cases)) {
 		return 0;
 	}
 
@@ -262,22 +272,39 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, 
 	Case *tmp = NULL;
 	int x = 0;
 	int y = 0;
+	Couleur couleur = getCouleurCase(getValeurListeCase(casesComposanteConnexe));
 	while(!testListeCaseVide(casesComposanteConnexe)) {
 		tmp = getValeurListeCase(casesComposanteConnexe);
 		x = getXCase(tmp);
 		y = getYCase(tmp);
 
-		if(x < taille - 1&& !estPresentDansListeCase(getCaseGrille(grille, x + 1, y), casesComposanteConnexe)) {
-			res = constructeurListeCase(getCaseGrille(grille, x + 1, y), res);
+		if(x < taille - 1 && !estPresentDansListeCase(getCaseGrille(grille, x + 1, y), casesComposanteConnexe)) {
+			if(!estPresentDansListeCase(getCaseGrille(grille, x + 1, y), res)) {
+				if(getCouleurCase(getCaseGrille(grille, x + 1, y)) != couleur) {
+					res = constructeurListeCase(getCaseGrille(grille, x + 1, y), res);
+				}
+			}
 		}
 		if(x > 0 && !estPresentDansListeCase(getCaseGrille(grille, x - 1, y), casesComposanteConnexe)) {
-			res = constructeurListeCase(getCaseGrille(grille, x - 1, y), res);
+			if(!estPresentDansListeCase(getCaseGrille(grille, x - 1, y), res)) {
+				if(getCouleurCase(getCaseGrille(grille, x - 1, y)) != couleur) {
+					res = constructeurListeCase(getCaseGrille(grille, x - 1, y), res);
+				}
+			}
 		}
 		if(y < taille - 1 && !estPresentDansListeCase(getCaseGrille(grille, x, y + 1), casesComposanteConnexe)) {
-			res = constructeurListeCase(getCaseGrille(grille, x, y + 1), res);
+			if(!estPresentDansListeCase(getCaseGrille(grille, x, y + 1), res)) {
+				if(getCouleurCase(getCaseGrille(grille, x, y + 1)) != couleur) {
+					res = constructeurListeCase(getCaseGrille(grille, x, y + 1), res);
+				}
+			}
 		}
 		if(y > 0 && !estPresentDansListeCase(getCaseGrille(grille, x, y - 1), casesComposanteConnexe)) {
-			res = constructeurListeCase(getCaseGrille(grille, x, y - 1), res);
+			if(!estPresentDansListeCase(getCaseGrille(grille, x, y - 1), res)) {
+				if(getCouleurCase(getCaseGrille(grille, x, y - 1)) != couleur) {
+					res = constructeurListeCase(getCaseGrille(grille, x, y - 1), res);
+				}
+			}
 		}
 
 		casesComposanteConnexe = getSuivantListeCase(casesComposanteConnexe);
@@ -292,11 +319,14 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, 
  *\return void
  */
 
-static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATronquer) {
-	while(!testListeCaseVide(casesAEnlever)) {
-		supprimeElementListeCase(getValeurListeCase(casesAEnlever), listeATronquer);
+static ListeCase supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase listeATronquer) {
+	int s = 0;
+	while(!testListeCaseVide(casesAEnlever) && !testListeCaseVide(listeATronquer)) {
+		listeATronquer = supprimeElementListeCase(getValeurListeCase(casesAEnlever), listeATronquer);
 		casesAEnlever = getSuivantListeCase(casesAEnlever);
+		s ++;
 	}
+	return listeATronquer;
 }
 
 /**\fn ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case ***grille, int taille, TabComposanteConnexe tabCC)
@@ -315,21 +345,13 @@ static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase cases
 	ListeCase aDetruire = initListeCase();
 
 	casesVoisinesCC = casesVoisines(casesComposanteConnexe, grille, taille);
+	aDetruire = casesVoisinesCC;
 
 	while(!testListeCaseVide(casesVoisinesCC)) {
 		cc = rechercheElementTabComposanteConnexeAvecCase(getValeurListeCase(casesVoisinesCC), tabCC);
 		composantesVoisines = constructeurListeComposanteConnexe(composantesVoisines, cc);
-		if(cc != NULL) {
-			supprimeCasesDansListe(cc->cases, &casesVoisinesCC);
-		}
-		aDetruire = casesVoisinesCC;
-		casesVoisinesCC = getSuivantListeCase(casesVoisinesCC);
+		casesVoisinesCC = supprimeCasesDansListe(cc->cases, casesVoisinesCC);
 	}
-	
-	if(!testListeCaseVide(aDetruire)) {
-		destructeurListeCase(aDetruire);
-	}
-
 	return composantesVoisines;
 }
 
@@ -416,6 +438,26 @@ TabComposanteConnexe constructeurTabComposanteConnexe(ComposanteConnexe cc, TabC
   return cell;
 }
 
+/**\fn ComposanteConnexe * getValeurTabComposanteConnexe(TabComposanteConnexe tabCC)
+ *\brief Permet d'obtenir un pointeur vers la tete d'un TabComposanteConnexe.
+ *\param tabCC Le TabComposanteConnexe dont on veut la tete.
+ *\return Un pointeur vers la tete du TabComposanteConnexe.
+ */
+
+ComposanteConnexe * getValeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
+	return &(tabCC->composanteConnexe);
+}
+
+/**\fn TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC)
+ *\brief Permet d'obtenir la queue du TabComposanteConnexe.
+ *\param tabCC Le TabComposanteConnexe dont on veut le suivant.
+ *\return La queue de TabComposanteConnexe.
+ */
+
+TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC) {
+	return tabCC->suivant;
+}
+
 /**\fn void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell)
  *\brief Destructeur d'une cellule de TabComposanteConnexe, libère la mémoire d'une cellule de TabComposanteConnexe et de la composante connexe qui le constitue.
  *\param cell Pointeur vers la cellule de TabComposanteConnexe que l'on veut libérer.
@@ -481,7 +523,7 @@ TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrill
 TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille) {
 	TabComposanteConnexe save = tabCC;
 	while(!estVideTabComposanteConnexe(tabCC)) {
-		(tabCC->composanteConnexe).listeVoisins = definieComposantesConnexesVoisines((tabCC->composanteConnexe).cases, grille, taille, tabCC);
+		(tabCC->composanteConnexe).listeVoisins = definieComposantesConnexesVoisines((tabCC->composanteConnexe).cases, grille, taille, save);
 		tabCC = tabCC->suivant;
 	}
 	tabCC = save;

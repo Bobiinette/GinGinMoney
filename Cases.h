@@ -24,6 +24,8 @@ int estPresentDansListeCase(Case *c, ListeCase l);
 
 ListeCase concatenationListeCase(ListeCase l, ListeCase m);
 
-void supprimeElementListeCase(Case *c, ListeCase *l);
+ListeCase supprimeElementListeCase(Case *c, ListeCase l);
+
+int longueurListeCase(ListeCase l);
 
 #endif

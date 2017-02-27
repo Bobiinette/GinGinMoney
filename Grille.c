@@ -274,4 +274,3 @@ Couleur conversionCharCouleur(char c) {
     }
     return couleur;
 }
-
