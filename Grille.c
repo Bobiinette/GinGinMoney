@@ -230,6 +230,40 @@ Couleur conversionCharCouleur(char c) {
     return couleur;
 }
 
+char conversionCouleurChar(Couleur c) {
+    char couleur = ' ';
+    switch (c) {
+        case B :
+            couleur = 'B';
+            break;
+
+        case R :
+            couleur = 'R';
+            break;
+
+        case J :
+            couleur = 'J';
+            break;
+
+        case V :
+            couleur = 'V';
+            break;
+
+        case M :
+            couleur = 'M';
+            break;
+
+        case G :
+            couleur = 'G';
+            break;
+
+        default :
+            couleur = ' ';
+            break;
+    }
+    return couleur;
+}
+
 
 /*! \fn char conversionCouleurChar(int a)
  *  \brief Transforme un entier en char

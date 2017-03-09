@@ -1,7 +1,7 @@
 #ifndef GRILLE_H
 #define GRILLE_H
 
-typedef enum Couleur {B,V,R,J,M,G} Couleur;
+typedef enum Couleur {H,B,V,R,J,M,G} Couleur;
 
 typedef struct Case Case;
 
@@ -35,6 +35,8 @@ static void erreurFinFichier(int check);
 static void checkCouleur(char buff);
 
 Couleur conversionCharCouleur(char c);
+
+char conversionCouleurChar(Couleur c);
 
 char conversionEntierChar(int a);
 

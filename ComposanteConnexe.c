@@ -245,22 +245,6 @@ int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
 		if(testListeCaseVide(cc2->cases)) {
 			return 0;
 		}
-		else {
-			Case* val1;
-			Case* val2;
-			val1 = getValeurListeCase(cc1->cases);
-			val2 = getValeurListeCase(cc2->cases);
-			if(getXCase(val1)!=getXCase(val2)) {
-				free(val1);
-				free(val2);
-				return 0;
-			}
-			if(getYCase(val1)!=getYCase(val2)) {
-				free(val1);
-				free(val2);
-				return 0;
-			}
-		}
 		cc1->cases = getSuivantListeCase(cc1->cases);
 		cc2->cases = getSuivantListeCase(cc2->cases);
 	}
@@ -363,7 +347,16 @@ static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase cases
 	return composantesVoisines;
 }
 
-/**\fn ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur)
+static void changementCouleurCase(ComposanteConnexe *cc, Couleur couleur) {
+	ListeCase tmp = cc->cases;
+	while(!testListeCaseVide(cc->cases)) {
+		setCouleur(getValeurListeCase(cc->cases), couleur);
+		cc->cases = getSuivantListeCase(cc->cases);
+	}
+	cc->cases = tmp;
+}
+
+/**\fn ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe toutesComposantesConnexes, Couleur nouvelleCouleur)
  *\brief Fonction qui permet le changement de couleur d'une composante connexe. Met à jour les cases et les composantes connexes voisines de la composante connexe.
  *\param ccInitiale La composante connexe dont on veut changer le couleur.
  *\param touteComposantesConnexes Un pointeur vers la liste de toutes les composantes connexes.
@@ -371,35 +364,47 @@ static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase cases
  *\return Renvoie la composante connexe avec la nouvelle couleur et ses cases et composantes connexes voisines mis à jour.
  */
 
-ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
+ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe toutesComposantesConnexes, Couleur nouvelleCouleur) {
 	if(ccInitiale == NULL) {
 		printf("Impossible de changer la couleur de NULL");
 		return NULL;
 	}
 	ListeComposanteConnexe aParcourir = ccInitiale->listeVoisins;
+	Couleur ancienneCouleur = ccInitiale->couleur;
 	ccInitiale->couleur = nouvelleCouleur;
 	ComposanteConnexe *tmp = NULL;
+	ComposanteConnexe *tmp2 = NULL; /*juste pour stocker getValeurListeComposanteConnexe(tmp->listeVoisins) et améliorer la lisibilité*/
 	ListeComposanteConnexe saveTmp = initListeComposanteConnexe();
+	ListeComposanteConnexe nouveauxVoisins = initListeComposanteConnexe();
+	changementCouleurCase(ccInitiale, nouvelleCouleur);
 
 	while(!estVideListeComposanteConnexe(aParcourir)) {
 		tmp = getValeurListeComposanteConnexe(aParcourir);
 		if(tmp->couleur == nouvelleCouleur) {
+			printf("longueur tmp : %d\n", longueurListeCase(tmp->cases));
 			ccInitiale->cases = concatenationListeCase(ccInitiale->cases, tmp->cases);
-			tmp = rechercheElementTabComposanteConnexe(tmp, *toutesComposantesConnexes);
+			tmp = rechercheElementTabComposanteConnexe(tmp, toutesComposantesConnexes);
 			saveTmp = tmp->listeVoisins;
 
 			while(!estVideListeComposanteConnexe(tmp->listeVoisins)) { /*Tout ceci devient extrèmement bizarre, il va falloir commenter tout ça au plus vite*/
-				if(rechercheElementListeComposanteConnexe(aParcourir, getValeurListeComposanteConnexe(tmp->listeVoisins)) == NULL) {
-					ccInitiale->listeVoisins = constructeurListeComposanteConnexe(ccInitiale->listeVoisins, getValeurListeComposanteConnexe(tmp->listeVoisins));
+				tmp2 = getValeurListeComposanteConnexe(tmp->listeVoisins);
+				if(rechercheElementListeComposanteConnexe(aParcourir, tmp2) == NULL) {
+					if(tmp2->couleur != nouvelleCouleur) {
+						nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp2);
+					}
 				}
 				tmp->listeVoisins = getSuivantListeComposanteConnexe(tmp->listeVoisins);
 			}
 
 			tmp->listeVoisins = saveTmp;
-			supprimeElementTabComposanteConnexe(toutesComposantesConnexes, *tmp);
+			toutesComposantesConnexes = supprimeElementTabComposanteConnexe(toutesComposantesConnexes, *tmp);
+		}
+		if(getValeurListeComposanteConnexe(aParcourir)->couleur != ancienneCouleur && getValeurListeComposanteConnexe(aParcourir)->couleur != nouvelleCouleur) {
+			nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, getValeurListeComposanteConnexe(aParcourir));
 		}
 		aParcourir = getSuivantListeComposanteConnexe(aParcourir);
 	}
+	ccInitiale->listeVoisins = nouveauxVoisins;
 	return ccInitiale;
 }
 
@@ -573,25 +578,26 @@ int longueurTabComposanteConnexe(TabComposanteConnexe tabCC) {
  *\return void
  */
 
-void supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element) {
+TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe tabCC, ComposanteConnexe element) {
     TabComposanteConnexe tmp = initTabComposanteConnexe();
     TabComposanteConnexe save = initTabComposanteConnexe();
-    save = *tabCC;
+    save = tabCC;
 
-    if(estIdentique(&((*tabCC)->composanteConnexe), &element)) {
-        *tabCC = (*tabCC)->suivant;
+    if(estIdentique(&(tabCC->composanteConnexe), &element)) {
+        tabCC = tabCC->suivant;
         CelluleTabComposanteConnexe(save);
+        return tabCC;
     }
     else {
-        while (!estVideTabComposanteConnexe((*tabCC)->suivant)){
-            if(estIdentique(&element, &((*tabCC)->suivant)->composanteConnexe)){
-                tmp = (*tabCC)->suivant;
-                (*tabCC)->suivant = ((*tabCC)->suivant)->suivant;
+        while (!estVideTabComposanteConnexe(tabCC->suivant)){
+            if(estIdentique(&element, &(tabCC->suivant)->composanteConnexe)){
+                tmp = tabCC->suivant;
+                tabCC->suivant = (tabCC->suivant)->suivant;
                 destructeurCelluleTabComposanteConnexe(tmp);
             }
-            *tabCC = (*tabCC)->suivant;
+            tabCC = tabCC->suivant;
         }
-        *tabCC = save;
+        tabCC = save;
     }
 }
 
