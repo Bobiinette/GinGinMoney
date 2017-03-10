@@ -8,6 +8,11 @@
 
 #include "ListeComposanteConnexe.h"
 
+/**\file colorFlood.c
+ *\brief Execution d'une partie.
+ *		Module permettant l'execution d'une partie, mise en place d'une grille de jeu, affichage et déroulement d'une partie.
+ */
+
 
 int main(int argc, char const *argv[])
 {
@@ -61,14 +66,18 @@ void viderBuffer()
         c = getchar();
     }
 }
-
+/**\fn int saisirTaille()
+ *\brief Demande à l'utilisateur de saisir la taille de la grille de jeu. Cette taille dois être comprise entre 3 et 25.
+ *\param aucun paramettre
+ *\return la taille de la grille saisi par le joueur.
+ */
 int saisirTaille() {
 	char tmp[3];
 	int ret = 0;
 	int res = 0;
 	int i = 0;
 
-	ret = read(0, tmp, 3*sizeof(char));
+	ret = read(0, tmp, 3*sizeof(char)); /*lit la valeur entrée par le joueur, cette valeur est lu en temps que caractère.*/
 
 	if(ret < 0) {
 		perror("Erreur de saisi\n\n");
@@ -83,7 +92,7 @@ int saisirTaille() {
 		ret = 3;
 	}
 
-	for(i = 0; i < ret; i++) {
+	for(i = 0; i < ret; i++) {       /*convertie la valeur entrée par le joueur en temps que caractère en un entier*/
 		if(tmp[i] > 47 && tmp[i] < 58) {
 			res = res * 10 + (tmp[i] - 48);/*48 équivaut au 0*/
 		}
@@ -91,7 +100,11 @@ int saisirTaille() {
 
 	return res;
 }
-
+/**\fn int testTaille(int taille)
+ *\brief Teste si la taille de grille demandé est bien comprise entre 3 et 25.
+ *\param taille Entier qui correspond à la taille demandé pour la grille.
+ *\return 1 si la taille est comprise entre 3 et 25, 0 sinon.
+ */
 int testTaille(int taille) {
 	int min = 3;
 	int max = 25;
@@ -102,6 +115,10 @@ int testTaille(int taille) {
 	return 1;
 }
 
+/**\fn void afficheInterLigneDessus(int taille)
+ *\brief Affiche les lignes délimitant les cases du tableau
+ *\param taille Entier qui correspond à la taille de la grille.
+ */
 void afficheInterLigneDessus(int taille) {
 	int i = 0;
 	for(i = 0;i < taille;i++) {
@@ -110,15 +127,26 @@ void afficheInterLigneDessus(int taille) {
 	printf("-");
 }
 
+/**\fn void afficheInterLigneDessus(int taille)
+ *\brief Affiche les cases du tableau
+ *\param grille Pointeur vers la grille de jeu.
+ *\param taille Entier qui correspond à la taille de la grille.
+ *\param ligne Entier qui correspond au numéro de la ligne à afficher.
+ */
 void afficheLigneDessus(Case **grille, int taille, int ligne) {
 	int i = 0;
-	for(i = 0;i < taille;i++) {
+	for(i = 0;i < taille;i++) { /*affiche pour chaque case de la ligne la couleur et la délimitation de la case */
 		printf("|");
 		printf(" %c ", (conversionCouleurChar(getCouleurCase(getCaseGrille(grille, ligne, i)))));
 	}
 	printf("|");
 }
 
+/**\fn void afficheGrille(Case **grille, int taille)
+ *\brief Affiche la grille en appelant les fonction afficheLigneDessus() et afficheInterLigneDessus().
+ *\param grille Pointeur vers la grille de jeu.
+ *\param taille Entier qui correspond à la taille de la grille.
+ */
 void afficheGrille(Case **grille, int taille) {
 	int i = 0;
 
