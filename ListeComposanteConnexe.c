@@ -115,22 +115,21 @@ int longueurListeComposanteConnexe(ListeComposanteConnexe l){
  *  \param element pointeur vers la ComposanteConnexe que l'on cherche dans la liste
  *  \return Le pointeur vers l'élèment recherché si trouvé, Renvoie NULL sinon
 */
-ComposanteConnexe *rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element){
-  ComposanteConnexe *cc = NULL;
+int rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element){
+  ListeComposanteConnexe tmp = l;
   if(element == NULL) {
-    return NULL;
+    return 0;
   }
   if(estVideListeComposanteConnexe(l)) {
-    return NULL;
+    return 0;
   }
-  while(!(estVideListeComposanteConnexe(l))){
-    if(estIdentique(l->composantec, element)){
-        cc = l->composantec;
-        return cc;
+  while(!(estVideListeComposanteConnexe(tmp))){
+    if(estIdentique(tmp->composantec, element)){
+        return 1;
     }
-  l = l->suivant;
+  tmp = tmp->suivant;
   }
-return NULL;
+return 0;
 }
 
 /*! \fn void supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe *element)
@@ -143,7 +142,7 @@ ListeComposanteConnexe supprimeElementListeComposanteConnexe(ListeComposanteConn
     ListeComposanteConnexe tmp = initListeComposanteConnexe();
     ListeComposanteConnexe save = initListeComposanteConnexe();
     save = l;
-    if (rechercheElementListeComposanteConnexe(l,element)!=NULL){
+    if (rechercheElementListeComposanteConnexe(l,element)){
 
         if(l->composantec == element) {
             l = l->suivant;

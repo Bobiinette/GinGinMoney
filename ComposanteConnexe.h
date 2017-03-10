@@ -27,7 +27,7 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, 
 static ListeCase supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase listeATronquer);
 static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC);
 static void changementCouleurCase(ComposanteConnexe *cc, Couleur couleur); /*A commenter*/
-ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe toutesComposantesConnexes, Couleur nouvelleCouleur);
+ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur);
 
 /*======================================================Tab composante connexe=============================================*/
 
@@ -43,9 +43,15 @@ TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrill
 TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille);
 int testVictoire(TabComposanteConnexe tabCC);
 int longueurTabComposanteConnexe(TabComposanteConnexe tabCC);
-TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe tabCC, ComposanteConnexe element);
+TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe tabCC);
 static int estDansComposanteConnexe(Case *c, ComposanteConnexe cc);
 ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComposanteConnexe tabCC);
 ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
+
+
+
+
+void afficheListe(ListeCase cases);
+void afficheVoisins(ListeComposanteConnexe voisins);
 
 #endif

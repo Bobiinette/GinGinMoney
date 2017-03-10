@@ -230,6 +230,8 @@ Couleur conversionCharCouleur(char c) {
     return couleur;
 }
 
+
+
 char conversionCouleurChar(Couleur c) {
     char couleur = ' ';
     switch (c) {

@@ -1,7 +1,7 @@
 #ifndef GRILLE_H
 #define GRILLE_H
 
-typedef enum Couleur {H,B,V,R,J,M,G} Couleur;
+typedef enum Couleur {H = 0,B,V,R,J,M,G} Couleur;
 
 typedef struct Case Case;
 
