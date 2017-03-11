@@ -1,6 +1,6 @@
 all : composanteConnexe cases grille listeComposanteConnexe
 CC = gcc
-LIBRARIES = -lcunit -lm -g -O0
+LIBRARIES = -lcunit -lm -g -O0 -lSDL -lSDLmain
 CFLAGS = -Wall -Wextra -ansi
 SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c
 OBJ = ${SRC: .c = .o}
@@ -33,7 +33,13 @@ ListeComposanteConnexe-testU.o : ListeComposanteConnexe-testU.c
 	$(CC) $(CFLAGS) ListeComposanteConnexe-testU.c -c
 
 colorFlood : $(OBJ) colorFlood.o
-	$(CC) $(OBJ) colorFlood.o -o colorFlood
+	$(CC) $(OBJ) colorFlood.o -o colorFlood $(LIBRARIES)
 
 colorFood.o : colorFlood.c 
 	$(CC) $(CFLAGS) colorFlood.c -c
+
+colorFloodSDL : $(OBJ) colorFlood_SDL.o
+	$(CC) $(OBJ) colorFlood_SDL.o -o colorFloodSDL $(LIBRARIES)
+
+colorFood_SDL.o : colorFlood_SDL.c 
+	$(CC) $(CFLAGS) colorFlood_SDL.c -c
