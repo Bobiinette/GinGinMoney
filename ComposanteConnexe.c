@@ -382,6 +382,7 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 	ComposanteConnexe *tmp = NULL;
 	ComposanteConnexe *tmp2 = NULL; /*juste pour stocker getValeurListeComposanteConnexe(tmp->listeVoisins) et améliorer la lisibilité*/
 	ListeComposanteConnexe voisinsBonneCouleur = initListeComposanteConnexe();
+	ListeComposanteConnexe save = initListeComposanteConnexe();
 	ListeComposanteConnexe voisinsEltSelectionne = initListeComposanteConnexe();
 	ListeComposanteConnexe nouveauxVoisins = initListeComposanteConnexe();
 	changementCouleurCase(ccInitiale, nouvelleCouleur);
@@ -400,9 +401,10 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 		else if(tmp->couleur != H) {
 			nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp);
 		}
-		*toutesComposantesConnexes = supprimeElementTabComposanteConnexe(*toutesComposantesConnexes);
 		aParcourir = getSuivantListeComposanteConnexe(aParcourir);
+		tmp = NULL;
 	}
+	save = voisinsBonneCouleur;
 
 	/*Puis on ajoute les voisins des composantes connexes voisines de la bonne couleur aux voisins de ccInitiale*/
 	while(!estVideListeComposanteConnexe(voisinsBonneCouleur)) {
@@ -411,13 +413,27 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 		while(!estVideListeComposanteConnexe(voisinsEltSelectionne)) {
 			tmp2 = getValeurListeComposanteConnexe(voisinsEltSelectionne);
 
-			if(!rechercheElementListeComposanteConnexe(nouveauxVoisins, tmp2) && tmp2->couleur != H && tmp2->couleur != nouvelleCouleur) {
-				nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp2);
+			printf("10\n");
+
+			if(tmp2 != NULL) {
+				printf("10.5\n");
+				if(tmp2->couleur != H) {
+					printf("10.6\n");
+					if(tmp2->couleur != nouvelleCouleur && !rechercheElementListeComposanteConnexe(nouveauxVoisins, tmp2)) {
+						printf("11\n");
+						nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp2);
+					}
+				}
 			}
+			printf("12\n");
 			voisinsEltSelectionne = getSuivantListeComposanteConnexe(voisinsEltSelectionne);
+			printf("13\n");
 		}
 		voisinsBonneCouleur = getSuivantListeComposanteConnexe(voisinsBonneCouleur);
 	}
+	destructeurListeComposanteConnexe(save);
+	destructeurListeComposanteConnexe(ccInitiale->listeVoisins);
+	*toutesComposantesConnexes = supprimeElementTabComposanteConnexe(*toutesComposantesConnexes);
 	ccInitiale->listeVoisins = nouveauxVoisins;
 	return ccInitiale;
 }
@@ -496,6 +512,7 @@ TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC) 
 
 void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell) {
 	destructeurComposanteConnexe(&(cell->composanteConnexe));
+	free(cell);
 }
 
 /**\fn void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC)
@@ -510,7 +527,6 @@ void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
 		tmp = tabCC;
 		tabCC = tabCC->suivant;
 		destructeurCelluleTabComposanteConnexe(tmp);
-		free(tmp);
 	}
 }
 
@@ -520,14 +536,6 @@ void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
  *\param tailleGrille La taille de la grille.
  *\return Le TabComposanteConnexe avec toutes les composantes connexes crées dedans.
  */
-
-void afficheListe(ListeCase cases) {
-	ListeCase tmp = cases;
-	while(!testListeCaseVide(tmp)) {
-		printf("x : %d|| y : %d\n", getXCase(getValeurListeCase(tmp)), getYCase(getValeurListeCase(tmp)));
-		tmp = getSuivantListeCase(tmp);
-	}
-}
 
 TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrille) {
 	TabComposanteConnexe res = NULL;
@@ -542,8 +550,6 @@ TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrill
 				cc = constructeurComposanteConnexe(getCaseGrille(grille, i, j), grille, tailleGrille);
 				res = constructeurTabComposanteConnexe(cc, res);
 				tabTest = completeGrilleTest(cc.cases, tabTest);
-				printf("Nouvelle liste\n");
-				afficheListe(cc.cases);
 			}
 		}
 	}
@@ -560,24 +566,10 @@ TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrill
  *\param taille La taille de la grille de jeu.
  */
 
-void afficheVoisins(ListeComposanteConnexe voisins) {
-	ListeComposanteConnexe tmp = voisins;
-	int i = 0;
-	while(!estVideListeComposanteConnexe(tmp)) {
-		printf("Voisin %d\n", i);
-		afficheListe(getCasesComposanteConnexe(getValeurListeComposanteConnexe(tmp)));
-		tmp = getSuivantListeComposanteConnexe(tmp);
-		i ++;
-	}
-}
-
 TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille) {
 	TabComposanteConnexe save = tabCC;
-	printf("\n\n\n\n");
 	while(!estVideTabComposanteConnexe(tabCC)) {
 		(tabCC->composanteConnexe).listeVoisins = definieComposantesConnexesVoisines((tabCC->composanteConnexe).cases, grille, taille, save);
-		printf("Nouveau voisin\n");
-		afficheVoisins((tabCC->composanteConnexe).listeVoisins);
 		tabCC = tabCC->suivant;
 	}
 	tabCC = save;
@@ -625,13 +617,20 @@ TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe ta
         tmp = tabCC;
         tabCC = tabCC->suivant;
         destructeurCelluleTabComposanteConnexe(tmp);
+        tmp = NULL;
         return tabCC;
     }
     while (!estVideTabComposanteConnexe(tabCC->suivant)){
         if(testListeCaseVide(((tabCC->suivant)->composanteConnexe).cases) || ((tabCC->suivant)->composanteConnexe).cases == H){
             tmp = tabCC->suivant;
-            tabCC->suivant = (tabCC->suivant)->suivant;
+            if(tabCC->suivant == NULL) {
+            	tabCC->suivant = NULL;
+            }
+            else {
+            	tabCC->suivant = (tabCC->suivant)->suivant;
+            }
             destructeurCelluleTabComposanteConnexe(tmp);
+            tmp = NULL;
         }
         tabCC = tabCC->suivant;
     }
