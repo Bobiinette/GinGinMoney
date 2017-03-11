@@ -1,6 +1,6 @@
 all : composanteConnexe cases grille listeComposanteConnexe
 CC = gcc
-LIBRARIES = -lcunit -lm -g -O0 -lSDL -lSDLmain
+LIBRARIES = -lcunit -lm -g -O0 -lSDL -lSDLmain -lSDL_ttf
 CFLAGS = -Wall -Wextra -ansi
 SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c
 OBJ = ${SRC: .c = .o}
