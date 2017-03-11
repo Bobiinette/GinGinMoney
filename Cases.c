@@ -100,13 +100,14 @@ void destructeurListeCase(ListeCase l){
  */
 int estPresentDansListeCase(Case *c1, ListeCase l){
   int res=0;
-  while(!testListeCaseVide(l)){
-    if(l->c == c1){
+  ListeCase tmp = l;
+  while(!testListeCaseVide(tmp)){
+    if(getXCase(tmp->c) == getXCase(c1) && getYCase(tmp->c) == getYCase(c1)){
       res=1;
       return res;
     }
     else{
-      l=l->suivant;
+      tmp=tmp->suivant;
     }
   }
   return res;
