@@ -30,7 +30,7 @@ int main()
 		taille = saisirTaille();
 	}
 
-	printf("Entrez le nombre de coups que vous pensez effectuer\n");
+	printf("Entrez le nombre de coups que vous pensez effectuer : ");
 	nbrCoups=saisirTaille();
 
 	grille = tableauVide(taille);
@@ -48,10 +48,10 @@ int main()
 		afficheGrille(grille, taille);
 	}
 	if (nbrCoups == 0){
-		printf("Dommage, vous avez perdu\n");
+		printf("Dommage, vous avez perdu.\n");
 	}
 	else{
-		printf("Bravo!!! Vous avez gagner!!!!!\n");
+		printf("Bravo, vous avez gagné !!!!!\n");
 	}
 	destructeurTabComposanteConnexe(tabCC);
 	liberationGrille(grille, taille);
@@ -80,12 +80,12 @@ int getche(void) {
 */
 char saisirCouleur(int nbrCoup){
 	char c;
-	printf("Il vous reste %d coups restant\n",nbrCoup);
-	printf ("Choisissez votre couleur : J pour jaune, B pour bleu, R pour rouge, M pour Marron, V pour vert et G pour gris\n");
+	printf("Il vous reste %d coups.\n",nbrCoup);
+	printf ("Choisissez votre couleur : J pour Jaune, B pour Bleu, R pour Rouge, M pour Marron, V pour Vert et G pour Gris.\n");
 	printf("Choix de la couleur : \n\n");
 	c=getche();
 	while (c!='j' && c!='J' && c!='r' && c!='R' && c!='m' && c!='M' && c!='b' && c!='B' && c!='g' && c!='G' && c!='v' && c!='V'){
-		printf ("Cette couleur n'existe pas. Choisissez votre couleur : J pour jaune, B pour bleu, R pour rouge, M pour Marron, V pour vert et G pour gris\n");
+		printf ("Cette couleur n'existe pas. Choisissez votre couleur :J pour Jaune, B pour Bleu, R pour Rouge, M pour Marron, V pour Vert et G pour Gris.\n");
 		c=getche();
 	}
 	switch (c) {
@@ -128,11 +128,11 @@ int saisirTaille() {
 	ret = read(0, tmp, 3*sizeof(char)); /*lit la valeur entrée par le joueur, cette valeur est lu en temps que caractère.*/
 
 	if(ret < 0) {
-		perror("Erreur de saisie\n\n");
+		perror("Erreur de saisie.\n\n");
 		return 0;
 	}
 	else if(ret == 0) {
-		printf("Rien n'a été saisi\n\n");
+		printf("Rien n'a été saisi.\n\n");
 		return 0;
 	}
 	else if(ret > 3){
@@ -157,7 +157,7 @@ int testTaille(int taille) {
 	int min = 3;
 	int max = 25;
 	if(taille < min || taille > max) {
-		printf("Merci de rentrer une taille entre %d et %d\n\n", min, max);
+		printf("Merci de rentrer une taille entre %d et %d.\n\n", min, max);
 		return 0;
 	}
 	return 1;
