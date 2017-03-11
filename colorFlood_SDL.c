@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <time.h>
+#include <SDL/SDL_ttf.h>
 #include "Grille.h"
 
 int autoDraw=0;
@@ -35,23 +36,9 @@ void fillScreen(SDL_Surface *ecran, int r, int g, int b) {
     SDL_Flip(ecran);
 }
 
-int main(int argc, char *argv[]) {
-  srand(time(NULL));
-  
-  Case **tab=tableauVide(6);
-  tab = remplissageAleatoire(6,tab);
-	int continuer = 1;
-	SDL_Surface *ecran = NULL;
-	SDL_Event event;
+SDL_Surface* initFenetre() {
+  SDL_Surface *ecran = NULL;
     const SDL_VideoInfo* info = NULL;
-    SDL_Surface *ima=NULL;
-    SDL_Surface *carre = NULL;
-    SDL_Rect position;
-    position.x = 0;
-    position.y = 0;
-    int i;
-    int j;
-
 
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
         /* Failed, exit. */
@@ -65,51 +52,108 @@ int main(int argc, char *argv[]) {
         SDL_Quit( );
     }
 
-	ecran=SDL_SetVideoMode(500, 500, 32, SDL_HWSURFACE);
+	ecran=SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE);
 	SDL_WM_SetCaption("exemple SDL", NULL);
+
+  fillScreen(ecran, 0,0,0);
+  drawRectangle(ecran, 250, 250, 5, 0, 255, 255);
+  SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+
+  TTF_Init();
+
+  if(TTF_Init() == -1){
+  fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+  exit(EXIT_FAILURE);
+}
+
+  return ecran;
+}
+
+void quitter(){
+  TTF_Quit();
+  SDL_Quit();
+}
+
+void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
+  int taille = 500;
+  int tailleCarre = taille/tailleGrille;
+  SDL_Rect position;
+  position.x = 50;
+  position.y = 50;
+  int i;
+  int j;
+  SDL_Surface *carre = NULL;
+  SDL_Surface *texte =NULL;
+  TTF_Font *police = NULL;
+  /*SDL_Color fond = {255,255,255};*/
+  SDL_Color couleurNoire = {0, 0, 0};
+  carre = SDL_CreateRGBSurface(SDL_HWSURFACE, tailleCarre, tailleCarre, 32, 0, 0, 0, 0);
+  police = TTF_OpenFont("napo.ttf", 14);
+  if(!police) {
+    printf("Erreur lors du chargement de la police");
+  }
+  SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+  SDL_BlitSurface(carre, NULL, ecran, &position);
+
+  for (i=0;i<tailleGrille;i++){
+    for(j=0;j<tailleGrille;j++){
+      if(getCouleurCase(getCaseGrille(tab,i,j))==R){
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
+        SDL_BlitSurface(carre, NULL, ecran, &position);
+      }
+      if(getCouleurCase(getCaseGrille(tab,i,j))==V){
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 0, 255, 0));
+        SDL_BlitSurface(carre, NULL, ecran, &position);
+      }
+      if(getCouleurCase(getCaseGrille(tab,i,j))==B){
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 0, 0, 255));
+        SDL_BlitSurface(carre, NULL, ecran, &position);
+      }
+      if(getCouleurCase(getCaseGrille(tab,i,j))==J){
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 240, 195, 0));
+        SDL_BlitSurface(carre, NULL, ecran, &position);
+      }
+      if(getCouleurCase(getCaseGrille(tab,i,j))==M){
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 132, 46, 27));
+        SDL_BlitSurface(carre, NULL, ecran, &position);
+      }
+      if(getCouleurCase(getCaseGrille(tab,i,j))==G){
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 80, 80, 80));
+        SDL_BlitSurface(carre, NULL, ecran, &position);
+      }
+      position.x+=tailleCarre;
+    }
+    position.x=50;
+    position.y+=tailleCarre;
+  }
+  position.x=0;
+  position.y=0;
+  texte = TTF_RenderText_Blended(police, "Salut les Zér0s !", couleurNoire/*, fond*/);
+  SDL_BlitSurface(texte, NULL, ecran, &position);
+  SDL_Flip(ecran);
+  TTF_CloseFont(police);
+  SDL_FreeSurface(texte);
+  SDL_FreeSurface(carre);
+}
+
+int main(int argc, char *argv[]) {
+  srand(time(NULL));
+
+
+    int tailleGrille = 20;
+
+
+  Case **tab=tableauVide(tailleGrille);
+  tab = remplissageAleatoire(tailleGrille,tab);
+	int continuer = 1;
+  SDL_Surface *ima=NULL;
+  SDL_Event event;
+
+  SDL_Surface *ecran = initFenetre();
 
     ima = SDL_LoadBMP("./cerise.bmp");
 
-
-    fillScreen(ecran, 0,0,0);
-    drawRectangle(ecran, 250, 250, 5, 0, 255, 255);
-    SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 17, 206, 112));
-    carre = SDL_CreateRGBSurface(SDL_HWSURFACE, 50, 50, 32, 0, 0, 0, 0);
-    SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
-    SDL_BlitSurface(carre, NULL, ecran, &position);
-
-    for (i=0;i<6;i++){
-      for(j=0;j<6;j++){
-        if(getCouleurCase(getCaseGrille(tab,i,j))==R){
-          SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
-          SDL_BlitSurface(carre, NULL, ecran, &position);
-        }
-        if(getCouleurCase(getCaseGrille(tab,i,j))==V){
-          SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 0, 255, 0));
-          SDL_BlitSurface(carre, NULL, ecran, &position);
-        }
-        if(getCouleurCase(getCaseGrille(tab,i,j))==B){
-          SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 0, 0, 255));
-          SDL_BlitSurface(carre, NULL, ecran, &position);
-        }
-        if(getCouleurCase(getCaseGrille(tab,i,j))==J){
-          SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 240, 195, 0));
-          SDL_BlitSurface(carre, NULL, ecran, &position);
-        }
-        if(getCouleurCase(getCaseGrille(tab,i,j))==M){
-          SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 132, 46, 27));
-          SDL_BlitSurface(carre, NULL, ecran, &position);
-        }
-        if(getCouleurCase(getCaseGrille(tab,i,j))==G){
-          SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 80, 80, 80));
-          SDL_BlitSurface(carre, NULL, ecran, &position);
-        }
-        position.x+=50;
-      }
-      position.x=0;
-      position.y+=50;
-    }
-    SDL_Flip(ecran);
+    afficheGrille2D(tailleGrille,tab,ecran);
 
     while (continuer) {
         SDL_WaitEvent(&event);
@@ -119,61 +163,13 @@ int main(int argc, char *argv[]) {
                 break;
             case SDL_KEYDOWN:
             	switch (event.key.keysym.sym) {
-            		case SDLK_p:
-                        drawRectangle(ecran, 250, 250, 2, 255, 255, 255);
-                        drawRectangle(ecran, 0, 0, 10, 255, 0, 0);
-                        drawPixel(ecran, 1, 1, 0, 255, 0);
-                        drawPixel(ecran, 0, 0, 0, 0, 255);
-
-                        break;
-            		case SDLK_e:
-                        fillScreen(ecran, 255,0,255);
-						break;
-                    case SDLK_r:
-                        fillScreen(ecran, 0,0,0);
-                        break;
-                    case SDLK_t :
-                        drawTexture(ecran, 100, 150, ima);
-                        break;
             		case SDLK_ESCAPE:
 						continuer=0; break;
             	}
             	break;
-
-            case SDL_MOUSEBUTTONUP:
-                autoDraw=0;
-                if (event.button.button == SDL_BUTTON_LEFT) {
-                    drawRectangle(ecran, event.button.x, event.button.y, 3, 255, 0, 0);
-                }
-                               break;
-            case SDL_MOUSEBUTTONDOWN:
-                if (event.button.button == SDL_BUTTON_LEFT) {
-                    autoDraw=1;
-                    drawRectangle(ecran, event.button.x, event.button.y, 3, 0, 255, 0);
-                }
-                else if(event.button.button == SDL_BUTTON_RIGHT)
-                {
-                    int x,y;
-                    x = event.button.x ;
-                    y = event.button.y ;
-                    int bpp = ecran->format->BytesPerPixel;
-                    /* Here p is the address to the pixel we want to retrieve */
-                    Uint8 *p = (Uint8 *)ecran->pixels + y * ecran->pitch + x * bpp;
-                    fprintf(stderr,"%d %d -> %d %d %d\n",y, x, p[0], p[1], p[2]);
-                }
-                break;
-            case SDL_MOUSEMOTION:
-                if (autoDraw)
-                    drawRectangle(ecran, event.button.x, event.button.y, 1, 0, 0, 255);
-
-                break;
-
-
-
         }
     }
-  SDL_FreeSurface(carre);
-	SDL_Quit();
+	quitter();
 
 	return 0;
 }
