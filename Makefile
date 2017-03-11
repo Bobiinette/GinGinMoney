@@ -40,6 +40,12 @@ colorFood.o : colorFlood.c
 
 colorFloodSDL : $(OBJ) colorFlood_SDL.o
 	$(CC) $(OBJ) colorFlood_SDL.o -o colorFloodSDL $(LIBRARIES)
+	
+colorFood_SDL2.o : colorFlood_SDL2.c 
+	$(CC) $(CFLAGS) colorFlood_SDL2.c -c
 
-colorFood_SDL.o : colorFlood_SDL.c 
-	$(CC) $(CFLAGS) colorFlood_SDL.c -c
+colorFloodSDL2 : $(OBJ) colorFlood_SDL2.o
+	$(CC) $(OBJ) colorFlood_SDL2.o -o colorFloodSDL2 $(LIBRARIES)
+
+colorFood_SDL2.o : colorFlood_SDL2.c 
+	$(CC) $(CFLAGS) colorFlood_SDL2.c -c
