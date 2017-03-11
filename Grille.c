@@ -116,7 +116,7 @@ static Couleur aleatoire(){
     Couleur res;
 
     res=random()%6;
-    return res;
+    return res + 1;
 }
 
 

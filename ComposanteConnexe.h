@@ -41,12 +41,12 @@ void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC);
 
 TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrille);
 TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille);
-int testVictoire(TabComposanteConnexe tabCC);
+int testVictoire(TabComposanteConnexe tabCC, ComposanteConnexe *cc);
 int longueurTabComposanteConnexe(TabComposanteConnexe tabCC);
 TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe tabCC);
 static int estDansComposanteConnexe(Case *c, ComposanteConnexe cc);
 ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComposanteConnexe tabCC);
-ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
+int estPresentElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
 
 
 

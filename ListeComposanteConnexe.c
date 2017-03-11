@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "ListeComposanteConnexe.h"
 
@@ -118,7 +117,6 @@ int longueurListeComposanteConnexe(ListeComposanteConnexe l){
  *  \return Le pointeur vers l'élèment recherché si trouvé, Renvoie NULL sinon
 */
 int rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element){
-    printf("Salut\n");
   ListeComposanteConnexe tmp = l;
   if(element == NULL) {
     return 0;

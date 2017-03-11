@@ -19,7 +19,6 @@ int main(int argc, char const *argv[])
 	srand(time(NULL));
 
 	Case **grille;
-	Case **grilleTest;
 	TabComposanteConnexe tabCC = initTabComposanteConnexe();
 	int taille = 0;
 	Couleur couleur;
@@ -30,32 +29,24 @@ int main(int argc, char const *argv[])
 		taille = saisirTaille();
 	}
 
-	/*grille = tableauVide(taille);
-	grille = remplissageAleatoire(taille, grille);*/
-	grilleTest = tableauVide(taille);
-	grille = remplissageFichier("./test", 6);
+	grille = tableauVide(taille);
+	grille = remplissageAleatoire(taille, grille);
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
 	afficheGrille(grille, taille);
 
-	while(!testVictoire(tabCC)) {
+	while(!testVictoire(tabCC, cc)) {
 		printf("Choix de la couleur : ");
 		scanf("%c", &choix);
 		couleur = conversionCharCouleur(choix);
 		cc = changementCouleur(cc, &tabCC, couleur);
-		setGrilleTest(grilleTest, cc);
 		afficheGrille(grille, taille);
-		/*afficheGrille(grilleTest, taille);*/
 		scanf("%c", &choix);
-		printf("longueur cases : %d\n", longueurListeCase(getCasesComposanteConnexe(cc)));
-		printf("longueur voisins : %d\n", longueurListeComposanteConnexe(getComposantesVoisinesComposanteConnexe(cc)));
-		printf("longueur tabCC : %d\n", longueurTabComposanteConnexe(tabCC));
 	}
 
 	destructeurTabComposanteConnexe(tabCC);
 	liberationGrille(grille, taille);
-	liberationGrille(grilleTest, taille);
 
 	return 0;
 }
