@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "colorFlood.h"
-
+#include <termios.h>
 #include "ListeComposanteConnexe.h"
 
 /**\file colorFlood.c
@@ -14,7 +14,7 @@
  */
 
 
-int main(int argc, char const *argv[])
+int main()
 {
 	srand(time(NULL));
 
@@ -22,6 +22,7 @@ int main(int argc, char const *argv[])
 	Case **grilleTest;
 	TabComposanteConnexe tabCC;
 	int taille = 0;
+	int nbrCoups = 0;
 	Couleur couleur;
 	char choix;
 	ComposanteConnexe *cc;
@@ -29,7 +30,8 @@ int main(int argc, char const *argv[])
 	while(!testTaille(taille)) {
 		taille = saisirTaille();
 	}
-
+	printf("Entrez le nombre de coups que vous pensez effectuer\n");
+	nbrCoups=saisirTaille();
 	/*grille = tableauVide(taille);
 	grille = remplissageAleatoire(taille, grille);*/
 	grilleTest = tableauVide(taille);
@@ -39,24 +41,75 @@ int main(int argc, char const *argv[])
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
 	afficheGrille(grille, taille);
 
-	while(!testVictoire(tabCC)) {
-		printf("Choix de la couleur : ");
-		scanf("%c", &choix);
+	while(!testVictoire(tabCC) && nbrCoups!=0) {
+		choix=saisirCouleur(nbrCoups);
+		nbrCoups= nbrCoups -1;
 		couleur = conversionCharCouleur(choix);
 		cc = changementCouleur(cc, &tabCC, couleur);
 		setGrilleTest(grilleTest, cc);
 		afficheGrille(grille, taille);
 		afficheGrille(grilleTest, taille);
-		scanf("%c", &choix);
 		printf("longueur cases : %d\n", longueurListeCase(getCasesComposanteConnexe(cc)));
 		printf("longueur voisins : %d\n", longueurListeComposanteConnexe(getComposantesVoisinesComposanteConnexe(cc)));
 		printf("longueur tabCC : %d\n", longueurTabComposanteConnexe(tabCC));
 	}
-
+	if (nbrCoups == 0){
+		printf("Dommage, vous avez perdu\n");
+	}
+	else{
+		printf("Bravo!!! Vous avez gagner!!!!!\n");
+	}
 	destructeurTabComposanteConnexe(tabCC);
 	liberationGrille(grille, taille);
 
 	return 0;
+}
+/**\fn int getche(void)
+*\brief C'est la fonction qui permet de gèrer ce que tape l'utilisateur sur le clavier
+*\return la valeur entrée par l'utilisateur au clavier
+*/
+int getche(void) {
+	struct termios oldattr, newattr;
+	int ch;
+	tcgetattr( STDIN_FILENO, &oldattr );
+	newattr = oldattr;
+	newattr.c_lflag &= ~( ICANON | ECHO );
+	tcsetattr( STDIN_FILENO, TCSANOW, &newattr );
+	ch = getchar();
+	tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
+	return ch;
+}
+
+/**\fn char saisirCouleur()
+*\brief Cette fonction vérifie que la couleur demandé existe.
+*\return la valeur correspondant à une couleur existante entrée par l'utilisateur au clavier
+*/
+char saisirCouleur(int nbrCoup){
+	char c;
+	printf("Il vous reste %d coups restant\n",nbrCoup);
+	printf ("Choisissez votre couleur : J pour jaune, B pour bleu, R pour rouge, M pour Marron, V pour vert et G pour gris\n");
+	printf("Choix de la couleur : ");
+	c=getche();
+	while (c!='j' && c!='J' && c!='r' && c!='R' && c!='m' && c!='M' && c!='b' && c!='B' && c!='g' && c!='G' && c!='v' && c!='V'){
+		printf ("Cette couleur n'existe pas. Choisissez votre couleur : J pour jaune, B pour bleu, R pour rouge, M pour Marron, V pour vert et G pour gris\n");
+		c=getche();
+	}
+	switch (c) {
+		case 'j':
+			return 'J';
+		case 'r':
+			return 'R';
+		case 'm':
+			return 'M';
+		case 'b':
+			return 'B';
+		case 'g':
+			return 'G';
+		case 'v':
+			return 'V';
+		default :
+			return c;
+	}
 }
 
 void viderBuffer()
@@ -115,6 +168,7 @@ int testTaille(int taille) {
 	}
 	return 1;
 }
+
 
 /**\fn void afficheInterLigneDessus(int taille)
  *\brief Affiche les lignes délimitant les cases du tableau
