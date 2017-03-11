@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
 
 	Case **grille;
 	Case **grilleTest;
-	TabComposanteConnexe tabCC;
+	TabComposanteConnexe tabCC = initTabComposanteConnexe();
 	int taille = 0;
 	Couleur couleur;
 	char choix;
@@ -46,7 +46,7 @@ int main(int argc, char const *argv[])
 		cc = changementCouleur(cc, &tabCC, couleur);
 		setGrilleTest(grilleTest, cc);
 		afficheGrille(grille, taille);
-		afficheGrille(grilleTest, taille);
+		/*afficheGrille(grilleTest, taille);*/
 		scanf("%c", &choix);
 		printf("longueur cases : %d\n", longueurListeCase(getCasesComposanteConnexe(cc)));
 		printf("longueur voisins : %d\n", longueurListeComposanteConnexe(getComposantesVoisinesComposanteConnexe(cc)));
@@ -55,6 +55,7 @@ int main(int argc, char const *argv[])
 
 	destructeurTabComposanteConnexe(tabCC);
 	liberationGrille(grille, taille);
+	liberationGrille(grilleTest, taille);
 
 	return 0;
 }
@@ -164,18 +165,14 @@ void afficheGrille(Case **grille, int taille) {
 void setGrilleTest(Case **grille, ComposanteConnexe *cc) {
 	ListeCase tmp = getCasesComposanteConnexe(cc);
 	ListeComposanteConnexe voisins = getComposantesVoisinesComposanteConnexe(cc);
-	printf("Composante actuelle\n");
 	while(!testListeCaseVide(tmp)) {
 		setCouleur(getCaseGrille(grille, getXCase(getValeurListeCase(tmp)), getYCase(getValeurListeCase(tmp))), getCouleurCase(getValeurListeCase(tmp)));
-		printf("x : %d|| y : %d\n", getXCase(getValeurListeCase(tmp)), getYCase(getValeurListeCase(tmp)));
 		tmp = getSuivantListeCase(tmp);
 	}
 	while(!estVideListeComposanteConnexe(voisins)) {
 		tmp = getCasesComposanteConnexe(getValeurListeComposanteConnexe(voisins));
-		printf("Nouveau voisin\n");
 		while(!testListeCaseVide(tmp)) {
 			setCouleur(getCaseGrille(grille, getXCase(getValeurListeCase(tmp)), getYCase(getValeurListeCase(tmp))), getCouleurCase(getValeurListeCase(tmp)));
-			printf("x : %d|| y : %d\n", getXCase(getValeurListeCase(tmp)), getYCase(getValeurListeCase(tmp)));
 			tmp = getSuivantListeCase(tmp);
 		}
 
