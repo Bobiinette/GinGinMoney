@@ -26,7 +26,7 @@ struct ComposanteConnexe {
 
 static ComposanteConnexe initComposanteConnexe() {
 	ComposanteConnexe res;
-	res.couleur = B;
+	res.couleur = H;
 	res.listeVoisins = initListeComposanteConnexe();
 	res.cases = initListeCase();
 	return res;
@@ -104,9 +104,11 @@ void destructeurComposanteConnexe(ComposanteConnexe *cc) {
 	if(cc != NULL) {
 		if(!estVideListeComposanteConnexe(cc->listeVoisins)) {
 			destructeurListeComposanteConnexe(cc->listeVoisins);
+			cc->listeVoisins = NULL;
 		}
 		if(!testListeCaseVide(cc->cases)) {
 			destructeurListeCase(cc->cases);
+			cc->cases = NULL;
 		}
 	}
 	cc = NULL;
@@ -413,26 +415,25 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 		while(!estVideListeComposanteConnexe(voisinsEltSelectionne)) {
 			tmp2 = getValeurListeComposanteConnexe(voisinsEltSelectionne);
 
-			printf("10\n");
+			if(!estPresentElementTabComposanteConnexe(tmp2, *toutesComposantesConnexes)) {
+				tmp2 = NULL;
+			}
 
 			if(tmp2 != NULL) {
-				printf("10.5\n");
 				if(tmp2->couleur != H) {
-					printf("10.6\n");
 					if(tmp2->couleur != nouvelleCouleur && !rechercheElementListeComposanteConnexe(nouveauxVoisins, tmp2)) {
-						printf("11\n");
 						nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp2);
 					}
 				}
 			}
-			printf("12\n");
 			voisinsEltSelectionne = getSuivantListeComposanteConnexe(voisinsEltSelectionne);
-			printf("13\n");
 		}
 		voisinsBonneCouleur = getSuivantListeComposanteConnexe(voisinsBonneCouleur);
 	}
 	destructeurListeComposanteConnexe(save);
+	save = NULL;
 	destructeurListeComposanteConnexe(ccInitiale->listeVoisins);
+	ccInitiale->listeVoisins = NULL;
 	*toutesComposantesConnexes = supprimeElementTabComposanteConnexe(*toutesComposantesConnexes);
 	ccInitiale->listeVoisins = nouveauxVoisins;
 	return ccInitiale;
@@ -513,6 +514,7 @@ TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC) 
 void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell) {
 	destructeurComposanteConnexe(&(cell->composanteConnexe));
 	free(cell);
+	cell = NULL;
 }
 
 /**\fn void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC)
@@ -582,8 +584,14 @@ TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int 
  *\return 0 si la longueur de la composante connexe est différente de 1, 1 sinon.
  */
 
-int testVictoire(TabComposanteConnexe tabCC) {
-	return (longueurTabComposanteConnexe(tabCC)==1);
+int testVictoire(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
+	if(longueurTabComposanteConnexe(tabCC)==1) {
+		return 1;
+	}
+	if(longueurListeComposanteConnexe(cc->listeVoisins) == 0) {
+		return 1;
+	}
+	return 0;
 }
 
 /**\fn int longueurTabComposanteConnexe(TabComposanteConnexe tabCC)
@@ -675,12 +683,12 @@ ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComp
  *\return Un pointeur vers la composante connexe que l'on cherche dans le TabComposanteConnexe.
  */
 
-ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC) {
+int estPresentElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC) {
 	while(!estVideTabComposanteConnexe(tabCC)) {
-		if(estIdentique(cc, &(tabCC->composanteConnexe))) {
-			return &(tabCC->composanteConnexe);
+		if(cc == &(tabCC->composanteConnexe)) {
+			return 1;
 		}
 		tabCC = tabCC->suivant;
 	}
-	return NULL;
+	return 0;
 }
