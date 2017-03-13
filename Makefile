@@ -32,8 +32,8 @@ listeComposanteConnexe : $(OBJ) ListeComposanteConnexe-testU.o
 ListeComposanteConnexe-testU.o : ListeComposanteConnexe-testU.c 
 	$(CC) $(CFLAGS) ListeComposanteConnexe-testU.c -c
 
-colorFlood : $(OBJ) colorFlood.o
-	$(CC) $(OBJ) colorFlood.o -o colorFlood $(LIBRARIES)
+colorFlood : $(OBJ) colorFlood.o colorFlood_SDL.o
+	$(CC) $(OBJ) colorFlood.o colorFlood_SDL.o -o colorFlood $(LIBRARIES)
 
 colorFood.o : colorFlood.c 
 	$(CC) $(CFLAGS) colorFlood.c -c

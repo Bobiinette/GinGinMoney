@@ -7,6 +7,9 @@
 #include "colorFlood.h"
 #include <termios.h>
 #include "ListeComposanteConnexe.h"
+#include "colorFlood_SDL.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 
 /**\file colorFlood.c
  *\brief Execution d'une partie.
@@ -22,38 +25,89 @@ int main()
 	TabComposanteConnexe tabCC = initTabComposanteConnexe();
 	int taille = 0;
 	int nbrCoups = 0;
-	Couleur couleur;
-	char choix;
-	ComposanteConnexe *cc;
+	char nbCoupsStr[100];
+	Couleur couleur = H;
+	char* choix;
+	ComposanteConnexe *cc = NULL;
+	int continuer = 1;
+	int x = 0, y = 0;
+	int xClic = 0, yClic = 0;
+
+	SDL_Surface *ecran = initFenetre();
+	SDL_Event event;
 
 	while(!testTaille(taille)) {
 		taille = saisirTaille();
+		printf("\n");
 	}
 
-	printf("Entrez le nombre de coups que vous pensez effectuer : ");
-	nbrCoups=saisirTaille();
+	printf("Entrez le nombre de coups que vous pensez effectuer : \n");
 
 	grille = tableauVide(taille);
 	grille = remplissageAleatoire(taille, grille);
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
-	afficheGrille(grille, taille);
+	/*afficheGrille(grille, taille);*/
 
-	while(!testVictoire(tabCC, cc) && nbrCoups!=0) {
-		choix=saisirCouleur(nbrCoups);
-		nbrCoups= nbrCoups -1;
-		couleur = conversionCharCouleur(choix);
-		cc = changementCouleur(cc, &tabCC, couleur);
-		afficheGrille(grille, taille);
+	nbrCoups = saisirTaille();
+	sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
+
+	afficheGrille2D(taille, grille, ecran, nbCoupsStr);
+
+	while(nbrCoups >=0 && continuer != 0) {
+		/*choix=saisirCouleur(nbrCoups);
+		couleur = conversionCharCouleur(choix);*/
+		/*afficheGrille(grille, taille);*/
+
+		SDL_WaitEvent(&event);
+        switch(event.type) {
+            case SDL_QUIT:
+                continuer = 0;
+                break;
+            case SDL_KEYDOWN:
+            	switch (event.key.keysym.sym) {
+            		case SDLK_ESCAPE:
+						continuer=0;
+						break;
+            	}
+            	break;
+            case SDL_MOUSEBUTTONDOWN:
+            	if (event.button.button == SDL_BUTTON_LEFT) {
+            		xClic = event.button.x ;
+                    yClic = event.button.y ;
+                    endroitClique(&y, &x, taille, xClic, yClic);
+                    if(x < taille && x >= 0 && y < taille && y >= 0) {
+                    	if(estVoisine(cc, rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, x, y), tabCC))) {
+                    		couleur = getCouleurCase(getCaseGrille(grille, x, y));
+							cc = changementCouleur(cc, &tabCC, couleur);
+							nbrCoups = nbrCoups -1;
+							if(nbrCoups == 0 && !testVictoire(tabCC, cc)) {
+								sprintf(nbCoupsStr, "Vous avez perdu, echap pour quitter", nbrCoups);
+							}
+							else if(testVictoire(tabCC, cc)){
+								sprintf(nbCoupsStr, "Vous avez gagne, echap pour quitter", nbrCoups);
+							}
+							else {
+								sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
+							}
+                    		afficheGrille2D(taille, grille, ecran, nbCoupsStr);
+                    	}
+                    }
+                }
+            break;
+
+        }
 	}
-	if (nbrCoups == 0){
+
+	/*if (nbrCoups == 0){
 		printf("Dommage, vous avez perdu.\n");
 	}
 	else{
 		printf("Bravo, vous avez gagné !!!!!\n");
-	}
-	destructeurTabComposanteConnexe(tabCC);
+	}*/
+	quitter();
+  	destructeurTabComposanteConnexe(tabCC);
 	liberationGrille(grille, taille);
 
 	return 0;

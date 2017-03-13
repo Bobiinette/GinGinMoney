@@ -7,15 +7,6 @@
 
 int autoDraw=0;
 
-/* px, py coordonnées haut, gauche de la texture*/
-void drawTexture(SDL_Surface *ecran, int px, int py, SDL_Surface *ima) {
-	SDL_Rect rect;
-    rect.x=px;
-    rect.y=py;
-	SDL_BlitSurface(ima, NULL, ecran, &rect);
-	SDL_Flip(ecran);
-}
-
 /* px, py coordonnées haut, gauche du pixel*/
 void drawRectangle(SDL_Surface *ecran, int px, int py, int size, int r, int g, int b) {
     SDL_Rect rect;
@@ -26,11 +17,6 @@ void drawRectangle(SDL_Surface *ecran, int px, int py, int size, int r, int g, i
     SDL_Flip(ecran);
 }
 
-/* px, py coordonnées haut, gauche du pixel*/
-void drawPixel(SDL_Surface *ecran, int px, int py, int r, int g, int b) {
-    drawRectangle(ecran,  px,  py, 1,  r,  g,  b);
-}
-
 void fillScreen(SDL_Surface *ecran, int r, int g, int b) {
     SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, r, g, b));
     SDL_Flip(ecran);
@@ -38,7 +24,7 @@ void fillScreen(SDL_Surface *ecran, int r, int g, int b) {
 
 SDL_Surface* initFenetre() {
   SDL_Surface *ecran = NULL;
-    const SDL_VideoInfo* info = NULL;
+  const SDL_VideoInfo* info = NULL;
 
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
         /* Failed, exit. */
@@ -62,11 +48,32 @@ SDL_Surface* initFenetre() {
   TTF_Init();
 
   if(TTF_Init() == -1){
-  fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-  exit(EXIT_FAILURE);
-}
+    fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+    exit(EXIT_FAILURE);
+  }
 
   return ecran;
+}
+
+/*i et j sont les coordonnées de la case cliquée*/
+void endroitClique(int *i, int* j, int nombre_Cases, int x_clique, int y_clique){
+  int nbPixelCase = 500/nombre_Cases;
+
+  *i = (x_clique - 50)/nbPixelCase;
+  *j = (y_clique - 50)/nbPixelCase;
+
+  if(x_clique < 50 || x_clique > 550) {
+    *i = -1;
+    *j = -1;
+  }
+  else if(y_clique < 50 || y_clique > 550) {
+    *i = -1;
+    *j = -1;
+  }
+  else { 
+    *i = (x_clique - 50)/nbPixelCase;
+    *j = (y_clique - 50)/nbPixelCase;
+  }
 }
 
 void quitter(){
@@ -74,7 +81,7 @@ void quitter(){
   SDL_Quit();
 }
 
-void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
+void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran, char *str){
   int taille = 500;
   int tailleCarre = taille/tailleGrille;
   SDL_Rect position;
@@ -83,12 +90,14 @@ void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
   int i;
   int j;
   SDL_Surface *carre = NULL;
-  SDL_Surface *texte =NULL;
+  SDL_Surface *texte = NULL;
+  SDL_Surface *cacheTexte = NULL;
   TTF_Font *police = NULL;
   /*SDL_Color fond = {255,255,255};*/
   SDL_Color couleurNoire = {0, 0, 0};
   carre = SDL_CreateRGBSurface(SDL_HWSURFACE, tailleCarre, tailleCarre, 32, 0, 0, 0, 0);
-  police = TTF_OpenFont("napo.ttf", 14);
+  cacheTexte = SDL_CreateRGBSurface(SDL_HWSURFACE, 450, 50, 32, 0, 0, 0, 0);
+  police = TTF_OpenFont("LinLibertine.ttf", 32);
   if(!police) {
     printf("Erreur lors du chargement de la police");
   }
@@ -126,17 +135,20 @@ void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
     position.x=50;
     position.y+=tailleCarre;
   }
-  position.x=0;
-  position.y=0;
-  texte = TTF_RenderText_Blended(police, "Salut les Zér0s !", couleurNoire/*, fond*/);
+  position.x=40;
+  position.y=550;
+  SDL_FillRect(cacheTexte, NULL, SDL_MapRGB(ecran->format, 250, 250, 250));
+  SDL_BlitSurface(cacheTexte, NULL, ecran, &position);
+  texte = TTF_RenderText_Blended(police, str, couleurNoire);
   SDL_BlitSurface(texte, NULL, ecran, &position);
   SDL_Flip(ecran);
   TTF_CloseFont(police);
   SDL_FreeSurface(texte);
   SDL_FreeSurface(carre);
+  SDL_FreeSurface(cacheTexte);
 }
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
   srand(time(NULL));
 
 
@@ -173,3 +185,4 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 }
+*/

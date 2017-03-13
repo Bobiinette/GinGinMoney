@@ -1,1 +1,1 @@
-valgrind --leak-check=full ./colorFlood
+valgrind --leak-check=full --run-libc-freeres=yes ./colorFlood
