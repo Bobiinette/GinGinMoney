@@ -1,8 +1,10 @@
-all : composanteConnexe cases grille listeComposanteConnexe
+all : composanteConnexe cases grille listeComposanteConnexe colorFlood
+APPLIS = composanteConnexe cases grille listeComposanteConnexe colorFlood
 CC = gcc
 LIBRARIES = -lcunit -lm -g -O0 -lSDL -lSDLmain -lSDL_ttf
 CFLAGS = -Wall -Wextra -ansi
 SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c
+DOXYSRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c colorFlood.c
 OBJ = ${SRC: .c = .o}
 
 .c.o:
@@ -38,14 +40,9 @@ colorFlood : $(OBJ) colorFlood.o colorFlood_SDL.o
 colorFood.o : colorFlood.c 
 	$(CC) $(CFLAGS) colorFlood.c -c
 
-colorFloodSDL : $(OBJ) colorFlood_SDL.o
-	$(CC) $(OBJ) colorFlood_SDL.o -o colorFloodSDL $(LIBRARIES)
-	
-colorFood_SDL2.o : colorFlood_SDL2.c 
-	$(CC) $(CFLAGS) colorFlood_SDL2.c -c
+clean :
+	-rm *.o $(APPLIS)
 
-colorFloodSDL2 : $(OBJ) colorFlood_SDL2.o
-	$(CC) $(OBJ) colorFlood_SDL2.o -o colorFloodSDL2 $(LIBRARIES)
+documentation :
+	doxygen Doxyfile
 
-colorFood_SDL2.o : colorFlood_SDL2.c 
-	$(CC) $(CFLAGS) colorFlood_SDL2.c -c
