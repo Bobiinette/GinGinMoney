@@ -26,7 +26,7 @@ struct ComposanteConnexe {
 
 static ComposanteConnexe initComposanteConnexe() {
 	ComposanteConnexe res;
-	res.couleur = B;
+	res.couleur = H;
 	res.listeVoisins = initListeComposanteConnexe();
 	res.cases = initListeCase();
 	return res;
@@ -104,9 +104,11 @@ void destructeurComposanteConnexe(ComposanteConnexe *cc) {
 	if(cc != NULL) {
 		if(!estVideListeComposanteConnexe(cc->listeVoisins)) {
 			destructeurListeComposanteConnexe(cc->listeVoisins);
+			cc->listeVoisins = NULL;
 		}
 		if(!testListeCaseVide(cc->cases)) {
 			destructeurListeCase(cc->cases);
+			cc->cases = NULL;
 		}
 	}
 	cc = NULL;
@@ -231,40 +233,45 @@ static void destructeurTableauTest(int **tab, int taille) {
  */
 
 int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
-	if(cc1 == NULL) {
+	ListeCase cases1 = cc1->cases;
+	ListeCase cases2 = cc2->cases;
+	if(cc1 == NULL && cc2 == NULL) {
+		return 1;
+	}
+	else if(cc1 != NULL && cc2 == NULL) {
 		return 0;
 	}
-	else if(cc2 == NULL) {
+	else if(cc1 == NULL && cc2 != NULL) {
 		return 0;
 	}
-	else if(testListeCaseVide(cc1->cases)) {
+	else if(testListeCaseVide(cases1) && !testListeCaseVide(cases2)) {
 		return 0;
 	}
 
-	while(!testListeCaseVide(cc1->cases)) {
-		if(testListeCaseVide(cc2->cases)) {
+	while(!testListeCaseVide(cases1)) {
+		if(!estPresentDansListeCase(getValeurListeCase(cases1), cases2)) {
 			return 0;
 		}
-		else {
-			Case* val1;
-			Case* val2;
-			val1 = getValeurListeCase(cc1->cases);
-			val2 = getValeurListeCase(cc2->cases);
-			if(getXCase(val1)!=getXCase(val2)) {
-				free(val1);
-				free(val2);
-				return 0;
-			}
-			if(getYCase(val1)!=getYCase(val2)) {
-				free(val1);
-				free(val2);
-				return 0;
-			}
-		}
-		cc1->cases = getSuivantListeCase(cc1->cases);
-		cc2->cases = getSuivantListeCase(cc2->cases);
+		cases1 = getSuivantListeCase(cases1);
 	}
 	return 1;
+}
+
+int estVoisine(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
+	if(cc1 == NULL || cc2 == NULL) {
+		return 0;
+	}
+	else if(estVideListeComposanteConnexe(cc1->listeVoisins)) {
+		return 0;
+	}
+	ListeComposanteConnexe tmp = cc1->listeVoisins;
+	while(!estVideListeComposanteConnexe(tmp)) {
+		if(getValeurListeComposanteConnexe(tmp) == cc2) {
+			return 1;
+		}
+		tmp = getSuivantListeComposanteConnexe(tmp);
+	}
+	return 0;
 }
 
 /**\fn static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case ***grille, int taille)
@@ -275,7 +282,7 @@ int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
  *\return La liste des cases voisines à la liste de cases passées en paramètre.
  */
 
-static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille) {
+ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille) {
 	ListeCase res = initListeCase();
 	Case *tmp = NULL;
 	int x = 0;
@@ -323,7 +330,7 @@ static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, 
 /**\fn static void supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase *listeATronquer)
  *\brief Suprime une liste de cases dans une autre liste de cases. L'ordre des cases dans les listes ne rentre pas en compte.
  *\param casesAEnlever La liste des cases à enlever.
- *\param listeATronquer Un pointeur vers la liste des cases à laquelle on enlève les cases.
+ *\param listeATronquer La liste des cases à laquelle on enlève les cases.
  *\return void
  */
 
@@ -363,7 +370,16 @@ static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase cases
 	return composantesVoisines;
 }
 
-/**\fn ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur)
+static void changementCouleurCase(ComposanteConnexe *cc, Couleur couleur) {
+	ListeCase tmp = cc->cases;
+	while(!testListeCaseVide(cc->cases)) {
+		setCouleur(getValeurListeCase(cc->cases), couleur);
+		cc->cases = getSuivantListeCase(cc->cases);
+	}
+	cc->cases = tmp;
+}
+
+/**\fn ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe toutesComposantesConnexes, Couleur nouvelleCouleur)
  *\brief Fonction qui permet le changement de couleur d'une composante connexe. Met à jour les cases et les composantes connexes voisines de la composante connexe.
  *\param ccInitiale La composante connexe dont on veut changer le couleur.
  *\param touteComposantesConnexes Un pointeur vers la liste de toutes les composantes connexes.
@@ -376,30 +392,67 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 		printf("Impossible de changer la couleur de NULL");
 		return NULL;
 	}
+	else if(ccInitiale->couleur == nouvelleCouleur) {
+		/*printf("Impossible de changer la couleur, la couleur est la même qu'à l'origine\n");*/
+		return ccInitiale;
+	}
 	ListeComposanteConnexe aParcourir = ccInitiale->listeVoisins;
 	ccInitiale->couleur = nouvelleCouleur;
 	ComposanteConnexe *tmp = NULL;
-	ListeComposanteConnexe saveTmp = initListeComposanteConnexe();
+	ComposanteConnexe *tmp2 = NULL; /*juste pour stocker getValeurListeComposanteConnexe(tmp->listeVoisins) et améliorer la lisibilité*/
+	ListeComposanteConnexe voisinsBonneCouleur = initListeComposanteConnexe();
+	ListeComposanteConnexe save = initListeComposanteConnexe();
+	ListeComposanteConnexe voisinsEltSelectionne = initListeComposanteConnexe();
+	ListeComposanteConnexe nouveauxVoisins = initListeComposanteConnexe();
+	changementCouleurCase(ccInitiale, nouvelleCouleur);
 
+	/*D'abord on regarde les omposantes connexes voisines de la bonne couleur*/
 	while(!estVideListeComposanteConnexe(aParcourir)) {
 		tmp = getValeurListeComposanteConnexe(aParcourir);
 		if(tmp->couleur == nouvelleCouleur) {
 			ccInitiale->cases = concatenationListeCase(ccInitiale->cases, tmp->cases);
-			tmp = rechercheElementTabComposanteConnexe(tmp, *toutesComposantesConnexes);
-			saveTmp = tmp->listeVoisins;
-
-			while(!estVideListeComposanteConnexe(tmp->listeVoisins)) { /*Tout ceci devient extrèmement bizarre, il va falloir commenter tout ça au plus vite*/
-				if(rechercheElementListeComposanteConnexe(aParcourir, getValeurListeComposanteConnexe(tmp->listeVoisins)) == NULL) {
-					ccInitiale->listeVoisins = constructeurListeComposanteConnexe(ccInitiale->listeVoisins, getValeurListeComposanteConnexe(tmp->listeVoisins));
-				}
-				tmp->listeVoisins = getSuivantListeComposanteConnexe(tmp->listeVoisins);
-			}
-
-			tmp->listeVoisins = saveTmp;
-			supprimeElementTabComposanteConnexe(toutesComposantesConnexes, *tmp);
+			tmp->cases = NULL;
+			voisinsBonneCouleur = constructeurListeComposanteConnexe(voisinsBonneCouleur, tmp);
+			
+			tmp->couleur = H;
+		}
+		/*Si la composante connexe n'est pas de la bonne couleur, on la remet dans les voisins*/
+		else if(tmp->couleur != H) {
+			nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp);
 		}
 		aParcourir = getSuivantListeComposanteConnexe(aParcourir);
+		tmp = NULL;
 	}
+	save = voisinsBonneCouleur;
+
+	/*Puis on ajoute les voisins des composantes connexes voisines de la bonne couleur aux voisins de ccInitiale*/
+	while(!estVideListeComposanteConnexe(voisinsBonneCouleur)) {
+		voisinsEltSelectionne = getValeurListeComposanteConnexe(voisinsBonneCouleur)->listeVoisins;
+
+		while(!estVideListeComposanteConnexe(voisinsEltSelectionne)) {
+			tmp2 = getValeurListeComposanteConnexe(voisinsEltSelectionne);
+
+			if(!estPresentElementTabComposanteConnexe(tmp2, *toutesComposantesConnexes)) {
+				tmp2 = NULL;
+			}
+
+			if(tmp2 != NULL) {
+				if(tmp2->couleur != H) {
+					if(tmp2->couleur != nouvelleCouleur && !rechercheElementListeComposanteConnexe(nouveauxVoisins, tmp2)) {
+						nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp2);
+					}
+				}
+			}
+			voisinsEltSelectionne = getSuivantListeComposanteConnexe(voisinsEltSelectionne);
+		}
+		voisinsBonneCouleur = getSuivantListeComposanteConnexe(voisinsBonneCouleur);
+	}
+	destructeurListeComposanteConnexe(save);
+	save = NULL;
+	destructeurListeComposanteConnexe(ccInitiale->listeVoisins);
+	ccInitiale->listeVoisins = NULL;
+	*toutesComposantesConnexes = supprimeElementTabComposanteConnexe(*toutesComposantesConnexes);
+	ccInitiale->listeVoisins = nouveauxVoisins;
 	return ccInitiale;
 }
 
@@ -477,6 +530,8 @@ TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC) 
 
 void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell) {
 	destructeurComposanteConnexe(&(cell->composanteConnexe));
+	free(cell);
+	cell = NULL;
 }
 
 /**\fn void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC)
@@ -491,7 +546,6 @@ void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
 		tmp = tabCC;
 		tabCC = tabCC->suivant;
 		destructeurCelluleTabComposanteConnexe(tmp);
-		free(tmp);
 	}
 }
 
@@ -547,8 +601,14 @@ TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int 
  *\return 0 si la longueur de la composante connexe est différente de 1, 1 sinon.
  */
 
-int testVictoire(TabComposanteConnexe tabCC) {
-	return (longueurTabComposanteConnexe(tabCC)==1);
+int testVictoire(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
+	if(longueurTabComposanteConnexe(tabCC)==1) {
+		return 1;
+	}
+	if(longueurListeComposanteConnexe(cc->listeVoisins) == 0) {
+		return 1;
+	}
+	return 0;
 }
 
 /**\fn int longueurTabComposanteConnexe(TabComposanteConnexe tabCC)
@@ -573,26 +633,34 @@ int longueurTabComposanteConnexe(TabComposanteConnexe tabCC) {
  *\return void
  */
 
-void supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element) {
+TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe tabCC) {
     TabComposanteConnexe tmp = initTabComposanteConnexe();
     TabComposanteConnexe save = initTabComposanteConnexe();
-    save = *tabCC;
+    save = tabCC;
 
-    if(estIdentique(&((*tabCC)->composanteConnexe), &element)) {
-        *tabCC = (*tabCC)->suivant;
-        CelluleTabComposanteConnexe(save);
+     if(testListeCaseVide((tabCC->composanteConnexe).cases) || (tabCC->composanteConnexe).couleur == H){
+        tmp = tabCC;
+        tabCC = tabCC->suivant;
+        destructeurCelluleTabComposanteConnexe(tmp);
+        tmp = NULL;
+        return tabCC;
     }
-    else {
-        while (!estVideTabComposanteConnexe((*tabCC)->suivant)){
-            if(estIdentique(&element, &((*tabCC)->suivant)->composanteConnexe)){
-                tmp = (*tabCC)->suivant;
-                (*tabCC)->suivant = ((*tabCC)->suivant)->suivant;
-                destructeurCelluleTabComposanteConnexe(tmp);
+    while (!estVideTabComposanteConnexe(tabCC->suivant)){
+        if(testListeCaseVide(((tabCC->suivant)->composanteConnexe).cases) || ((tabCC->suivant)->composanteConnexe).cases == H){
+            tmp = tabCC->suivant;
+            if(tabCC->suivant == NULL) {
+            	tabCC->suivant = NULL;
             }
-            *tabCC = (*tabCC)->suivant;
+            else {
+            	tabCC->suivant = (tabCC->suivant)->suivant;
+            }
+            destructeurCelluleTabComposanteConnexe(tmp);
+            tmp = NULL;
         }
-        *tabCC = save;
+        tabCC = tabCC->suivant;
     }
+    tabCC = save;
+    return tabCC;
 }
 
 /**\fn static int estDansComposanteConnexe(Case *c, ComposanteConnexe cc)
@@ -632,12 +700,12 @@ ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComp
  *\return Un pointeur vers la composante connexe que l'on cherche dans le TabComposanteConnexe.
  */
 
-ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC) {
+int estPresentElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC) {
 	while(!estVideTabComposanteConnexe(tabCC)) {
-		if(estIdentique(cc, &(tabCC->composanteConnexe))) {
-			return &(tabCC->composanteConnexe);
+		if(cc == &(tabCC->composanteConnexe)) {
+			return 1;
 		}
 		tabCC = tabCC->suivant;
 	}
-	return NULL;
+	return 0;
 }

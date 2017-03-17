@@ -23,9 +23,11 @@ static int **tableauTestAppartenance(int taille);
 static int grilleTeste(int **tab, int taille);
 static void destructeurTableauTest(int **tab, int taille);
 int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2);
-static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille);
+int estVoisine(ComposanteConnexe *cc1, ComposanteConnexe *cc2);
+ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille);
 static ListeCase supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase listeATronquer);
 static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC);
+static void changementCouleurCase(ComposanteConnexe *cc, Couleur couleur); /*A commenter*/
 ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur);
 
 /*======================================================Tab composante connexe=============================================*/
@@ -40,11 +42,11 @@ void destructeurTabComposanteConnexe(TabComposanteConnexe tabCC);
 
 TabComposanteConnexe listeComposanteConnexeGrille(Case **grille, int tailleGrille);
 TabComposanteConnexe creeVoisins(TabComposanteConnexe tabCC, Case **grille, int taille);
-int testVictoire(TabComposanteConnexe tabCC);
+int testVictoire(TabComposanteConnexe tabCC, ComposanteConnexe *cc);
 int longueurTabComposanteConnexe(TabComposanteConnexe tabCC);
-void supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element);
+TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe tabCC);
 static int estDansComposanteConnexe(Case *c, ComposanteConnexe cc);
 ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComposanteConnexe tabCC);
-ComposanteConnexe *rechercheElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
+int estPresentElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
 
 #endif

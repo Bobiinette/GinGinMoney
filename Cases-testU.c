@@ -6,29 +6,29 @@
 #include <stdio.h>
 
 void testListe1(){
-  //Vérification liste vide
+  /*Vérification liste vide*/
   ListeCase l=initListeCase();
   CU_ASSERT(testListeCaseVide(l));
 
-  //Création d'une case
+  /*Création d'une case*/
   Case * c;
   c=constructeurCase(2,3,B);
 
-  //Création d'une autre case
+  /*Création d'une autre case*/
   Case * c2;
   c2=constructeurCase(4,5,R);
   
-  //Remplissage de la liste de cases
-  l=constructeurListeCase(c,l);  //attention, si erreur, problème dans la partie 'Rajout'
+  /*Remplissage de la liste de cases*/
+  l=constructeurListeCase(c,l);  /*attention, si erreur, problème dans la partie 'Rajout'*/
   CU_ASSERT(!testListeCaseVide(l));
 
-  //Vérification récupération de la case
+  /*Vérification récupération de la case*/
   Case * testCase=getValeurListeCase(l);
   CU_ASSERT(testCase==c);
   ListeCase testListe=getSuivantListeCase(l);
   CU_ASSERT(testListeCaseVide(testListe));
 
-  //Rajout et vérification que 'suivant' est cette fois-ci liste non vide
+  /*Rajout et vérification que 'suivant' est cette fois-ci liste non vide*/
   l=constructeurListeCase(c2,l);
   ListeCase testListe2=getSuivantListeCase(l);
   CU_ASSERT(!testListeCaseVide(testListe2));
@@ -56,7 +56,7 @@ int verificationEgaliteListe(ListeCase l1,ListeCase l2){
     }
   }
 
-  //les deux prochaines conditions vérifient le cas où les deux listes sont de longueur différente
+  /*les deux prochaines conditions vérifient le cas où les deux listes sont de longueur différente*/
   if (!testListeCaseVide(l1))
     res=0;
 
@@ -69,25 +69,25 @@ int verificationEgaliteListe(ListeCase l1,ListeCase l2){
 void testListe2(){
   ListeCase l=initListeCase();
 
-  //Création d'une case
+  /*Création d'une case*/
   Case * c;
   c=constructeurCase(2,3,B);
 
-  //Création d'une autre case
+  /*Création d'une autre case*/
   Case * c2;
   c2=constructeurCase(4,5,R);
 
-  //Création d'une autre case
+  /*Création d'une autre case*/
   Case * c3;
   c3=constructeurCase(6,7,J);
   
-  //Remplissage de la liste de cases
+  /*Remplissage de la liste de cases*/
   l=constructeurListeCase(c,l);
   l=constructeurListeCase(c2,l);
   CU_ASSERT(estPresentDansListeCase(c,l));
   CU_ASSERT(!estPresentDansListeCase(c3,l));
 
-  //Concaténation de deux listes
+  /*Concaténation de deux listes*/
   ListeCase l2=initListeCase();
   l2=constructeurListeCase(c3,l2);
   ListeCase verif=initListeCase();
@@ -96,7 +96,7 @@ void testListe2(){
   verif=constructeurListeCase(c3,verif);
   CU_ASSERT(verificationEgaliteListe(concatenationListeCase(l2,l),verif));/*La liste l2 vaut à présent l2 + l, la liste l a été absorbée par la concaténation*/
 
-  //Suppression d'un élément de la liste verif
+  /*Suppression d'un élément de la liste verif*/
   supprimeElementListeCase(c2,verif);
   ListeCase verif2=initListeCase();
   verif2=constructeurListeCase(c,verif2);

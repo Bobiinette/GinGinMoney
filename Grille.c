@@ -116,7 +116,7 @@ static Couleur aleatoire(){
     Couleur res;
 
     res=random()%6;
-    return res;
+    return res + 1;
 }
 
 
@@ -231,6 +231,42 @@ Couleur conversionCharCouleur(char c) {
 }
 
 
+
+char conversionCouleurChar(Couleur c) {
+    char couleur = ' ';
+    switch (c) {
+        case B :
+            couleur = 'B';
+            break;
+
+        case R :
+            couleur = 'R';
+            break;
+
+        case J :
+            couleur = 'J';
+            break;
+
+        case V :
+            couleur = 'V';
+            break;
+
+        case M :
+            couleur = 'M';
+            break;
+
+        case G :
+            couleur = 'G';
+            break;
+
+        default :
+            couleur = ' ';
+            break;
+    }
+    return couleur;
+}
+
+
 /*! \fn char conversionCouleurChar(int a)
  *  \brief Transforme un entier en char
  *  \param a est l'entier à transformer en type char
@@ -294,7 +330,7 @@ void creationFichier(int n, char * chemin){
 		fputc('\n',fichier);
 	}
 }
-			
+
 
 
 /*! \fn Case ** remplissageFichier(char * chemin, int taille)
@@ -313,7 +349,7 @@ Case ** remplissageFichier(char * chemin, int taille){
     erreurOuverture(fichier==NULL);
 
     for (i=0;i<taille;i++){
-        for (j=0;j<taille;j++){ 
+        for (j=0;j<taille;j++){
             buff=fgetc(fichier);
             erreurLongueur(buff=='\n');    /*vérifie la longueur de la chaine de caractères en cours de lecture*/
             erreurFinFichier(buff==EOF); /*vérifie qu'on n'est pas à la fin du fichier*/
