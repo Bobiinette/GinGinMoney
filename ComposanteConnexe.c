@@ -257,6 +257,23 @@ int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
 	return 1;
 }
 
+int estVoisine(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
+	if(cc1 == NULL || cc2 == NULL) {
+		return 0;
+	}
+	else if(estVideListeComposanteConnexe(cc1->listeVoisins)) {
+		return 0;
+	}
+	ListeComposanteConnexe tmp = cc1->listeVoisins;
+	while(!estVideListeComposanteConnexe(tmp)) {
+		if(getValeurListeComposanteConnexe(tmp) == cc2) {
+			return 1;
+		}
+		tmp = getSuivantListeComposanteConnexe(tmp);
+	}
+	return 0;
+}
+
 /**\fn static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case ***grille, int taille)
  *\brief Une fonction qui renvoie toutes les cases voisines d'une liste de cases donnée en argument.
  *\param casesComposanteConnexe La liste des cases dont on veut les voisins.
@@ -265,7 +282,7 @@ int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2) {
  *\return La liste des cases voisines à la liste de cases passées en paramètre.
  */
 
-static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille) {
+ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille) {
 	ListeCase res = initListeCase();
 	Case *tmp = NULL;
 	int x = 0;
@@ -376,7 +393,7 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 		return NULL;
 	}
 	else if(ccInitiale->couleur == nouvelleCouleur) {
-		printf("Impossible de changer la couleur, la couleur est la même qu'à l'origine\n");
+		/*printf("Impossible de changer la couleur, la couleur est la même qu'à l'origine\n");*/
 		return ccInitiale;
 	}
 	ListeComposanteConnexe aParcourir = ccInitiale->listeVoisins;

@@ -7,6 +7,11 @@
 #include "colorFlood.h"
 #include <termios.h>
 #include "ListeComposanteConnexe.h"
+#include "colorFlood_SDL.h"
+
+#define MIN_TAILLE_GRILLE 3
+#define MAX_TAILLE_GRILLE 30
+#define MAX_COUPS 100
 
 /**\file colorFlood.c
  *\brief Execution d'une partie.
@@ -18,46 +23,143 @@ int main()
 {
 	srand(time(NULL));
 
+	int choix = -1;
+	int continuer = 1;
+	int xClic = 0, yClic = 0;
+
+	SDL_Surface *ecran = initFenetre();
+	SDL_Event event;
+
+	menu(ecran);
+
+	while(continuer) {
+		SDL_WaitEvent(&event);
+        switch(event.type) {
+            case SDL_QUIT:
+                continuer = 0;
+                break;
+            case SDL_KEYDOWN:
+            	switch (event.key.keysym.sym) {
+            		case SDLK_ESCAPE:
+						continuer = 0;
+						break;
+					default :
+						break;
+            	}
+            	break;
+            case SDL_MOUSEBUTTONDOWN:
+            	if (event.button.button == SDL_BUTTON_LEFT) {
+            		xClic = event.button.x ;
+                    yClic = event.button.y ;
+                    choix = choixMenu(xClic, yClic);
+                }
+                break;
+        }
+        if(choix >= 0) {
+        	continuer = 0;
+        }
+	}
+	maj(ecran);
+
+	if(choix == 0) {
+		jouer(ecran);
+	}
+
+	quitter();
+
+	return 0;
+}
+
+void jouer(SDL_Surface *ecran) {
 	Case **grille;
 	TabComposanteConnexe tabCC = initTabComposanteConnexe();
 	int taille = 0;
 	int nbrCoups = 0;
-	Couleur couleur;
-	char choix;
-	ComposanteConnexe *cc;
+	char nbCoupsStr[100];
+	Couleur couleur = H;
+	char* choix;
+	ComposanteConnexe *cc = NULL;
+	int continuer = 1;
+	int x = 0, y = 0;
+	int xClic = 0, yClic = 0;
+	SDL_Event event;
 
-	while(!testTaille(taille)) {
-		taille = saisirTaille();
+	taille = saisirTaille2D(ecran, "Entrez la taille de la grille,", MIN_TAILLE_GRILLE, MAX_TAILLE_GRILLE);
+
+	/*Si on a quité pendant la saisie*/
+	if(taille == -1) {
+		quitter();
+		exit(0);
 	}
 
-	printf("Entrez le nombre de coups que vous pensez effectuer : ");
-	nbrCoups=saisirTaille();
+	nbrCoups = saisirTaille2D(ecran, "Nombre coups max,", 0, MAX_COUPS);
+
+	/*Si on a quité pendant la saisie*/
+	if(taille == -1) {
+		quitter();
+		exit(0);
+	}
 
 	grille = tableauVide(taille);
 	grille = remplissageAleatoire(taille, grille);
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
-	afficheGrille(grille, taille);
+	/*afficheGrille(grille, taille);*/
+	sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
 
-	while(!testVictoire(tabCC, cc) && nbrCoups!=0) {
-		choix=saisirCouleur(nbrCoups);
-		nbrCoups= nbrCoups -1;
-		couleur = conversionCharCouleur(choix);
-		cc = changementCouleur(cc, &tabCC, couleur);
-		afficheGrille(grille, taille);
-	}
-	if (nbrCoups == 0){
-		printf("Dommage, vous avez perdu.\n");
-	}
-	else{
-		printf("Bravo, vous avez gagné !!!!!\n");
+	afficheGrille2D(taille, grille, ecran, nbCoupsStr);
+
+	while(nbrCoups >=0 && continuer != 0) {
+		/*choix=saisirCouleur(nbrCoups);
+		couleur = conversionCharCouleur(choix);*/
+		/*afficheGrille(grille, taille);*/
+
+		SDL_WaitEvent(&event);
+        switch(event.type) {
+            case SDL_QUIT:
+                continuer = 0;
+                break;
+            case SDL_KEYDOWN:
+            	switch (event.key.keysym.sym) {
+            		case SDLK_ESCAPE:
+						continuer=0;
+						break;
+					default :
+						break;
+            	}
+            	break;
+            case SDL_MOUSEBUTTONDOWN:
+            	if (event.button.button == SDL_BUTTON_LEFT) {
+            		xClic = event.button.x ;
+                    yClic = event.button.y ;
+                    endroitClique(&y, &x, taille, xClic, yClic);
+                    if(x < taille && x >= 0 && y < taille && y >= 0) {
+                    	if(estVoisine(cc, rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, x, y), tabCC))) {
+                    		couleur = getCouleurCase(getCaseGrille(grille, x, y));
+							cc = changementCouleur(cc, &tabCC, couleur);
+							nbrCoups = nbrCoups -1;
+							if(nbrCoups == 0 && !testVictoire(tabCC, cc)) {
+								sprintf(nbCoupsStr, "Vous avez perdu, echap pour quitter");
+							}
+							else if(testVictoire(tabCC, cc)){
+								sprintf(nbCoupsStr, "Vous avez gagne, echap pour quitter");
+							}
+							else {
+								sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
+							}
+                    		afficheGrille2D(taille, grille, ecran, nbCoupsStr);
+                    	}
+                    }
+                }
+            break;
+
+        }
 	}
 	destructeurTabComposanteConnexe(tabCC);
 	liberationGrille(grille, taille);
-
-	return 0;
 }
+
 /**\fn int getche(void)
 *\brief C'est la fonction qui permet de gèrer ce que tape l'utilisateur sur le clavier
 *\return la valeur entrée par l'utilisateur au clavier
@@ -225,4 +327,105 @@ void setGrilleTest(Case **grille, ComposanteConnexe *cc) {
 
 		voisins = getSuivantListeComposanteConnexe(voisins);
 	}
+}
+
+int saisirTaille2D(SDL_Surface *ecran, char *str1, int min, int max) {
+	SDL_Event event;
+	int taille = 0;
+	char str2[100];
+	int continuer = 1;
+	sprintf(str2, "entre %d et %d :", min, max);
+	saisieTaille2D(ecran, str1, str2);
+	while(continuer != 0) {
+		/*choix=saisirCouleur(nbrCoups);
+		couleur = conversionCharCouleur(choix);*/
+		/*afficheGrille(grille, taille);*/
+
+		SDL_WaitEvent(&event);
+        switch(event.type) {
+            case SDL_QUIT:
+                continuer = 0;
+                taille = -1;
+                break;
+            case SDL_KEYDOWN:
+            	switch (event.key.keysym.sym) {
+            		case SDLK_ESCAPE:
+						continuer = 0;
+						taille = -1;
+						break;
+					case SDLK_BACKSPACE :
+						if(taille > 0) {
+		            		taille = taille / 10;
+		            		sprintf(str2, "entre %d et %d :%d", min, max, taille);
+		            		saisieTaille2D(ecran, str1, str2);
+		            	}
+						break;
+					case SDLK_RETURN :
+						continuer = 0;
+						break;
+					/*Pour les touches 0 à 9 du clavier*/
+					case SDLK_WORLD_64 :
+						taille = changeTaille(ecran, str1, str2, 0, taille, min, max);
+						break;
+					case SDLK_AMPERSAND :
+						taille = changeTaille(ecran, str1, str2, 1, taille, min, max);
+						break;
+					case SDLK_WORLD_73 :
+						taille = changeTaille(ecran, str1, str2, 2, taille, min, max);
+						break;
+					case SDLK_QUOTEDBL :
+						taille = changeTaille(ecran, str1, str2, 3, taille, min, max);
+						break;
+					case SDLK_QUOTE :
+						taille = changeTaille(ecran, str1, str2, 4, taille, min, max);
+						break;
+					case SDLK_LEFTPAREN :
+						taille = changeTaille(ecran, str1, str2, 5, taille, min, max);
+						break;
+					case SDLK_MINUS :
+						taille = changeTaille(ecran, str1, str2, 6, taille, min, max);
+						break;
+					case SDLK_WORLD_72 :
+						taille = changeTaille(ecran, str1, str2, 7, taille, min, max);
+						break;
+					case SDLK_UNDERSCORE :
+						taille = changeTaille(ecran, str1, str2, 8, taille, min, max);
+						break;
+					case SDLK_WORLD_71 :
+						taille = changeTaille(ecran, str1, str2, 9, taille, min, max);
+						break;
+					default :
+						/*Pour le clavier numérique*/
+		            	if(event.key.keysym.sym >= SDLK_KP0 && event.key.keysym.sym <= SDLK_KP9) {
+		            		taille = changeTaille(ecran, str1, str2, event.key.keysym.sym - SDLK_KP0, taille, min, max);
+		            	}
+		            	/*pour les touches 0 à 9  du clavier, oui encore*/
+		            	else if(event.key.keysym.sym >= SDLK_0 && event.key.keysym.sym <= SDLK_9) {
+		            		taille = changeTaille(ecran, str1, str2, event.key.keysym.sym - SDLK_0, taille, min, max);
+		            	}
+		            	break;
+
+            	}
+            	break;
+        }
+
+        if(taille != -1) {
+	        if(taille < min || taille > max) {
+	        	continuer = 1;
+	        }
+	    }
+    }
+    return taille;
+}
+
+int changeTaille(SDL_Surface *ecran, char *str1, char *str2, int entierSaisi, int taille, int min, int max) {
+	taille = 10 * taille + entierSaisi;
+	if(taille <= max) {
+		sprintf(str2, "entre %d et %d : %d", min, max, taille);
+		saisieTaille2D(ecran, str1, str2);
+	}
+	else {
+		taille = taille / 10;
+	}
+	return taille;
 }

@@ -5,40 +5,9 @@
 #include <SDL/SDL_ttf.h>
 #include "Grille.h"
 
-int autoDraw=0;
-
-/* px, py coordonnées haut, gauche de la texture*/
-void drawTexture(SDL_Surface *ecran, int px, int py, SDL_Surface *ima) {
-	SDL_Rect rect;
-    rect.x=px;
-    rect.y=py;
-	SDL_BlitSurface(ima, NULL, ecran, &rect);
-	SDL_Flip(ecran);
-}
-
-/* px, py coordonnées haut, gauche du pixel*/
-void drawRectangle(SDL_Surface *ecran, int px, int py, int size, int r, int g, int b) {
-    SDL_Rect rect;
-    rect.x=px;
-    rect.y=py;
-    rect.h=rect.w=size;
-    SDL_FillRect(ecran, &rect, SDL_MapRGB(ecran->format, r, g, b));
-    SDL_Flip(ecran);
-}
-
-/* px, py coordonnées haut, gauche du pixel*/
-void drawPixel(SDL_Surface *ecran, int px, int py, int r, int g, int b) {
-    drawRectangle(ecran,  px,  py, 1,  r,  g,  b);
-}
-
-void fillScreen(SDL_Surface *ecran, int r, int g, int b) {
-    SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, r, g, b));
-    SDL_Flip(ecran);
-}
-
 SDL_Surface* initFenetre() {
   SDL_Surface *ecran = NULL;
-    const SDL_VideoInfo* info = NULL;
+  const SDL_VideoInfo* info = NULL;
 
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
         /* Failed, exit. */
@@ -53,20 +22,123 @@ SDL_Surface* initFenetre() {
     }
 
 	ecran=SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("exemple SDL", NULL);
+	SDL_WM_SetCaption("Color flood GinGinMoney", NULL);
 
-  fillScreen(ecran, 0,0,0);
-  drawRectangle(ecran, 250, 250, 5, 0, 255, 255);
   SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+  SDL_Flip(ecran);
 
   TTF_Init();
 
   if(TTF_Init() == -1){
-  fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-  exit(EXIT_FAILURE);
-}
+    fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+    exit(EXIT_FAILURE);
+  }
 
   return ecran;
+}
+
+void maj(SDL_Surface *ecran) {
+  SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+  SDL_Flip(ecran);
+}
+
+void menu(SDL_Surface *ecran) {
+  SDL_Rect position;
+  SDL_Surface *texte = NULL;
+  SDL_Surface *choixMenu = NULL;
+  SDL_Surface *choixMenuBack = NULL;
+  TTF_Font *police = NULL;
+  SDL_Color couleurNoire = {0, 0, 0};
+  choixMenu = SDL_CreateRGBSurface(SDL_HWSURFACE, 140, 40, 32, 0, 0, 0, 0);
+  choixMenuBack = SDL_CreateRGBSurface(SDL_HWSURFACE, 150, 50, 32, 0, 0, 0, 0);
+  police = TTF_OpenFont("LinLibertine.ttf", 32);
+  if(!police) {
+    printf("Erreur lors du chargement de la police");
+  }
+
+  position.x = 120;
+  position.y = 50;
+
+  texte = TTF_RenderText_Blended(police, "Bienvenu dans le color flood", couleurNoire);
+  SDL_BlitSurface(texte, NULL, ecran, &position);
+  SDL_FreeSurface(texte);
+  position.x += 50;
+  position.y += 50;
+  texte = TTF_RenderText_Blended(police, "de GinGinMoney!!", couleurNoire);
+  SDL_BlitSurface(texte, NULL, ecran, &position);
+  SDL_FreeSurface(texte);
+
+  position.x = 225;
+  position.y = 250;
+  SDL_FillRect(choixMenuBack, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
+  SDL_BlitSurface(choixMenuBack, NULL, ecran, &position);
+  position.x += 5;
+  position.y += 5;
+  SDL_FillRect(choixMenu, NULL, SDL_MapRGB(ecran->format, 206, 206, 206));
+  SDL_BlitSurface(choixMenu, NULL, ecran, &position);
+  position.x += 30;
+  texte = TTF_RenderText_Blended(police, "Jouer", couleurNoire);
+  SDL_BlitSurface(texte, NULL, ecran, &position);
+
+  /*SDL_FreeSurface(texte);*/
+
+  SDL_Flip(ecran);
+
+  TTF_CloseFont(police);
+  SDL_FreeSurface(texte);
+  SDL_FreeSurface(choixMenu);
+  SDL_FreeSurface(choixMenuBack);
+}
+
+void saisieTaille2D(SDL_Surface *ecran, char *str1, char *str2) {
+  SDL_Rect position;
+  SDL_Surface *texte = NULL;
+  SDL_Surface *cacheTexte = NULL;
+  TTF_Font *police = NULL;
+  SDL_Color couleurNoire = {0, 0, 0};
+  cacheTexte = SDL_CreateRGBSurface(SDL_HWSURFACE, 450, 50, 32, 0, 0, 0, 0);
+  police = TTF_OpenFont("LinLibertine.ttf", 32);
+  if(!police) {
+    printf("Erreur lors du chargement de la police");
+  }
+
+  position.x=60;
+  position.y=250;
+  SDL_FillRect(cacheTexte, NULL, SDL_MapRGB(ecran->format, 250, 250, 250));
+  SDL_BlitSurface(cacheTexte, NULL, ecran, &position);
+  texte = TTF_RenderText_Blended(police, str1, couleurNoire);
+  SDL_BlitSurface(texte, NULL, ecran, &position);
+
+  SDL_FreeSurface(texte);
+
+  position.y += 40;
+  SDL_FillRect(cacheTexte, NULL, SDL_MapRGB(ecran->format, 250, 250, 250));
+  SDL_BlitSurface(cacheTexte, NULL, ecran, &position);
+  texte = TTF_RenderText_Blended(police, str2, couleurNoire);
+  SDL_BlitSurface(texte, NULL, ecran, &position);
+  SDL_Flip(ecran);
+
+  TTF_CloseFont(police);
+  SDL_FreeSurface(texte);
+  SDL_FreeSurface(cacheTexte);
+}
+
+/*i et j sont les coordonnées de la case cliquée*/
+void endroitClique(int *i, int* j, int nombre_Cases, int x_clique, int y_clique){
+  int nbPixelCase = 500/nombre_Cases;
+
+  if(x_clique < 50 || x_clique > 550) {
+    *i = -1;
+    *j = -1;
+  }
+  else if(y_clique < 50 || y_clique > 550) {
+    *i = -1;
+    *j = -1;
+  }
+  else { 
+    *i = (x_clique - 50)/nbPixelCase;
+    *j = (y_clique - 50)/nbPixelCase;
+  }
 }
 
 void quitter(){
@@ -74,7 +146,7 @@ void quitter(){
   SDL_Quit();
 }
 
-void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
+void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran, char *str){
   int taille = 500;
   int tailleCarre = taille/tailleGrille;
   SDL_Rect position;
@@ -83,12 +155,14 @@ void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
   int i;
   int j;
   SDL_Surface *carre = NULL;
-  SDL_Surface *texte =NULL;
+  SDL_Surface *texte = NULL;
+  SDL_Surface *cacheTexte = NULL;
   TTF_Font *police = NULL;
   /*SDL_Color fond = {255,255,255};*/
   SDL_Color couleurNoire = {0, 0, 0};
   carre = SDL_CreateRGBSurface(SDL_HWSURFACE, tailleCarre, tailleCarre, 32, 0, 0, 0, 0);
-  police = TTF_OpenFont("napo.ttf", 14);
+  cacheTexte = SDL_CreateRGBSurface(SDL_HWSURFACE, 450, 50, 32, 0, 0, 0, 0);
+  police = TTF_OpenFont("LinLibertine.ttf", 32);
   if(!police) {
     printf("Erreur lors du chargement de la police");
   }
@@ -98,27 +172,27 @@ void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
   for (i=0;i<tailleGrille;i++){
     for(j=0;j<tailleGrille;j++){
       if(getCouleurCase(getCaseGrille(tab,i,j))==R){
-        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 255, 0, 0));
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 237, 0, 0));
         SDL_BlitSurface(carre, NULL, ecran, &position);
       }
       if(getCouleurCase(getCaseGrille(tab,i,j))==V){
-        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 0, 255, 0));
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 20, 148, 20));
         SDL_BlitSurface(carre, NULL, ecran, &position);
       }
       if(getCouleurCase(getCaseGrille(tab,i,j))==B){
-        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 0, 0, 255));
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 16, 52, 166));
         SDL_BlitSurface(carre, NULL, ecran, &position);
       }
       if(getCouleurCase(getCaseGrille(tab,i,j))==J){
-        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 240, 195, 0));
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 252, 220, 18));
         SDL_BlitSurface(carre, NULL, ecran, &position);
       }
       if(getCouleurCase(getCaseGrille(tab,i,j))==M){
-        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 132, 46, 27));
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 91, 60, 17));
         SDL_BlitSurface(carre, NULL, ecran, &position);
       }
       if(getCouleurCase(getCaseGrille(tab,i,j))==G){
-        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 80, 80, 80));
+        SDL_FillRect(carre, NULL, SDL_MapRGB(ecran->format, 175, 175, 175));
         SDL_BlitSurface(carre, NULL, ecran, &position);
       }
       position.x+=tailleCarre;
@@ -126,17 +200,27 @@ void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran){
     position.x=50;
     position.y+=tailleCarre;
   }
-  position.x=0;
-  position.y=0;
-  texte = TTF_RenderText_Blended(police, "Salut les Zér0s !", couleurNoire/*, fond*/);
+  position.x=40;
+  position.y=550;
+  SDL_FillRect(cacheTexte, NULL, SDL_MapRGB(ecran->format, 250, 250, 250));
+  SDL_BlitSurface(cacheTexte, NULL, ecran, &position);
+  texte = TTF_RenderText_Blended(police, str, couleurNoire);
   SDL_BlitSurface(texte, NULL, ecran, &position);
   SDL_Flip(ecran);
   TTF_CloseFont(police);
   SDL_FreeSurface(texte);
   SDL_FreeSurface(carre);
+  SDL_FreeSurface(cacheTexte);
 }
 
-int main(int argc, char *argv[]) {
+int choixMenu(int x, int y) {
+  if(x >= 225 && x <= 225 + 150 && y >= 250 && y <= 250 + 50) {
+    return 0;
+  }
+  return -1;
+}
+
+/*int main(int argc, char *argv[]) {
   srand(time(NULL));
 
 
@@ -173,3 +257,4 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 }
+*/

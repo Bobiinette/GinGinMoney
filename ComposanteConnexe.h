@@ -23,7 +23,8 @@ static int **tableauTestAppartenance(int taille);
 static int grilleTeste(int **tab, int taille);
 static void destructeurTableauTest(int **tab, int taille);
 int estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2);
-static ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille);
+int estVoisine(ComposanteConnexe *cc1, ComposanteConnexe *cc2);
+ListeCase casesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille);
 static ListeCase supprimeCasesDansListe(ListeCase casesAEnlever, ListeCase listeATronquer);
 static ListeComposanteConnexe definieComposantesConnexesVoisines(ListeCase casesComposanteConnexe, Case **grille, int taille, TabComposanteConnexe tabCC);
 static void changementCouleurCase(ComposanteConnexe *cc, Couleur couleur); /*A commenter*/
@@ -47,11 +48,5 @@ TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe ta
 static int estDansComposanteConnexe(Case *c, ComposanteConnexe cc);
 ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComposanteConnexe tabCC);
 int estPresentElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
-
-
-
-
-void afficheListe(ListeCase cases);
-void afficheVoisins(ListeComposanteConnexe voisins);
 
 #endif
