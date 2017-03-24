@@ -273,34 +273,34 @@ char conversionCouleurChar(Couleur c) {
  *  \return Renvoie le char correspondant
  */
 char conversionEntierChar(int a) {
-    char tmp = 'B';
+    char tmp = 'H';
     switch (a) {
-        case 0 :
+        case 1 :
             tmp = 'B';
             break;
 
-        case 1 :
+        case 2 :
             tmp = 'V';
             break;
 
-        case 2 :
+        case 3 :
             tmp = 'R';
             break;
 
-        case 3 :
+        case 4 :
             tmp = 'J';
             break;
 
-        case 4 :
+        case 5 :
             tmp = 'M';
             break;
 
-        case 5 :
+        case 6 :
             tmp = 'G';
             break;
 
         default :
-            tmp = 'B';
+            tmp = 'H';
             break;
     }
     return tmp;

@@ -99,7 +99,7 @@ void saisieTaille2D(SDL_Surface *ecran, char *str1, char *str2) {
   cacheTexte = SDL_CreateRGBSurface(SDL_HWSURFACE, 450, 50, 32, 0, 0, 0, 0);
   police = TTF_OpenFont("LinLibertine.ttf", 32);
   if(!police) {
-    printf("Erreur lors du chargement de la police");
+    fprintf(stderr, "Erreur lors du chargement de la police");
   }
 
   position.x=60;

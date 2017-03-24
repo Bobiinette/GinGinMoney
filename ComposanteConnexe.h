@@ -48,5 +48,6 @@ TabComposanteConnexe supprimeElementTabComposanteConnexe(TabComposanteConnexe ta
 static int estDansComposanteConnexe(Case *c, ComposanteConnexe cc);
 ComposanteConnexe *rechercheElementTabComposanteConnexeAvecCase(Case *c, TabComposanteConnexe tabCC);
 int estPresentElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
+int rangTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
 
 #endif

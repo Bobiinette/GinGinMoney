@@ -709,3 +709,21 @@ int estPresentElementTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteCo
 	}
 	return 0;
 }
+
+int rangTabComposanteConnexe(ComposanteConnexe *cc, TabComposanteConnexe tabCC) {
+	int rang = 0;
+	TabComposanteConnexe tmp = tabCC;
+	if(cc == NULL) {
+		return -1;
+	}
+	while(!estVideTabComposanteConnexe(tabCC)) {
+		if(cc == &(tabCC->composanteConnexe)) {
+			tabCC = tmp;
+			return rang;
+		}
+		rang ++;
+		tabCC = tabCC->suivant;
+	}
+	tabCC = tmp;
+	return -1;
+}
