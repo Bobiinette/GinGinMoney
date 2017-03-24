@@ -82,3 +82,15 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 	ccInitiale->listeVoisins = nouveauxVoisins;
 	return ccInitiale;
 }
+
+TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab){
+  TabComposanteConnexe res;
+  ComposanteConnexe *t;
+  res=initTabComposanteConnexe();
+  while(estVideTabComposanteConnexe(tab)){
+    t=getValeurTabComposanteConnexe(tab);
+    res=constructeurTabComposanteConnexe(t, res);
+    tab=getSuivantTabComposanteConnexe(tab);
+  }
+  return res;
+}
