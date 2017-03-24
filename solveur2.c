@@ -15,7 +15,7 @@ void solveur(char chemin,TabComposanteConnexe tab, ComposanteConnexe *cc){
 
 }
 
-ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
+ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
 	if(ccInitiale == NULL) {
 		printf("Impossible de changer la couleur de NULL");
 		return NULL;
