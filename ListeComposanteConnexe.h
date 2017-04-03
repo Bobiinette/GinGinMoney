@@ -11,7 +11,7 @@ int estVideListeComposanteConnexe(ListeComposanteConnexe l);
 ListeComposanteConnexe constructeurListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *c);
 int longueurListeComposanteConnexe(ListeComposanteConnexe l);
 ComposanteConnexe* getValeurListeComposanteConnexe(ListeComposanteConnexe l);
-ListeComposanteConnexe getSuivantListeComposanteConnexe(ListeComposanteConnexe l);
+ListeComposanteConnexe  getSuivantListeComposanteConnexe(ListeComposanteConnexe l);
 void destructeurCelluleListeComposanteConnexe(CelluleComposanteConnexe *c);
 void destructeurListeComposanteConnexe(ListeComposanteConnexe l);
 int rechercheElementListeComposanteConnexe(ListeComposanteConnexe l, ComposanteConnexe *element);
