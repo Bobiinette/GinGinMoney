@@ -1,18 +1,24 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "solveur2.h"
+#include <stdbool.h>
 
-void solveur(char chemin,TabComposanteConnexe tab, ComposanteConnexe *cc){
-  File* fichier=NULL;
+void solveur(char *chemin,TabComposanteConnexe tab, ComposanteConnexe *cc,Case **grille){
+  const int taille = longueurTabComposanteConnexe(tab);
+	char str[taille + 1];
+  FILE *fichier=NULL;
   int * taille_max=malloc(sizeof(int));
+  int longueurCompoConnexe = longueurTabComposanteConnexe(tab);
 
   fichier=fopen(chemin,"w+");
   if (fichier==NULL){
     perror("Erreur ouverture du fichier du solveur ");
     exit(EXIT_FAILURE);
   }
-
-  taille_max=longueurTabComposanteConnexe(tab);
-
+  taille_max=&longueurCompoConnexe;
+  solveurDeuxRecursif(&tab,fichier, taille, taille_max, grille, "");
+  fclose(fichier);
 }
 
 ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
@@ -20,12 +26,12 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 		printf("Impossible de changer la couleur de NULL");
 		return NULL;
 	}
-	else if(ccInitiale->couleur == nouvelleCouleur) {
+	else if(getCouleurComposanteConnexe(ccInitiale) == nouvelleCouleur) {
 		printf("Impossible de changer la couleur, la couleur est la même qu'à l'origine\n");
 		return ccInitiale;
 	}
-	ListeComposanteConnexe aParcourir = ccInitiale->listeVoisins;
-	ccInitiale->couleur = nouvelleCouleur;
+	ListeComposanteConnexe aParcourir = getComposantesVoisinesComposanteConnexe(ccInitiale);
+	setCouleurComposanteConnexe(ccInitiale, nouvelleCouleur);
 	ComposanteConnexe *tmp = NULL;
 	ComposanteConnexe *tmp2 = NULL; /*juste pour stocker getValeurListeComposanteConnexe(tmp->listeVoisins) et améliorer la lisibilité*/
 	ListeComposanteConnexe voisinsBonneCouleur = initListeComposanteConnexe();
@@ -36,15 +42,15 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 	/*D'abord on regarde les omposantes connexes voisines de la bonne couleur*/
 	while(!estVideListeComposanteConnexe(aParcourir)) {
 		tmp = getValeurListeComposanteConnexe(aParcourir);
-		if(tmp->couleur == nouvelleCouleur) {
-			ccInitiale->cases = concatenationListeCase(ccInitiale->cases, tmp->cases);
-			tmp->cases = NULL;
+		if(getCouleurComposanteConnexe(tmp) == nouvelleCouleur) {
+			setCasesComposanteConnexe(ccInitiale, concatenationListeCase(getCasesComposanteConnexe(ccInitiale), getCasesComposanteConnexe(tmp)));
+			setCasesComposanteConnexe(tmp, NULL);
 			voisinsBonneCouleur = constructeurListeComposanteConnexe(voisinsBonneCouleur, tmp);
 
-			tmp->couleur = H;
+			setCouleurComposanteConnexe(tmp, H);
 		}
 		/*Si la composante connexe n'est pas de la bonne couleur, on la remet dans les voisins*/
-		else if(tmp->couleur != H) {
+		else if(getCouleurComposanteConnexe(tmp) != H) {
 			nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp);
 		}
 		aParcourir = getSuivantListeComposanteConnexe(aParcourir);
@@ -54,7 +60,7 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 
 	/*Puis on ajoute les voisins des composantes connexes voisines de la bonne couleur aux voisins de ccInitiale*/
 	while(!estVideListeComposanteConnexe(voisinsBonneCouleur)) {
-		voisinsEltSelectionne = getValeurListeComposanteConnexe(voisinsBonneCouleur)->listeVoisins;
+		voisinsEltSelectionne = getComposantesVoisinesComposanteConnexe(getValeurListeComposanteConnexe(voisinsBonneCouleur));
 
 		while(!estVideListeComposanteConnexe(voisinsEltSelectionne)) {
 			tmp2 = getValeurListeComposanteConnexe(voisinsEltSelectionne);
@@ -64,8 +70,8 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 			}
 
 			if(tmp2 != NULL) {
-				if(tmp2->couleur != H) {
-					if(tmp2->couleur != nouvelleCouleur && !rechercheElementListeComposanteConnexe(nouveauxVoisins, tmp2)) {
+				if(getCouleurComposanteConnexe(tmp2) != H) {
+					if(getCouleurComposanteConnexe(tmp2) != nouvelleCouleur && !rechercheElementListeComposanteConnexe(nouveauxVoisins, tmp2)) {
 						nouveauxVoisins = constructeurListeComposanteConnexe(nouveauxVoisins, tmp2);
 					}
 				}
@@ -76,9 +82,65 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 	}
 	destructeurListeComposanteConnexe(save);
 	save = NULL;
-	destructeurListeComposanteConnexe(ccInitiale->listeVoisins);
-	ccInitiale->listeVoisins = NULL;
+	destructeurListeComposanteConnexe(getComposantesVoisinesComposanteConnexe(ccInitiale));
+	setComposantesVoisinesComposanteConnexe(ccInitiale, NULL);
 	*toutesComposantesConnexes = supprimeElementTabComposanteConnexe(*toutesComposantesConnexes);
-	ccInitiale->listeVoisins = nouveauxVoisins;
+	setComposantesVoisinesComposanteConnexe(ccInitiale, nouveauxVoisins);
 	return ccInitiale;
+}
+
+TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab){
+  TabComposanteConnexe res;
+  ComposanteConnexe *t;
+  res=initTabComposanteConnexe();
+  while(!estVideTabComposanteConnexe(tab)){
+    t=getValeurTabComposanteConnexe(tab);
+    res=constructeurTabComposanteConnexe(*t, res);
+    tab=getSuivantTabComposanteConnexe(tab);
+  }
+  return res;
+}
+
+bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille){
+  ListeComposanteConnexe *listeVoisins;
+  ComposanteConnexe *composantePrincipale;
+  ComposanteConnexe *ccVoisin;
+  composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
+  *listeVoisins=getComposantesVoisinesComposanteConnexe(composantePrincipale);
+  while(!estVideListeComposanteConnexe(*listeVoisins)){
+    ccVoisin = getValeurListeComposanteConnexe(*listeVoisins);
+    if (getCouleurComposanteConnexe(ccVoisin) == c){
+      return true;
+    }
+    *listeVoisins=getSuivantListeComposanteConnexe(*listeVoisins);
+  }
+  return false;
+}
+
+void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *nbrCoupsMax, Case **grille, char *test){
+  ComposanteConnexe *composantePrincipale;
+  composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
+  if (nbrCoups >= *nbrCoupsMax){
+    fputc('H',f);
+    fputc('\n',f);
+  }
+  else if (testVictoire(*tab, composantePrincipale)){
+    nbrCoupsMax = &nbrCoups;
+    fputs(test,f);
+    fputc('\n',f);
+  }
+  else{
+    int i;
+    for (i=1; i<7; i++){
+      if (couleurPresenteVoisin(tab,i,grille)){
+        *tab = copieTabCompoConnexe(* tab);
+        composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
+        test[nbrCoups]=conversionEntierChar(i);
+        test[nbrCoups + 1] = '\0';
+        changementCouleurComposanteConnexe(composantePrincipale, tab, i);
+        solveurDeuxRecursif(tab,f, nbrCoups + 1, nbrCoupsMax, grille,test);
+      }
+    }
+  }
+
 }

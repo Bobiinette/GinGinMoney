@@ -17,6 +17,9 @@ void destructeurComposanteConnexe(ComposanteConnexe *cc);
 ListeCase getCasesComposanteConnexe(ComposanteConnexe *cc);
 ListeComposanteConnexe getComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc);
 Couleur getCouleurComposanteConnexe(ComposanteConnexe *cc);
+void setCouleurComposanteConnexe(ComposanteConnexe *cc, Couleur c);
+void setComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc, ListeComposanteConnexe l);
+void setCasesComposanteConnexe(ComposanteConnexe *cc,ListeCase lc);
 
 ListeCase voisinsConnexes(Case *depart, Case **grille, int taille);
 static int **tableauTestAppartenance(int taille);

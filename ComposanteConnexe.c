@@ -144,6 +144,18 @@ Couleur getCouleurComposanteConnexe(ComposanteConnexe *cc) {
 	return cc->couleur;
 }
 
+void setCouleurComposanteConnexe(ComposanteConnexe *cc, Couleur c){
+	cc->couleur = c;
+}
+
+void setComposantesVoisinesComposanteConnexe(ComposanteConnexe *cc, ListeComposanteConnexe l){
+	cc->listeVoisins = l;
+}
+
+void setCasesComposanteConnexe(ComposanteConnexe *cc,ListeCase lc){
+	cc->cases = lc;
+}
+
 /**\fn ListeCase voisinsConnexes(Case *depart, Case ***grille, int taille)
  *\brief Fonction pour obtenir la liste de toutes les cases voisines de même couleur d'une case passée en paramètre.
  *\param depart Pointeur vers la case dont ont veut toutes les cases voisines de même couleur.
@@ -413,7 +425,7 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 			ccInitiale->cases = concatenationListeCase(ccInitiale->cases, tmp->cases);
 			tmp->cases = NULL;
 			voisinsBonneCouleur = constructeurListeComposanteConnexe(voisinsBonneCouleur, tmp);
-			
+
 			tmp->couleur = H;
 		}
 		/*Si la composante connexe n'est pas de la bonne couleur, on la remet dans les voisins*/
@@ -521,6 +533,7 @@ ComposanteConnexe * getValeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
 TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC) {
 	return tabCC->suivant;
 }
+
 
 /**\fn void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell)
  *\brief Destructeur d'une cellule de TabComposanteConnexe, libère la mémoire d'une cellule de TabComposanteConnexe et de la composante connexe qui le constitue.
