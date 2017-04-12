@@ -10,6 +10,32 @@ struct t_CelluleListeInt {
 	struct t_CelluleListeInt *suivant;
 };
 
+void afficheListeInt(ListeInt l) {
+	ListeInt tmp = l;
+	while(tmp != NULL) {
+		printf("%d->", tmp->valeur);
+		tmp = tmp->suivant;
+	}
+	printf("\n");
+}
+
+void afficheTabVoisins(ListeInt **tab, int taille) {
+	int i = 0; int j = 0;
+	for(i = 0; i < taille; i++) {
+		for(j = 0; j < 6; j ++) {
+			if(tab[i][j] == NULL) {
+				printf("%d | %d : null\n", i, j);
+			}
+			else {
+				printf("%d | %d : ", i, j);
+				afficheListeInt(tab[i][j]);
+			}
+		}
+		printf(" \n");
+	}
+	printf("---\n");
+}
+
 ListeInt initListeInt() {
 	return NULL;
 }
@@ -58,13 +84,13 @@ ListeInt concatenationListeInt(ListeInt l1, ListeInt l2) {
 	ListeInt tmp1 = l1;
 	ListeInt tmp2 = l2;
 	while(tmp1 != NULL) {
-		if(tmp1->valeur > 0) {
+		if(tmp1->valeur >= 0) {
 			res = constructeurListeInt(tmp1->valeur, res);
 		}
 		tmp1 = tmp1->suivant;
 	}
 	while(tmp2 != NULL) {
-		if(!estPresentDansListeInt(tmp2->valeur, res) && tmp2->valeur > 0) {
+		if(!estPresentDansListeInt(tmp2->valeur, res) && tmp2->valeur >= 0) {
 			res = constructeurListeInt(tmp2->valeur, res);
 		}
 		tmp2 = tmp2->suivant;
@@ -76,11 +102,12 @@ ListeInt concatenationListeInt(ListeInt l1, ListeInt l2) {
 int longueurListeInt(ListeInt l) {
 	ListeInt tmp = l;
 	int res = 0;
-	while(l != NULL) {
-		res ++;
-		l = l->suivant;
+	while(tmp != NULL) {
+		if(tmp->valeur >= 0) {
+			res ++;
+		}
+		tmp = tmp->suivant;
 	}
-	l = tmp;
 	return res;
 }
 
@@ -108,7 +135,7 @@ ListeInt **creeTabVoisins(TabComposanteConnexe tabCC, int taille) {
 		lcc = getComposantesVoisinesComposanteConnexe(getValeurTabComposanteConnexe(tmp));
 		while(!estVideListeComposanteConnexe(lcc)) {
 			cc = getValeurListeComposanteConnexe(lcc);
-			couleur = (int)getCouleurComposanteConnexe(cc) - 1;
+			couleur = getCouleurComposanteConnexe(cc) - 1;
 			res[i][couleur] = constructeurListeInt(rangTabComposanteConnexe(cc, tabCC), res[i][couleur]);
 			lcc = getSuivantListeComposanteConnexe(lcc);
 		}
@@ -140,8 +167,6 @@ ListeInt **changementCouleurSolveur(ListeInt **tabVoisins, int taille, int* nouv
 
 	*nouvelleTaille = taille - longueurListeInt(colonesAEnlever);
 	res = supprimeColone(tabVoisins, taille, *nouvelleTaille, colonesAEnlever);
-	destructeurListeInt(res[*nouvelleTaille - 1][nouvelleCouleur - 1]);
-	res[*nouvelleTaille - 1][nouvelleCouleur - 1] = NULL;
 
 	return res;
 }
@@ -178,11 +203,14 @@ ListeInt triListeInt(ListeInt l) {
 	return l;
 }
 
-ListeInt gestionDecalage(ListeInt l, int valeurTest) {
+ListeInt gestionDecalage(ListeInt l, int valeurTest, int valeurASupprimer) {
 	ListeInt tmp = l;
 	while(tmp != NULL) {
 		if(tmp->valeur > valeurTest) {
 			tmp->valeur = tmp->valeur - 1;
+			if(tmp->valeur == valeurASupprimer) {
+				tmp->valeur = -1;
+			}
 		}
 		else if(tmp->valeur == valeurTest) {
 			tmp->valeur = -1;
@@ -218,7 +246,7 @@ ListeInt **supprimeColone(ListeInt **tabVoisins, int taille, int nouvelleTaille,
 			for(j = 0; j < 6; j ++) {
 				res[nouvelleTaille - 1][j] = concatenationListeInt(res[nouvelleTaille - 1][j], tabVoisins[i][j]);
 			}
-			deplacement += 1;
+			deplacement ++;
 		}
 	}
 
@@ -229,7 +257,7 @@ ListeInt **supprimeColone(ListeInt **tabVoisins, int taille, int nouvelleTaille,
 	while(tmp != NULL) {
 		for(i = 0; i < nouvelleTaille; i++) {
 			for(j = 0; j < 6; j ++) {
-				res[i][j] = gestionDecalage(res[i][j], tmp->valeur - deplacement);
+				res[i][j] = gestionDecalage(res[i][j], tmp->valeur - deplacement, nouvelleTaille - 1);
 			}
 		}
 		tmp = tmp->suivant;
@@ -243,7 +271,7 @@ ListeInt **supprimeColone(ListeInt **tabVoisins, int taille, int nouvelleTaille,
 int testNull(ListeInt * tab) {
 	int i = 0;
 	for(i = 0; i < 6; i++) {
-		if(tab[i] != NULL) {
+		if(longueurListeInt(tab[i]) > 0) {
 			return 0;
 		}
 	}
@@ -251,10 +279,11 @@ int testNull(ListeInt * tab) {
 }
 
 void solveurEtape(ListeInt **tabVoisins, int taille, int *tailleMax, FILE **f, char *str, int nbrCoups) {
+	/*On veut UNE solution en un nombre minimum de coups*/
 	if(tabVoisins == NULL) {
 		fprintf(stderr, "Tab voisins vide\n");
 	}
-	else if(nbrCoups > *tailleMax) {
+	else if(nbrCoups >= *tailleMax) {
 		detruitTabVoisins(tabVoisins, taille);
 		return;
 	}
@@ -265,13 +294,14 @@ void solveurEtape(ListeInt **tabVoisins, int taille, int *tailleMax, FILE **f, c
 				fclose(*f);
 				*f = fopen("./solution.txt", "w+");
 			}
+			printf("Nouvelle solution en %d coups\n", nbrCoups);
 			fputs(str, *f);
 			fputc('\n', *f);
 		}
 		detruitTabVoisins(tabVoisins, taille);
 		return;
 	}
-	else if(taille <= 1) {
+	else if(taille < 1) {
 		detruitTabVoisins(tabVoisins, taille);
 		return;
 	}
@@ -279,12 +309,17 @@ void solveurEtape(ListeInt **tabVoisins, int taille, int *tailleMax, FILE **f, c
 		int i = 0;
 		int nombreNull = 0;
 		for(i = 0; i < 6; i ++) {
-			if(tabVoisins[taille - 1][i] != NULL) {
+			if(longueurListeInt(tabVoisins[taille - 1][i]) > 0) {
 				int *nouvelleTaille = (int *)calloc(1, sizeof(int));
 				ListeInt **nouveauTabVoisins = changementCouleurSolveur(tabVoisins, taille, nouvelleTaille, i + 1);
 
 				str[nbrCoups] = conversionEntierChar(i + 1);
 				str[nbrCoups + 1] = '\0';
+
+				destructeurListeInt(tabVoisins[*nouvelleTaille - 1][i]);
+				tabVoisins[*nouvelleTaille - 1][i] = NULL;
+
+				/*afficheTabVoisins(nouveauTabVoisins, *nouvelleTaille);*/
 
 				solveurEtape(nouveauTabVoisins, *nouvelleTaille, tailleMax, f, str, nbrCoups + 1);
 
@@ -294,7 +329,9 @@ void solveurEtape(ListeInt **tabVoisins, int taille, int *tailleMax, FILE **f, c
 			}
 		}
 		if(nombreNull == 0) {
-			printf("6 NOMBRES NULL LES ENFANTS\n");
+			/*fprintf(stderr, "6 NOMBRES NULL LES ENFANTS\n");*/
+			detruitTabVoisins(tabVoisins, taille);
+			return;
 		}
 	}
 	detruitTabVoisins(tabVoisins, taille);
@@ -305,6 +342,7 @@ void solveur(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 	const int taille = longueurTabComposanteConnexe(tabCC);
 	char str[taille + 1];
 	ListeInt **tabVoisins = creeTabVoisins(tabCC, taille);
+	/*afficheTabVoisins(tabVoisins, taille);*/
 	int *tailleMax;
 	FILE *f = fopen("./solution.txt", "w+");
 	tailleMax = calloc(1, sizeof(int));

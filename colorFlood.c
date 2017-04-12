@@ -8,7 +8,7 @@
 #include <termios.h>
 #include "ListeComposanteConnexe.h"
 #include "colorFlood_SDL.h"
-#include "solveur.h"
+#include "solveurTableau2.h"
 
 #define MIN_TAILLE_GRILLE 3
 #define MAX_TAILLE_GRILLE 30
