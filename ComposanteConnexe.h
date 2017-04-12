@@ -38,6 +38,7 @@ ComposanteConnexe *changementCouleur(ComposanteConnexe *ccInitiale, TabComposant
 TabComposanteConnexe initTabComposanteConnexe();
 int estVideTabComposanteConnexe(TabComposanteConnexe tabCC);
 TabComposanteConnexe constructeurTabComposanteConnexe(ComposanteConnexe cc, TabComposanteConnexe tabCC);
+TabComposanteConnexe constructeurTabComposanteConnexep(ComposanteConnexe *cc, TabComposanteConnexe tabCC);
 ComposanteConnexe * getValeurTabComposanteConnexe(TabComposanteConnexe tabCC);
 TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC);
 void destructeurCelluleTabComposanteConnexe(CelluleTabComposanteConnexe *cell);

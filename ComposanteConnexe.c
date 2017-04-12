@@ -514,6 +514,15 @@ TabComposanteConnexe constructeurTabComposanteConnexe(ComposanteConnexe cc, TabC
   return cell;
 }
 
+TabComposanteConnexe constructeurTabComposanteConnexep(ComposanteConnexe *cc, TabComposanteConnexe tabCC) {
+	CelluleTabComposanteConnexe *cell;
+ 	cell=(CelluleTabComposanteConnexe *)malloc(sizeof(CelluleTabComposanteConnexe));
+ 	cell->composanteConnexe = *cc;
+ 	cell->suivant = tabCC;
+  return cell;
+}
+
+
 /**\fn ComposanteConnexe * getValeurTabComposanteConnexe(TabComposanteConnexe tabCC)
  *\brief Permet d'obtenir un pointeur vers la tete d'un TabComposanteConnexe.
  *\param tabCC Le TabComposanteConnexe dont on veut la tete.

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 
-void testCreationTabComposanteConnexe() {
+/*void testCreationTabComposanteConnexe() {
 	printf("\n");
 	Case **grille;
 	int taille = 6;
@@ -31,7 +31,7 @@ void testCreationTabComposanteConnexe() {
 
 	while(!estVideTabComposanteConnexe(tabCC)) {
 		CU_ASSERT(estVideListeComposanteConnexe(getComposantesVoisinesComposanteConnexe(getValeurTabComposanteConnexe(tabCC)))); /*Les vosins doivent tous être vides*/
-		tabCC = getSuivantTabComposanteConnexe(tabCC);
+		/*tabCC = getSuivantTabComposanteConnexe(tabCC);
 	}
 
 	tabCC = save;
@@ -62,12 +62,12 @@ void testCreationTabComposanteConnexe() {
 
 	destructeurTabComposanteConnexe(save);
 	liberationGrille(grille, taille);
-}
+}*/
 
 int main(int argc, char const *argv[])
 {
 	srand(time(NULL));
-	CU_pSuite pSuite = NULL;
+	/*CU_pSuite pSuite = NULL;
 	CU_initialize_registry();
 	pSuite = CU_add_suite("Suite", NULL, NULL);
 
@@ -75,6 +75,18 @@ int main(int argc, char const *argv[])
 
 	CU_basic_set_mode(CU_BRM_VERBOSE);
 	CU_basic_run_tests();
-	CU_cleanup_registry();
+	CU_cleanup_registry();*/
+
+	Case **grille;
+	int taille = 6;
+	ComposanteConnexe *cc;
+	grille = remplissageFichier("./test", taille);
+	TabComposanteConnexe tabCC = initTabComposanteConnexe();
+	TabComposanteConnexe test = initTabComposanteConnexe();
+	tabCC = listeComposanteConnexeGrille(grille, taille);
+	cc = getValeurTabComposanteConnexe(tabCC);
+	test = constructeurTabComposanteConnexep(cc, test);
+	printf("%d\n", longueurTabComposanteConnexe(test));
+
 	return 0;
 }
