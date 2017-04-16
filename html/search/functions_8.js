@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['setcouleur',['setCouleur',['../_grille_8c.html#afa2e284e68787b2997383a31eb764b97',1,'setCouleur(Case *test, Couleur c):&#160;Grille.c'],['../_grille_8h.html#afa2e284e68787b2997383a31eb764b97',1,'setCouleur(Case *test, Couleur c):&#160;Grille.c']]],
+  ['supprimeelementlistecase',['supprimeElementListeCase',['../_cases_8c.html#a21680ced48392caba19b812918ad50bc',1,'supprimeElementListeCase(Case *c, ListeCase *l):&#160;Cases.c'],['../_cases_8h.html#a21680ced48392caba19b812918ad50bc',1,'supprimeElementListeCase(Case *c, ListeCase *l):&#160;Cases.c']]],
+  ['supprimeelementlistecomposanteconnexe',['supprimeElementListeComposanteConnexe',['../_liste_composante_connexe_8c.html#a53f8c0429704adef788b4eff7c6ea0bd',1,'supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe *element):&#160;ListeComposanteConnexe.c'],['../_liste_composante_connexe_8h.html#a53f8c0429704adef788b4eff7c6ea0bd',1,'supprimeElementListeComposanteConnexe(ListeComposanteConnexe *l, ComposanteConnexe *element):&#160;ListeComposanteConnexe.c']]],
+  ['supprimeelementtabcomposanteconnexe',['supprimeElementTabComposanteConnexe',['../_composante_connexe_8c.html#a338e9a2d867f178ac58fa79c83a87225',1,'supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element):&#160;ComposanteConnexe.c'],['../_composante_connexe_8h.html#a338e9a2d867f178ac58fa79c83a87225',1,'supprimeElementTabComposanteConnexe(TabComposanteConnexe *tabCC, ComposanteConnexe element):&#160;ComposanteConnexe.c']]]
+];

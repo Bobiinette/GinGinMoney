@@ -1,0 +1,6 @@
+<map id="t_CelluleTabComposanteConnexe" name="t_CelluleTabComposanteConnexe">
+<area shape="rect" id="node2" href="$struct_composante_connexe.html" title="Structure de composante connexe. " alt="" coords="227,184,375,211"/>
+<area shape="rect" id="node5" href="$structt___liste_composante_connexe.html" title="Structure de Liste de pointeurs Composantes connexes. " alt="" coords="321,273,508,300"/>
+<area shape="rect" id="node3" href="$structt__liste_case.html" title="t_listeCase" alt="" coords="257,95,345,121"/>
+<area shape="rect" id="node4" href="$struct_case.html" title="Structure de cases. " alt="" coords="275,5,328,32"/>
+</map>

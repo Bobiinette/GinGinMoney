@@ -1,0 +1,220 @@
+\hypertarget{_grille_8c}{}\section{Grille.\+c File Reference}
+\label{_grille_8c}\index{Grille.\+c@{Grille.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$cunit.\+h$>$}\\*
+Include dependency graph for Grille.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=322pt]{_grille_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structt__case}{t\+\_\+case}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7}{Couleur} \{ \\*
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a3f2a77ecd272aa6d6b5902faa5e5fc68}{B}, 
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a28f41f1144eee94834387e9a6a088bc1}{V}, 
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a1784b1a3d7cbd43c45ff82c72d05e4ae}{R}, 
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a03605500b0c55f3d95874e8edfcf4e30}{J}, 
+\\*
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a51ca6c63d97347ee58cc7da59ab6994b}{M}, 
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a2fe993340f6abb2234e543cd427df70b}{G}, 
+\hyperlink{_grille_8h_aa304d0ca681f782b1d7735da33037dd7a3f2a77ecd272aa6d6b5902faa5e5fc68}{B}, 
+\hyperlink{_grille_8h_aa304d0ca681f782b1d7735da33037dd7a28f41f1144eee94834387e9a6a088bc1}{V}, 
+\\*
+\hyperlink{_grille_8h_aa304d0ca681f782b1d7735da33037dd7a1784b1a3d7cbd43c45ff82c72d05e4ae}{R}, 
+\hyperlink{_grille_8h_aa304d0ca681f782b1d7735da33037dd7a03605500b0c55f3d95874e8edfcf4e30}{J}, 
+\hyperlink{_grille_8h_aa304d0ca681f782b1d7735da33037dd7a51ca6c63d97347ee58cc7da59ab6994b}{M}, 
+\hyperlink{_grille_8h_aa304d0ca681f782b1d7735da33037dd7a2fe993340f6abb2234e543cd427df70b}{G}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_grille_8c_a802e561ca78785bfb07308847f57decc}{get\+X\+Case} (\hyperlink{_grille_8h_adca0b8649254211841dc79ed6c528a86}{Case} test)
+\begin{DoxyCompactList}\small\item\em Récupère l\textquotesingle{}abscisse de la case considérée. \end{DoxyCompactList}\item 
+int \hyperlink{_grille_8c_acfff6837eafd46f5269db9399503ae0c}{get\+Y\+Case} (\hyperlink{_grille_8h_adca0b8649254211841dc79ed6c528a86}{Case} test)
+\begin{DoxyCompactList}\small\item\em Récupère l\textquotesingle{}ordonnée de la case considérée. \end{DoxyCompactList}\item 
+int \hyperlink{_grille_8c_a1f67bc9aaa3d2b2e18bc56cbd64e9db4}{get\+Couleur\+Case} (\hyperlink{_grille_8h_adca0b8649254211841dc79ed6c528a86}{Case} test)
+\begin{DoxyCompactList}\small\item\em Récupère la couleur de la case considérée. \end{DoxyCompactList}\item 
+void \hyperlink{_grille_8c_afa2e284e68787b2997383a31eb764b97}{set\+Couleur} (\hyperlink{_grille_8h_adca0b8649254211841dc79ed6c528a86}{Case} $\ast$test, \hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7}{Couleur} c)
+\begin{DoxyCompactList}\small\item\em Change la couleur de la case considérée par la couleur en paramètre. \end{DoxyCompactList}\item 
+\hyperlink{_grille_8h_adca0b8649254211841dc79ed6c528a86}{Case} $\ast$$\ast$ \hyperlink{_grille_8c_a1b8be80378b6a5b3fca696f93d67e1a9}{tableau\+Vide} (int n)
+\begin{DoxyCompactList}\small\item\em Initialise un tableau vide de taille n. \end{DoxyCompactList}\item 
+void \hyperlink{_grille_8c_a63924a00bcf27e9d394076c4659ae55c}{liberation\+Grille} (\hyperlink{_grille_8h_adca0b8649254211841dc79ed6c528a86}{Case} $\ast$$\ast$tab, int taille)
+\begin{DoxyCompactList}\small\item\em Libère l\textquotesingle{}espace mémoire occupé par la grille. \end{DoxyCompactList}\item 
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7}{Couleur} $\ast$$\ast$ \hyperlink{_grille_8c_af90a8c5a6dfed19c42a57f0ca19daf81}{remplissage\+Aleatoire} (int n)
+\begin{DoxyCompactList}\small\item\em Fonction de remplissage aléatoire du tableau. \end{DoxyCompactList}\item 
+\hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7}{Couleur} $\ast$$\ast$ \hyperlink{_grille_8c_afd85b7e73c3be3858db354ee7f802683}{remplissage\+Fichier} (char $\ast$text)
+\begin{DoxyCompactList}\small\item\em Crée un tableau de couleur à partir d\textquotesingle{}un fichier. Le fichier doit contenir des chaines de caractères contenant un retour à la ligne au bout de chaque ligne. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{_grille_8c_aa304d0ca681f782b1d7735da33037dd7}{Couleur} \hyperlink{_grille_8c_a834ed0e52397f713642e488e87508c9e}{init\+Composante\+Connexe}
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\index{Grille.\+c@{Grille.\+c}!Couleur@{Couleur}}
+\index{Couleur@{Couleur}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{Couleur}{Couleur}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Couleur}}\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{B@{B}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!B@{B}}\item[{\em 
+B\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a3f2a77ecd272aa6d6b5902faa5e5fc68}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a3f2a77ecd272aa6d6b5902faa5e5fc68}
+}]\index{V@{V}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!V@{V}}\item[{\em 
+V\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a28f41f1144eee94834387e9a6a088bc1}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a28f41f1144eee94834387e9a6a088bc1}
+}]\index{R@{R}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!R@{R}}\item[{\em 
+R\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a1784b1a3d7cbd43c45ff82c72d05e4ae}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a1784b1a3d7cbd43c45ff82c72d05e4ae}
+}]\index{J@{J}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!J@{J}}\item[{\em 
+J\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a03605500b0c55f3d95874e8edfcf4e30}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a03605500b0c55f3d95874e8edfcf4e30}
+}]\index{M@{M}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!M@{M}}\item[{\em 
+M\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a51ca6c63d97347ee58cc7da59ab6994b}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a51ca6c63d97347ee58cc7da59ab6994b}
+}]\index{G@{G}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!G@{G}}\item[{\em 
+G\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a2fe993340f6abb2234e543cd427df70b}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a2fe993340f6abb2234e543cd427df70b}
+}]\index{B@{B}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!B@{B}}\item[{\em 
+B\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a3f2a77ecd272aa6d6b5902faa5e5fc68}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a3f2a77ecd272aa6d6b5902faa5e5fc68}
+}]\index{V@{V}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!V@{V}}\item[{\em 
+V\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a28f41f1144eee94834387e9a6a088bc1}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a28f41f1144eee94834387e9a6a088bc1}
+}]\index{R@{R}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!R@{R}}\item[{\em 
+R\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a1784b1a3d7cbd43c45ff82c72d05e4ae}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a1784b1a3d7cbd43c45ff82c72d05e4ae}
+}]\index{J@{J}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!J@{J}}\item[{\em 
+J\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a03605500b0c55f3d95874e8edfcf4e30}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a03605500b0c55f3d95874e8edfcf4e30}
+}]\index{M@{M}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!M@{M}}\item[{\em 
+M\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a51ca6c63d97347ee58cc7da59ab6994b}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a51ca6c63d97347ee58cc7da59ab6994b}
+}]\index{G@{G}!Grille.\+c@{Grille.\+c}}\index{Grille.\+c@{Grille.\+c}!G@{G}}\item[{\em 
+G\hypertarget{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a2fe993340f6abb2234e543cd427df70b}{}\label{_grille_8c_aa304d0ca681f782b1d7735da33037dd7a2fe993340f6abb2234e543cd427df70b}
+}]\end{description}
+\end{Desc}
+
+
+\subsection{Function Documentation}
+\index{Grille.\+c@{Grille.\+c}!get\+Couleur\+Case@{get\+Couleur\+Case}}
+\index{get\+Couleur\+Case@{get\+Couleur\+Case}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{get\+Couleur\+Case(\+Case test)}{getCouleurCase(Case test)}}]{\setlength{\rightskip}{0pt plus 5cm}int get\+Couleur\+Case (
+\begin{DoxyParamCaption}
+\item[{{\bf Case}}]{test}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_a1f67bc9aaa3d2b2e18bc56cbd64e9db4}{}\label{_grille_8c_a1f67bc9aaa3d2b2e18bc56cbd64e9db4}
+
+
+Récupère la couleur de la case considérée. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+\index{Grille.\+c@{Grille.\+c}!get\+X\+Case@{get\+X\+Case}}
+\index{get\+X\+Case@{get\+X\+Case}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{get\+X\+Case(\+Case test)}{getXCase(Case test)}}]{\setlength{\rightskip}{0pt plus 5cm}int get\+X\+Case (
+\begin{DoxyParamCaption}
+\item[{{\bf Case}}]{test}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_a802e561ca78785bfb07308847f57decc}{}\label{_grille_8c_a802e561ca78785bfb07308847f57decc}
+
+
+Récupère l\textquotesingle{}abscisse de la case considérée. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+\index{Grille.\+c@{Grille.\+c}!get\+Y\+Case@{get\+Y\+Case}}
+\index{get\+Y\+Case@{get\+Y\+Case}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{get\+Y\+Case(\+Case test)}{getYCase(Case test)}}]{\setlength{\rightskip}{0pt plus 5cm}int get\+Y\+Case (
+\begin{DoxyParamCaption}
+\item[{{\bf Case}}]{test}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_acfff6837eafd46f5269db9399503ae0c}{}\label{_grille_8c_acfff6837eafd46f5269db9399503ae0c}
+
+
+Récupère l\textquotesingle{}ordonnée de la case considérée. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+\index{Grille.\+c@{Grille.\+c}!liberation\+Grille@{liberation\+Grille}}
+\index{liberation\+Grille@{liberation\+Grille}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{liberation\+Grille(\+Case $\ast$$\ast$tab, int taille)}{liberationGrille(Case **tab, int taille)}}]{\setlength{\rightskip}{0pt plus 5cm}void liberation\+Grille (
+\begin{DoxyParamCaption}
+\item[{{\bf Case} $\ast$$\ast$}]{tab, }
+\item[{int}]{taille}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_a63924a00bcf27e9d394076c4659ae55c}{}\label{_grille_8c_a63924a00bcf27e9d394076c4659ae55c}
+
+
+Libère l\textquotesingle{}espace mémoire occupé par la grille. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+\index{Grille.\+c@{Grille.\+c}!remplissage\+Aleatoire@{remplissage\+Aleatoire}}
+\index{remplissage\+Aleatoire@{remplissage\+Aleatoire}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{remplissage\+Aleatoire(int n)}{remplissageAleatoire(int n)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Couleur}$\ast$$\ast$ remplissage\+Aleatoire (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_af90a8c5a6dfed19c42a57f0ca19daf81}{}\label{_grille_8c_af90a8c5a6dfed19c42a57f0ca19daf81}
+
+
+Fonction de remplissage aléatoire du tableau. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+\index{Grille.\+c@{Grille.\+c}!remplissage\+Fichier@{remplissage\+Fichier}}
+\index{remplissage\+Fichier@{remplissage\+Fichier}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{remplissage\+Fichier(char $\ast$text)}{remplissageFichier(char *text)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Couleur}$\ast$$\ast$ remplissage\+Fichier (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{text}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_afd85b7e73c3be3858db354ee7f802683}{}\label{_grille_8c_afd85b7e73c3be3858db354ee7f802683}
+
+
+Crée un tableau de couleur à partir d\textquotesingle{}un fichier. Le fichier doit contenir des chaines de caractères contenant un retour à la ligne au bout de chaque ligne. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+\index{Grille.\+c@{Grille.\+c}!set\+Couleur@{set\+Couleur}}
+\index{set\+Couleur@{set\+Couleur}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{set\+Couleur(\+Case $\ast$test, Couleur c)}{setCouleur(Case *test, Couleur c)}}]{\setlength{\rightskip}{0pt plus 5cm}void set\+Couleur (
+\begin{DoxyParamCaption}
+\item[{{\bf Case} $\ast$}]{test, }
+\item[{{\bf Couleur}}]{c}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_afa2e284e68787b2997383a31eb764b97}{}\label{_grille_8c_afa2e284e68787b2997383a31eb764b97}
+
+
+Change la couleur de la case considérée par la couleur en paramètre. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+\index{Grille.\+c@{Grille.\+c}!tableau\+Vide@{tableau\+Vide}}
+\index{tableau\+Vide@{tableau\+Vide}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{tableau\+Vide(int n)}{tableauVide(int n)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Case}$\ast$$\ast$ tableau\+Vide (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{_grille_8c_a1b8be80378b6a5b3fca696f93d67e1a9}{}\label{_grille_8c_a1b8be80378b6a5b3fca696f93d67e1a9}
+
+
+Initialise un tableau vide de taille n. 
+
+\begin{DoxyAuthor}{Author}
+Hélène Tran 
+\end{DoxyAuthor}
+
+
+\subsection{Variable Documentation}
+\index{Grille.\+c@{Grille.\+c}!init\+Composante\+Connexe@{init\+Composante\+Connexe}}
+\index{init\+Composante\+Connexe@{init\+Composante\+Connexe}!Grille.\+c@{Grille.\+c}}
+\subsubsection[{\texorpdfstring{init\+Composante\+Connexe}{initComposanteConnexe}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Couleur} init\+Composante\+Connexe}\hypertarget{_grille_8c_a834ed0e52397f713642e488e87508c9e}{}\label{_grille_8c_a834ed0e52397f713642e488e87508c9e}
