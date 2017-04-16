@@ -4,7 +4,7 @@
 #include "solveur2.h"
 #include <stdbool.h>
 
-void solveur(char *chemin,TabComposanteConnexe tab, ComposanteConnexe *cc,Case **grille){
+void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
   const int taille = longueurTabComposanteConnexe(tab);
 	char str[taille + 1];
   FILE *fichier=NULL;
@@ -95,7 +95,7 @@ TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab){
   res=initTabComposanteConnexe();
   while(!estVideTabComposanteConnexe(tab)){
     t=getValeurTabComposanteConnexe(tab);
-    res=constructeurTabComposanteConnexe(*t, res);
+    res=constructeurTabComposanteConnexep(t, res);
     tab=getSuivantTabComposanteConnexe(tab);
   }
   return res;
@@ -120,11 +120,11 @@ bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille){
 void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *nbrCoupsMax, Case **grille, char *test){
   ComposanteConnexe *composantePrincipale;
   composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
-  if (nbrCoups >= *nbrCoupsMax){
+  if (nbrCoups > *nbrCoupsMax){
     fputc('H',f);
     fputc('\n',f);
   }
-  else if (testVictoire(*tab, composantePrincipale)){
+  if (testVictoire(*tab, composantePrincipale)){
     nbrCoupsMax = &nbrCoups;
     fputs(test,f);
     fputc('\n',f);

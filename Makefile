@@ -3,8 +3,8 @@ APPLIS = composanteConnexe cases grille listeComposanteConnexe colorFlood
 CC = gcc
 LIBRARIES = -lcunit -lm -g -O0 -lSDL -lSDLmain -lSDL_ttf
 CFLAGS = -Wall -Wextra -ansi
-SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c solveur.c solveur2.c
-DOXYSRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c colorFlood.c solveur.c solveur2.c
+SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c  solveur2.c
+DOXYSRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c colorFlood.c  solveur2.c
 OBJ = ${SRC: .c = .o}
 
 .c.o:
