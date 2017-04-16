@@ -61,7 +61,6 @@ int main()
         }
 	}
 	maj(ecran);
-
 	if(choix == 0) {
 		jouer(ecran);
 	}
