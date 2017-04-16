@@ -5,10 +5,9 @@
 #include <stdbool.h>
 
 void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
-  const int taille = longueurTabComposanteConnexe(tab);
-	char str[taille + 1];
+  const int taille = longueurTabComposanteConnexe(tab);  /*nombre de composantes connexes*/
   FILE *fichier=NULL;
-  int * taille_max=malloc(sizeof(int));
+  int * taille_max=malloc(sizeof(int));  /*pour l'optimalité*/
   int longueurCompoConnexe = longueurTabComposanteConnexe(tab);
 
   fichier=fopen(chemin,"w+");
@@ -39,7 +38,7 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 	ListeComposanteConnexe voisinsEltSelectionne = initListeComposanteConnexe();
 	ListeComposanteConnexe nouveauxVoisins = initListeComposanteConnexe();
 
-	/*D'abord on regarde les omposantes connexes voisines de la bonne couleur*/
+	/*D'abord on regarde les composantes connexes voisines de la bonne couleur*/
 	while(!estVideListeComposanteConnexe(aParcourir)) {
 		tmp = getValeurListeComposanteConnexe(aParcourir);
 		if(getCouleurComposanteConnexe(tmp) == nouvelleCouleur) {
