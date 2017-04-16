@@ -8,7 +8,7 @@
 #include <termios.h>
 #include "ListeComposanteConnexe.h"
 #include "colorFlood_SDL.h"
-#include "solveur2.h"
+#include "solveurTableau2.h"
 
 #define MIN_TAILLE_GRILLE 3
 #define MAX_TAILLE_GRILLE 30
@@ -78,7 +78,6 @@ void jouer(SDL_Surface *ecran) {
 	int nbrCoups = 0;
 	char nbCoupsStr[100];
 	Couleur couleur = H;
-	char* choix;
 	ComposanteConnexe *cc = NULL;
 	int continuer = 1;
 	int x = 0, y = 0;
@@ -106,7 +105,8 @@ void jouer(SDL_Surface *ecran) {
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
-	solveur("./solution.txt", tabCC, cc,grille);
+	/*solveur("./solution.txt", tabCC, cc,grille);*/
+	solveur(tabCC, cc);
 	/*afficheGrille(grille, taille);*/
 	sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
 
