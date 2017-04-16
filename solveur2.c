@@ -102,17 +102,17 @@ TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab){
 }
 
 bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille){
-  ListeComposanteConnexe *listeVoisins;
+  ListeComposanteConnexe listeVoisins;
   ComposanteConnexe *composantePrincipale;
   ComposanteConnexe *ccVoisin;
   composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
-  *listeVoisins=getComposantesVoisinesComposanteConnexe(composantePrincipale);
-  while(!estVideListeComposanteConnexe(*listeVoisins)){
-    ccVoisin = getValeurListeComposanteConnexe(*listeVoisins);
+  listeVoisins=getComposantesVoisinesComposanteConnexe(composantePrincipale);
+  while(!estVideListeComposanteConnexe(listeVoisins)){
+    ccVoisin = getValeurListeComposanteConnexe(listeVoisins);
     if (getCouleurComposanteConnexe(ccVoisin) == c){
       return true;
     }
-    *listeVoisins=getSuivantListeComposanteConnexe(*listeVoisins);
+    listeVoisins=getSuivantListeComposanteConnexe(listeVoisins);
   }
   return false;
 }
