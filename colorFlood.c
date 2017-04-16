@@ -61,7 +61,6 @@ int main()
         }
 	}
 	maj(ecran);
-
 	if(choix == 0) {
 		jouer(ecran);
 	}
@@ -106,7 +105,8 @@ void jouer(SDL_Surface *ecran) {
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
-	solveur("./solution.txt", tabCC, cc,grille);
+	printf("Salut");
+	solveur("./solution.txt", tabCC ,grille);
 	/*afficheGrille(grille, taille);*/
 	sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
 

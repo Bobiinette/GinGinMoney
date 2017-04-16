@@ -10,14 +10,14 @@ void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
   FILE *fichier=NULL;
   int * taille_max=malloc(sizeof(int));
   int longueurCompoConnexe = longueurTabComposanteConnexe(tab);
-
+  printf("salut");
   fichier=fopen(chemin,"w+");
   if (fichier==NULL){
     perror("Erreur ouverture du fichier du solveur ");
     exit(EXIT_FAILURE);
   }
   taille_max=&longueurCompoConnexe;
-  solveurDeuxRecursif(&tab,fichier, taille, taille_max, grille, "");
+  solveurDeuxRecursif(&tab,fichier, 0, taille_max, grille, str);
   fclose(fichier);
 }
 
