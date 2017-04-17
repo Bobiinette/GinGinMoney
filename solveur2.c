@@ -8,7 +8,7 @@ void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
   const int taille = longueurTabComposanteConnexe(tab);  /*nombre de composantes connexes*/
 	char str[taille + 1];
   FILE *fichier=NULL;
-  int * taille_max=malloc(sizeof(int));  /*pour l'optimalité*/
+  int *taille_max=malloc(sizeof(int));  /*pour l'optimalité*/
   int longueurCompoConnexe = longueurTabComposanteConnexe(tab);
 
   fichier=fopen(chemin,"w+");
@@ -17,7 +17,7 @@ void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
     exit(EXIT_FAILURE);
   }
   taille_max=&longueurCompoConnexe;
-  solveurDeuxRecursif(&tab,fichier, taille, taille_max, grille, "");
+  solveurDeuxRecursif(&tab,fichier, 0, taille_max, grille, "");
   fclose(fichier);
 }
 

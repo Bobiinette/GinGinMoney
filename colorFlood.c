@@ -144,7 +144,7 @@ void jouer(SDL_Surface *ecran) {
 								sprintf(nbCoupsStr, "Vous avez perdu, echap pour quitter");
 							}
 							else if(testVictoire(tabCC, cc)){
-								sprintf(nbCoupsStr, "Vous avez gagne, echap pour quitter");
+								sprintf(nbCoupsStr, "Vous avez gagné, echap pour quitter");
 							}
 							else {
 								sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);

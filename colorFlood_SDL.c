@@ -59,7 +59,7 @@ void menu(SDL_Surface *ecran) {
   position.x = 120;
   position.y = 50;
 
-  texte = TTF_RenderText_Blended(police, "Bienvenu dans le color flood", couleurNoire);
+  texte = TTF_RenderText_Blended(police, "Bienvenue dans le color flood", couleurNoire);
   SDL_BlitSurface(texte, NULL, ecran, &position);
   SDL_FreeSurface(texte);
   position.x += 50;
@@ -135,7 +135,7 @@ void endroitClique(int *i, int* j, int nombre_Cases, int x_clique, int y_clique)
     *i = -1;
     *j = -1;
   }
-  else { 
+  else {
     *i = (x_clique - 50)/nbPixelCase;
     *j = (y_clique - 50)/nbPixelCase;
   }
