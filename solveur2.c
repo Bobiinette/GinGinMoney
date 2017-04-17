@@ -9,8 +9,8 @@ void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
 	char str[taille + 1];
   FILE *fichier=NULL;
   int * taille_max=malloc(sizeof(int));
-  int longueurCompoConnexe = longueurTabComposanteConnexe(tab);
-  printf("salut");
+  int longueurCompoConnexe = -1;
+  longueurCompoConnexe=longueurTabComposanteConnexe(tab);
   fichier=fopen(chemin,"w+");
   if (fichier==NULL){
     perror("Erreur ouverture du fichier du solveur ");
@@ -19,6 +19,7 @@ void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
   taille_max=&longueurCompoConnexe;
   solveurDeuxRecursif(&tab,fichier, 0, taille_max, grille, str);
   fclose(fichier);
+  /*free(taille_max);*/
 }
 
 ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur) {
@@ -98,30 +99,39 @@ TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab){
     res=constructeurTabComposanteConnexep(t, res);
     tab=getSuivantTabComposanteConnexe(tab);
   }
+  /*destructeurComposanteConnexe(t);*/
   return res;
 }
 
-bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille){
+int couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille){
   ListeComposanteConnexe listeVoisins;
   ComposanteConnexe *composantePrincipale;
   ComposanteConnexe *ccVoisin;
+  int check=0;
   composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
   listeVoisins=getComposantesVoisinesComposanteConnexe(composantePrincipale);
-  while(!estVideListeComposanteConnexe(listeVoisins)){
+  while(!estVideListeComposanteConnexe(listeVoisins) && check==false){
     ccVoisin = getValeurListeComposanteConnexe(listeVoisins);
     if (getCouleurComposanteConnexe(ccVoisin) == c){
-      return true;
+      check=1;
     }
     listeVoisins=getSuivantListeComposanteConnexe(listeVoisins);
   }
-  return false;
+  /*destructeurComposanteConnexe(composantePrincipale);
+  destructeurComposanteConnexe(ccVoisin);*/
+  return check;
 }
 
 void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *nbrCoupsMax, Case **grille, char *test){
-  ComposanteConnexe *composantePrincipale;
+  TabComposanteConnexe copie=NULL;
+  ComposanteConnexe *composantePrincipale=NULL;
   composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
+  if (composantePrincipale==NULL){
+    printf("erreur composantePrincipale solveur2");
+    exit(EXIT_FAILURE);
+  }
   if (nbrCoups > *nbrCoupsMax){
-    fputc('H',f);
+    fputc('H',f); /*permet de vérifier qu'il parcours bien toute la liste*/
     fputc('\n',f);
   }
   if (testVictoire(*tab, composantePrincipale)){
@@ -133,12 +143,12 @@ void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *
     int i;
     for (i=1; i<7; i++){
       if (couleurPresenteVoisin(tab,i,grille)){
-        *tab = copieTabCompoConnexe(* tab);
-        composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
+        copie = copieTabCompoConnexe(*tab);
+        /*composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *copie);
         test[nbrCoups]=conversionEntierChar(i);
         test[nbrCoups + 1] = '\0';
-        changementCouleurComposanteConnexe(composantePrincipale, tab, i);
-        solveurDeuxRecursif(tab,f, nbrCoups + 1, nbrCoupsMax, grille,test);
+        changementCouleurComposanteConnexe(composantePrincipale, copie, i);
+        solveurDeuxRecursif(copie,f, nbrCoups + 1, nbrCoupsMax, grille,test)*/;
       }
     }
   }
