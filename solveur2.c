@@ -5,19 +5,19 @@
 #include <stdbool.h>
 
 void solveur(char *chemin,TabComposanteConnexe tab, Case **grille){
-  const int taille = longueurTabComposanteConnexe(tab);  /*nombre de composantes connexes*/
+  const int taille = longueurTabComposanteConnexe(tab);
 	char str[taille + 1];
   FILE *fichier=NULL;
-  int *taille_max=malloc(sizeof(int));  /*pour l'optimalité*/
+  int * taille_max=malloc(sizeof(int));
   int longueurCompoConnexe = longueurTabComposanteConnexe(tab);
-
+  printf("salut");
   fichier=fopen(chemin,"w+");
   if (fichier==NULL){
     perror("Erreur ouverture du fichier du solveur ");
     exit(EXIT_FAILURE);
   }
   taille_max=&longueurCompoConnexe;
-  solveurDeuxRecursif(&tab,fichier, 0, taille_max, grille, "");
+  solveurDeuxRecursif(&tab,fichier, 0, taille_max, grille, str);
   fclose(fichier);
 }
 
@@ -39,7 +39,7 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 	ListeComposanteConnexe voisinsEltSelectionne = initListeComposanteConnexe();
 	ListeComposanteConnexe nouveauxVoisins = initListeComposanteConnexe();
 
-	/*D'abord on regarde les composantes connexes voisines de la bonne couleur*/
+	/*D'abord on regarde les omposantes connexes voisines de la bonne couleur*/
 	while(!estVideListeComposanteConnexe(aParcourir)) {
 		tmp = getValeurListeComposanteConnexe(aParcourir);
 		if(getCouleurComposanteConnexe(tmp) == nouvelleCouleur) {
@@ -102,17 +102,17 @@ TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab){
 }
 
 bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille){
-  ListeComposanteConnexe *listeVoisins;
+  ListeComposanteConnexe listeVoisins;
   ComposanteConnexe *composantePrincipale;
   ComposanteConnexe *ccVoisin;
   composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
-  *listeVoisins=getComposantesVoisinesComposanteConnexe(composantePrincipale);
-  while(!estVideListeComposanteConnexe(*listeVoisins)){
-    ccVoisin = getValeurListeComposanteConnexe(*listeVoisins);
+  listeVoisins=getComposantesVoisinesComposanteConnexe(composantePrincipale);
+  while(!estVideListeComposanteConnexe(listeVoisins)){
+    ccVoisin = getValeurListeComposanteConnexe(listeVoisins);
     if (getCouleurComposanteConnexe(ccVoisin) == c){
       return true;
     }
-    *listeVoisins=getSuivantListeComposanteConnexe(*listeVoisins);
+    listeVoisins=getSuivantListeComposanteConnexe(listeVoisins);
   }
   return false;
 }
