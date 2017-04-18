@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['estidentique',['estIdentique',['../_composante_connexe_8c.html#a89d2761e4dfbc030406373c360515110',1,'estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2):&#160;ComposanteConnexe.c'],['../_composante_connexe_8h.html#a89d2761e4dfbc030406373c360515110',1,'estIdentique(ComposanteConnexe *cc1, ComposanteConnexe *cc2):&#160;ComposanteConnexe.c']]],
-  ['estpresentdanslistecase',['estPresentDansListeCase',['../_cases_8c.html#a7b07d6f153d92484e7db34617b332c72',1,'estPresentDansListeCase(Case *c1, ListeCase l):&#160;Cases.c'],['../_cases_8h.html#a261a46f5296f8fab6e17da48de2fee32',1,'estPresentDansListeCase(Case *c, ListeCase l):&#160;Cases.c']]],
-  ['estvidelistecomposanteconnexe',['estVideListeComposanteConnexe',['../_liste_composante_connexe_8c.html#a8446c463a431710d16dd71816144f6ad',1,'estVideListeComposanteConnexe(ListeComposanteConnexe l):&#160;ListeComposanteConnexe.c'],['../_liste_composante_connexe_8h.html#a8446c463a431710d16dd71816144f6ad',1,'estVideListeComposanteConnexe(ListeComposanteConnexe l):&#160;ListeComposanteConnexe.c']]],
-  ['estvidetabcomposanteconnexe',['estVideTabComposanteConnexe',['../_composante_connexe_8c.html#a95fe8d8f92ef0a7f5fef64e1e17b9d5a',1,'estVideTabComposanteConnexe(TabComposanteConnexe tabCC):&#160;ComposanteConnexe.c'],['../_composante_connexe_8h.html#a95fe8d8f92ef0a7f5fef64e1e17b9d5a',1,'estVideTabComposanteConnexe(TabComposanteConnexe tabCC):&#160;ComposanteConnexe.c']]]
+  ['destructeurcellulelistecase',['destructeurCelluleListeCase',['../_cases_8c.html#a8a1120e8ad09c9954befe24513cb2d67',1,'Cases.c']]],
+  ['destructeurcellulelistecomposanteconnexe',['destructeurCelluleListeComposanteConnexe',['../_liste_composante_connexe_8c.html#a2723e2586b2eb2cd9033341094f748ea',1,'ListeComposanteConnexe.c']]],
+  ['destructeurcelluletabcomposanteconnexe',['destructeurCelluleTabComposanteConnexe',['../_composante_connexe_8c.html#a6b135d1616b8a83ecc47c8b2858db7c2',1,'ComposanteConnexe.c']]],
+  ['destructeurcomposanteconnexe',['destructeurComposanteConnexe',['../_composante_connexe_8c.html#aa5f2aca21f1bf993bf19a6d0dba7cea2',1,'ComposanteConnexe.c']]],
+  ['destructeurlistecase',['destructeurListeCase',['../_cases_8c.html#a441e5aeeb2c0dee536c7d140263d453f',1,'Cases.c']]],
+  ['destructeurlistecomposanteconnexe',['destructeurListeComposanteConnexe',['../_liste_composante_connexe_8c.html#a7672da5523783bac548dcbb99992dc67',1,'ListeComposanteConnexe.c']]],
+  ['destructeurtabcomposanteconnexe',['destructeurTabComposanteConnexe',['../_composante_connexe_8c.html#a62e6c0bd5f4e95f7dce8414a5f5638e5',1,'ComposanteConnexe.c']]]
 ];

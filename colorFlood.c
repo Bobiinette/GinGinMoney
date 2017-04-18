@@ -9,6 +9,7 @@
 #include "ListeComposanteConnexe.h"
 #include "colorFlood_SDL.h"
 #include "solveur2.h"
+#include "solveurTableau2.h"
 
 #define MIN_TAILLE_GRILLE 3
 #define MAX_TAILLE_GRILLE 30
@@ -77,7 +78,6 @@ void jouer(SDL_Surface *ecran) {
 	int nbrCoups = 0;
 	char nbCoupsStr[100];
 	Couleur couleur = H;
-	char* choix;
 	ComposanteConnexe *cc = NULL;
 	int continuer = 1;
 	int x = 0, y = 0;
@@ -105,7 +105,9 @@ void jouer(SDL_Surface *ecran) {
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
-	solveur("./solution.txt", tabCC,grille);
+	solveur("./solution.txt", tabCC, cc,grille);
+	solveurTableau2(tabCC, cc);
+	/*On lance les deux solveurs comme ça plus de problèmes.*/
 	/*afficheGrille(grille, taille);*/
 	sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
 
@@ -144,7 +146,7 @@ void jouer(SDL_Surface *ecran) {
 								sprintf(nbCoupsStr, "Vous avez perdu, echap pour quitter");
 							}
 							else if(testVictoire(tabCC, cc)){
-								sprintf(nbCoupsStr, "Vous avez gagné, echap pour quitter");
+								sprintf(nbCoupsStr, "Vous avez gagne, echap pour quitter");
 							}
 							else {
 								sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);

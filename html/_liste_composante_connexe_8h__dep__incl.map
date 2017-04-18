@@ -1,7 +1,0 @@
-<map id="ListeComposanteConnexe.h" name="ListeComposanteConnexe.h">
-<area shape="rect" id="node2" href="$_composante_connexe_8h.html" title="ComposanteConnexe.h" alt="" coords="233,80,391,107"/>
-<area shape="rect" id="node5" href="$main_8c.html" title="main.c" alt="" coords="408,155,469,181"/>
-<area shape="rect" id="node6" href="$_liste_composante_connexe_8c.html" title="Gestion des listes de pointeurs de composantes connexes. Module permettant la gestion des listes de p..." alt="" coords="467,80,653,107"/>
-<area shape="rect" id="node3" href="$_composante_connexe-test_u_8c.html" title="ComposanteConnexe&#45;testU.c" alt="" coords="5,155,200,181"/>
-<area shape="rect" id="node4" href="$_composante_connexe_8c.html" title="Gestion des composantes connexes. Module permettant la gestion des composantes connexes, et d&#39;une liste de composante connexe (sans pointeurs). " alt="" coords="225,155,383,181"/>
-</map>

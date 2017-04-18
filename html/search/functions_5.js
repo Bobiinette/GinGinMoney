@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['liberationgrille',['liberationGrille',['../_grille_8c.html#a63924a00bcf27e9d394076c4659ae55c',1,'liberationGrille(Case **tab, int taille):&#160;Grille.c'],['../_grille_8h.html#a63924a00bcf27e9d394076c4659ae55c',1,'liberationGrille(Case **tab, int taille):&#160;Grille.c']]],
-  ['listecomposanteconnexegrille',['listeComposanteConnexeGrille',['../_composante_connexe_8c.html#ab4517e75dc4b5246c30c8b8a7d57e76b',1,'listeComposanteConnexeGrille(Case **grille, int tailleGrille):&#160;ComposanteConnexe.c'],['../_composante_connexe_8h.html#ab4517e75dc4b5246c30c8b8a7d57e76b',1,'listeComposanteConnexeGrille(Case **grille, int tailleGrille):&#160;ComposanteConnexe.c']]],
-  ['longeurlistecomposanteconnexe',['longeurListeComposanteConnexe',['../_liste_composante_connexe_8c.html#a9c2fce1c8342c0a7c6fbcb378f9dace8',1,'longeurListeComposanteConnexe(ListeComposanteConnexe l):&#160;ListeComposanteConnexe.c'],['../_liste_composante_connexe_8h.html#a9c2fce1c8342c0a7c6fbcb378f9dace8',1,'longeurListeComposanteConnexe(ListeComposanteConnexe l):&#160;ListeComposanteConnexe.c']]],
-  ['longueurtabcomposanteconnexe',['longueurTabComposanteConnexe',['../_composante_connexe_8c.html#a8fac68c1fbc150fa9be962e0d2a27fcf',1,'longueurTabComposanteConnexe(TabComposanteConnexe tabCC):&#160;ComposanteConnexe.c'],['../_composante_connexe_8h.html#a8fac68c1fbc150fa9be962e0d2a27fcf',1,'longueurTabComposanteConnexe(TabComposanteConnexe tabCC):&#160;ComposanteConnexe.c']]]
+  ['initlistecase',['initListeCase',['../_cases_8c.html#ad16099e51b895cb4319cd4e8917f6815',1,'Cases.c']]],
+  ['initlistecomposanteconnexe',['initListeComposanteConnexe',['../_liste_composante_connexe_8c.html#a95d66715a101da0f5f315bc05074bc9f',1,'ListeComposanteConnexe.c']]],
+  ['inittabcomposanteconnexe',['initTabComposanteConnexe',['../_composante_connexe_8c.html#ad8d695f2a15c7ac669cb79ebca6741bd',1,'ComposanteConnexe.c']]]
 ];
