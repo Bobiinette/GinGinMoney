@@ -89,4 +89,4 @@ int main(int argc, char const *argv[])
 	printf("%d\n", longueurTabComposanteConnexe(test));
 
 	return 0;
-}
+}	

@@ -5,11 +5,151 @@
 #include "Grille.h"
 #include "solveurTableau2.h"
 
-unsigned long long nombreAppelsRecursifs = 0;
+/**\file solveurTableau2.c
+ *\brief Solveur à base de tableaux d'entiers
+ *	Solution proposée pour le solveur, à base de tableaux de listes d'entiers.
+ *	On attribue ici un numéro à chaque composante connexe, et on voit une composante connexe comme un tableau avec 1 colonne et 6 lignes, chaque ligne représantant une couleur de la composante connexe.
+ *	Dans chaque ligne, on a une liste de voisins correspondant aux voisins de la composante connexe, avec la couleur correspondant à la ligne sélectionnée.
+ */
+
+/*======================================================= HEADERS =======================================================*/
+
+/**\fn static ListeInt initListeInt(void)
+ *\brief Initialise un ListeInt à NULL.
+ *\param void
+ *\return NULL
+ */
+static ListeInt initListeInt();
+
+/**\fn static ListeInt constructeurListeInt(int v, ListeInt l)
+ *\brief Alloue la mmoire pour un nouvel ellement et ajoute un élément en tête de la liste.
+ *\param v L'entier à ajouter.
+ *\param l La liste à laquelle on rajoute l'entier.
+ *\return La liste avec l'élément v rajouté en tête.
+ */
+static ListeInt constructeurListeInt(int v, ListeInt l);
+
+/**\fn static void destructeurCelluleListeInt(CelluleListeInt *c)
+ *\brief Libère la mémoire allouée à un élément d'un ListeInt.
+ *\param c Un pointeur vers l'élément de la liste à libérer.
+ *\return void
+ */
+static void destructeurCelluleListeInt(CelluleListeInt *c);
+
+/**\fn static void destructeurListeInt(ListeInt l)
+ *\brief Libère la mémoire allouée à un ListeInt, en faisant appel à destructeurCelluleListeInt.
+ *\param l Le ListeInt dont on veut libérer la mémoire.
+ *\return void
+ */
+static void destructeurListeInt(ListeInt l);
+
+/**\fn static int estPresentDansListeInt(int v, ListeInt l)
+ *\brief Permet de savoir si un élément est présent dans un ListeInt ou non.
+ *\param v L'entier dont on veut savoir la présence ou non.
+ *\param l Le ListeInt dans lequel on fait la recherche. 
+ *\return 1 si l'élément est présent dans la liste, 0 sinon.
+ */
+static int estPresentDansListeInt(int v, ListeInt l);
+
+/**\fn static ListeInt concatenationListeInt(ListeInt l1, ListeInt l2)
+ *\brief Permet la concaténation de 2 ListeInt. On rajoute les éléments de l2 à l1, donc l1 est modifiée.
+ *\param l1 La première liste à concaténer. La liste l1 est modifiée.
+ *\param l2 La deuxièmre liste à concaténer. l2 n'estas modifiée.
+ *\return La liste l1 avec les éléments de l2 rajoutés.
+ */
+static ListeInt concatenationListeInt(ListeInt l1, ListeInt l2);
+
+/**\fn static ListeInt concatenationListeIntTestAppartenance(ListeInt l1, ListeInt l2, int *appartenance)
+ *\brief Permet la concaténation de 2 ListeInt, avec prise en compte de l'aggrandissement de la composante connexe principale. On rajoute les éléments de l2 à l1, donc l1 est modifiée.
+ *	Le tableau d'appartenance est un tableau avec n colonnes, n étant le nombre de composantes connexes, qui vaut 1 si la composante connexe appartient à la composante connexe principale, 0 sinon.
+ *\param l1 La première liste à concaténer. La liste l1 est modifiée.
+ *\param l2 La deuxièmre liste à concaténer. l2 n'estas modifiée.
+ *\param appartenance Le tableau d'appartenance, qui permet de déterminer si une composante cnnexe appartient à la composante connexe principale.
+ *\return La liste l1 avec les éléments de l2 rajoutés, sans les éléments de l2 qui ont étés absorbés par la composante connexe principale.
+ */
+static ListeInt concatenationListeIntTestAppartenance(ListeInt l1, ListeInt l2, int *appartenance);
+
+/**\fn static int longueurListeInt(ListeInt l)
+ *\brief Permet d'obtenir la taille d'un ListeInt.
+ *\param l La liste dont on veut la taille.
+ *\return La taille de l, 0 si l vaut NULL.
+ */
+static int longueurListeInt(ListeInt l);
+
+/**\fn static ListeInt **creeTabVoisins(TabComposanteConnexe tabCC, int taille)
+ *\brief Permet de transformer un TabComposanteConnexe en un tableau de taille colonnes et 6 lignes de ListeInt, pour l'utiliser dans le solveur.
+ * 	Les 6 lignes correspondant aux 6 couleurs.
+ *\param tabCC La liste des composantes connexes générées à partir de la grille.
+ *\param taille La taille du TabComposanteConnexe et le nombre de colonnes du ListeInt, à savoir le nombre de composantes connexes de la grille.
+ *\return Le ListeInt correspondant au TabComposanteConnexe.
+ */
+static ListeInt **creeTabVoisins(TabComposanteConnexe tabCC, int taille);
+
+/**\fn static void detruitTabVoisins(ListeInt **tab, int taille)
+ *\brief Libère la mémoire allouée à un tableau de taille colonnes et 6 lignes.
+ *\param tab Le tableau dont on veut libérer la mémoire.
+ *\param taille Le nombre de colones du tableau dont on veut libérer la mémoire.
+ *\return void
+ */
+static void detruitTabVoisins(ListeInt **tab, int taille);
+
+/**\fn static int **miseAjour(int **appartenance, const int taille, int a)
+ *\brief Copie les valeurs de la colonne a-1 de appartenance dans la colonne a.
+ *\param appartenance Le tableau de ListeInt que l'ont veut mettre à jour.
+ *\param taille La taille du tableau de ListeInt.
+ *\param a L'étape à mettre à jour.
+ *\return Le tableau avec les colones a-1 et a identiques.
+ */
+static int **miseAjour(int **appartenance, const int taille, int a);
+
+/**\fn static ListeInt **miseAjourCC(ListeInt **ccInitiale, const int taille, int a)
+ *\brief Copie les valeurs de la colonne a-1 de ccInitiale dans la colonne a.
+ *\param ccInitiale Le tableau de ListeInt que l'ont veut mettre à jour.
+ *\param taille La taille du tableau de ListeInt.
+ *\param a L'étape à mettre à jour.
+ *\return Le tableau avec les colones a-1 et a identiques.
+ */
+static ListeInt **miseAjourCC(ListeInt **ccInitiale, const int taille, int a);
+
+/**\fn static int nombreVoisinsNonNull(ListeInt *ccPrincipale)
+ *\brief Compte le nombre de voisins non nuls d'une composante connexe.
+ *\param ccInitiale Le tableau à une dimmension de ListeInt dont on veut le nombre de voisins non nuls.
+ *\return Le nombre de voisins non nuls de la composante connexe passée en argument.
+ */
+static int nombreVoisinsNonNull(ListeInt *ccPrincipale);
+
+/**\fn static ListeInt **changementCouleurSolveur(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacement, const int taille, int couleur, int nombreCoups)
+ *\brief Effectue les opérations nécessaires qu changement de couleur. Modifie la colone nombreCoups de ccPrincipale en lui affectant les nouveaux voisins qu'elle obtient avec le changement de couleur.
+ *\param tabVoisins Le tableau des voisins. Il n'est pas modifié par la fonction.
+ *\param ccPrincipale Le tableau qui correspond à la composanteConnexe principale à plusieurs étapes. L'étape nombreCoups est modifiée par la fonction.
+ *\param appartenance La tableau qui répertorie les composantes connexes qui appartiennent à la composante connexe principale. On modifie le tableau en ajoutant les nouvelle composantes connexes qui sont absorbées.
+ *\param taille Le nombre de composantes connexes en tout, le nombre de colonnes des différents tableaux.
+ *\param couleur La couleur choisie pour le changement de couleur.
+ *\param nombreCoups L'étape actuelle. Sert pour se placer dans les taleaux.
+ *\return Le tableau de composantes connexes modifié.
+ */
+static ListeInt **changementCouleurSolveur(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **appartenance, const int taille, int couleur, int nombreCoups);
+
+/**\fn static void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **appartenance, const int taille, int *tailleMax, FILE **f, char *str, int nbrCoups)
+ *\brief Effectue une étape du solveur. Fait un changement de couleur, ou met à jour la solution si on trouve une meilleure solution.
+ *\param tabVoisins Le tableau des voisins. Il n'est pas modifié par la fonction.
+ *\param ccPrincipale Le tableau qui correspond à la composanteConnexe principale à plusieurs étapes. L'étape nbrCoups est modifiée par la fonction.
+ *\param appartenance La tableau qui répertorie les composantes connexes qui appartiennent à la composante connexe principale.
+ *\param taille Le nombre de composantes connexes en tout, le nombre de colonnes des différents tableaux.
+ *\param tailleMax Un pointeur vers la meilleure solution trouvée.
+ *\param str Le tableau de char contenant la solution étudiée à l'étape actuelle.
+ *\param nbrCoups Le nombre de coups de la solution actuelle.
+ *\return Le tableau de composantes connexes modifié.
+ */
+static void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **appartenance, const int taille, int *tailleMax, FILE **f, char *str, int nbrCoups);
+
+static unsigned long long nombreAppelsRecursifs = 0; /**< Compteur du nombre d'appels récursifs de la fonction, à titre informatif*/
+
+/*======================================================= CODE =======================================================*/
 
 struct t_CelluleListeInt {
-	int valeur;
-	struct t_CelluleListeInt *suivant;
+	int valeur; /**< Valeur de la cellule actuelle de la liste*/
+	struct t_CelluleListeInt *suivant; /**< Valeur du voisin de la liste*/
 };
 
 void afficheListeInt(ListeInt l) {
@@ -81,46 +221,28 @@ int estPresentDansListeInt(int v, ListeInt l) {
 
 /*La liste l1 est modifiée*/
 ListeInt concatenationListeInt(ListeInt l1, ListeInt l2) {
-	ListeInt res = NULL;
+	ListeInt res = l1;
 	res = initListeInt();
-	ListeInt tmp1 = l1;
 	ListeInt tmp2 = l2;
-	while(tmp1 != NULL) {
-		if(tmp1->valeur >= 0) {
-			res = constructeurListeInt(tmp1->valeur, res);
-		}
-		tmp1 = tmp1->suivant;
-	}
 	while(tmp2 != NULL) {
 		if(!estPresentDansListeInt(tmp2->valeur, res) && tmp2->valeur >= 0) {
 			res = constructeurListeInt(tmp2->valeur, res);
 		}
 		tmp2 = tmp2->suivant;
 	}
-	destructeurListeInt(l1);
 	return res;
 }
 
-ListeInt concatenationListeIntDecalage(ListeInt l1, ListeInt l2, int *decalage) {
-	ListeInt res = NULL;
-	ListeInt tmp1 = l1;
+ListeInt concatenationListeIntTestAppartenance(ListeInt l1, ListeInt l2, int *appartenance) {
+	ListeInt res = l1;
 	ListeInt tmp2 = l2;
 	int val = 0;
-	while(tmp1 != NULL) {
-		val = tmp1->valeur - decalage[tmp1->valeur];
-		if(val >= 0) {
-			res = constructeurListeInt(tmp1->valeur, res);
-		}
-		tmp1 = tmp1->suivant;
-	}
 	while(tmp2 != NULL) {
-		val = tmp2->valeur - decalage[tmp2->valeur];
-		if(!estPresentDansListeInt(tmp2->valeur, res) && val >= 0) {
+		if(!estPresentDansListeInt(tmp2->valeur, res) && appartenance[tmp2->valeur] == 0) {
 			res = constructeurListeInt(tmp2->valeur, res);
 		}
 		tmp2 = tmp2->suivant;
 	}
-	destructeurListeInt(l1);
 	return res;
 }
 
@@ -184,12 +306,12 @@ void detruitTabVoisins(ListeInt **tab, int taille) {
 	free(tab);
 }
 
-int **miseAjour(int **deplacement, const int taille, int a) {
+int **miseAjour(int **appartenance, const int taille, int a) {
 	int i = 0;
 	for(i = 0; i < taille; i++) {
-		deplacement[a][i] = deplacement[a - 1][i];
+		appartenance[a][i] = appartenance[a - 1][i];
 	}
-	return deplacement;
+	return appartenance;
 }
 
 ListeInt **miseAjourCC(ListeInt **ccInitiale, const int taille, int a) {
@@ -201,39 +323,28 @@ ListeInt **miseAjourCC(ListeInt **ccInitiale, const int taille, int a) {
 	return ccInitiale;
 }
 
-int *copieTabInt(int *deplacement, const int taille) {
-	int *res = (int*)calloc(taille, sizeof(int));
-	int i = 0;
-	for(i = 0; i < taille; i++) {
-		res[i] = deplacement[i];
-	}
-	return res;
-}
-
-ListeInt **changementCouleurSolveur(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacement, const int taille, int couleur, int nombreCoups) {
+ListeInt **changementCouleurSolveur(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **appartenance, const int taille, int couleur, int nombreCoups) {
 	ListeInt ccBonneCouleur = ccPrincipale[nombreCoups][couleur];
+	ListeInt save = ccBonneCouleur;
+	ccPrincipale[nombreCoups][couleur] = NULL;
 	int i = 0;
 	int val = 0;
 	for(i = 0; i < 6; i++) {
 		if(i != couleur) {
-			ccPrincipale[nombreCoups][i] = concatenationListeIntDecalage(ccPrincipale[nombreCoups][i], ccPrincipale[nombreCoups - 1][i], deplacement[nombreCoups]);
-		}
-		else {
+			ccPrincipale[nombreCoups][i] = concatenationListeIntTestAppartenance(ccPrincipale[nombreCoups][i], ccPrincipale[nombreCoups - 1][i], appartenance[nombreCoups]);
 		}
 	}
 	while(ccBonneCouleur != NULL) {
 		val = ccBonneCouleur->valeur;
-		deplacement[nombreCoups][val] = taille + 1;
-		for(i = val + 1; i < taille; i++) {
-			deplacement[nombreCoups][i] += 1;
-		}
+		appartenance[nombreCoups][val] = 1;
 		for(i = 0; i < 6; i++) {
-			ccPrincipale[nombreCoups][i] = concatenationListeIntDecalage(ccPrincipale[nombreCoups][i], tabVoisins[val][i], deplacement[nombreCoups]);
+			if(i != couleur) {
+				ccPrincipale[nombreCoups][i] = concatenationListeIntTestAppartenance(ccPrincipale[nombreCoups][i], tabVoisins[val][i], appartenance[nombreCoups]);
+			}
 		}
 		ccBonneCouleur = ccBonneCouleur->suivant;
 	}
-	destructeurListeInt(ccPrincipale[couleur][i]);
-	ccPrincipale[couleur][i] = NULL;
+	destructeurListeInt(save);
 	return ccPrincipale;
 }
 
@@ -248,19 +359,19 @@ int nombreVoisinsNonNull(ListeInt *ccPrincipale) {
 	return res;
 }
 
-int tabVoisinsPlein(int *deplacement, int taille) {
+int tabVoisinsPlein(int *appartenance, int taille) {
 	int i;
 	for(i = 0; i < taille; i ++) {
-		if(deplacement[i] < taille) {
+		if(appartenance[i] < taille) {
 			return 0;
 		}
 	}
 	return 1;
 }
 
-void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacement, const int taille, int *tailleMax, FILE **f, char *str, int nbrCoups) {
+void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **appartenance, const int taille, int *tailleMax, FILE **f, char *str, int nbrCoups) {
 	/*On veut UNE solution en un nombre minimum de coups*/
-	deplacement = miseAjour(deplacement, taille, nbrCoups + 1);
+	appartenance = miseAjour(appartenance, taille, nbrCoups + 1);
 	ccPrincipale = miseAjourCC(ccPrincipale, taille, nbrCoups + 1);
 	int i = 0;
 	int j = 0;
@@ -292,7 +403,7 @@ void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacem
 		for(i = 0; i < 6; i ++) {
 			if(ccPrincipale[nbrCoups][i] != NULL) {
 				if (nbrCoups < *tailleMax) {
-					ccPrincipale = changementCouleurSolveur(tabVoisins, ccPrincipale, deplacement, taille, i, nbrCoups + 1);
+					ccPrincipale = changementCouleurSolveur(tabVoisins, ccPrincipale, appartenance, taille, i, nbrCoups + 1);
 
 					str[nbrCoups] = conversionEntierChar(i + 1);
 					str[nbrCoups + 1] = '\0';
@@ -301,8 +412,8 @@ void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacem
 						afficheListeInt(ccPrincipale[nbrCoups][j]);
 					}
 					printf("---\n");*/
-					solveurEtape(tabVoisins, ccPrincipale, deplacement, taille, tailleMax, f, str, nbrCoups + 1);
-					deplacement = miseAjour(deplacement, taille, nbrCoups + 1);
+					solveurEtape(tabVoisins, ccPrincipale, appartenance, taille, tailleMax, f, str, nbrCoups + 1);
+					appartenance = miseAjour(appartenance, taille, nbrCoups + 1);
 					ccPrincipale = miseAjourCC(ccPrincipale, taille, nbrCoups + 1);
 				}
 			}
@@ -311,7 +422,7 @@ void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacem
 	return;
 }
 
-void solveur(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
+int solveurTableau2(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 	const int taille = longueurTabComposanteConnexe(tabCC);
 	char str[taille + 1];
 	int i = 0;
@@ -320,32 +431,37 @@ void solveur(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 	ListeInt **tabVoisins = creeTabVoisins(tabCC, taille);
 	/*afficheTabVoisins(tabVoisins, taille);*/
 	int *tailleMax;
+	int res = 0;
 	ListeInt **ccInitiale = (ListeInt **)calloc(taille + 1, sizeof(ListeInt*));
 	for(i = 0; i < taille + 1; i ++) {
 		ccInitiale[i] = (ListeInt *)calloc(6, sizeof(ListeInt));
 	}
 	FILE *f = fopen("./solution.txt", "w+");
 	tailleMax = calloc(1, sizeof(int));
-	int **deplacement = calloc(taille + 1, sizeof(int *));
+	int **appartenance = calloc(taille + 1, sizeof(int *));
 	for(i = 0; i < taille + 1; i ++) {
-		deplacement[i] = calloc(taille, sizeof(int));
+		appartenance[i] = calloc(taille, sizeof(int));
 	}
-	deplacement[0][taille - 1] = taille + 1;
+	appartenance[0][taille - 1] = 1;
 	*tailleMax = taille;
 
 	for(i = 0; i < 6; i ++) {
 		ccInitiale[0][i] = concatenationListeInt(ccInitiale[0][i], tabVoisins[taille - 1][i]);
 	}
-	solveurEtape(tabVoisins, ccInitiale, deplacement, taille, tailleMax, &f, str, 0);
+
+
+	solveurEtape(tabVoisins, ccInitiale, appartenance, taille, tailleMax, &f, str, 0);
+
+	res = *tailleMax;
 	if(fgets(str, taille, f) != NULL) {
 		printf("Solution : %s\n", str);
 	}
 	printf("Nombre appels %llu\n", nombreAppelsRecursifs);
-	for(i = 0; i < taille; i ++) {
-		free(deplacement[i]);
+	for(i = 0; i < taille + 1; i ++) {
+		free(appartenance[i]);
 	}
-	free(deplacement);
-	for(i = 0; i < taille; i ++) {
+	free(appartenance);
+	for(i = 0; i < taille + 1; i ++) {
 		for(j = 0; j < 6; j ++) {
 			destructeurListeInt(ccInitiale[i][j]);
 		}
@@ -355,4 +471,5 @@ void solveur(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 	fclose(f);
 	detruitTabVoisins(tabVoisins, taille);
 	free(tailleMax);
+	return res;
 }
