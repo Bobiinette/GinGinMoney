@@ -30,14 +30,14 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 */
 TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab);
 
-/*! \fn bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille)
+/*! \fn int couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille)
  *  \brief Vérifie si une composante voisine possède la couleur donnée en paramètre
  *  \param *tab pointeur vers la TabComposanteConnexe qui contient toutes les composantes connexes du plateau
  *  \param c la couleur à tester
  *  \param grille la grille de jeu
  *  \return True si la couleur c est la couleur d'au moins une composante connexe voisine, False sinon
 */
-bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille);
+int couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille);
 
 /*! \fn void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *nbrCoupsMax, Case **grille, char *test)
  *  \brief teste toutes les possibilités du jeu et écrit dans un fichier la plus pertinente
