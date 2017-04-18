@@ -149,12 +149,12 @@ void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *
     int i;
     for (i=1; i<7; i++){
       if (couleurPresenteVoisin(tab,i,grille)){
-        copie = copieTabCompoConnexe(*tab);
-        composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), copie);
+        /*copie = copieTabCompoConnexe(*tab);*/
+        composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
         test[nbrCoups]=conversionEntierChar(i);
         test[nbrCoups + 1] = '\0';
-        changementCouleurComposanteConnexe(composantePrincipale, &copie, i);
-        solveurDeuxRecursif(&copie,f, nbrCoups + 1, nbrCoupsMax, grille,test);
+        composantePrincipale=changementCouleurComposanteConnexe(composantePrincipale, tab, i);
+        solveurDeuxRecursif(tab,f, nbrCoups + 1, nbrCoupsMax, grille,test);
       }
     }
   }
