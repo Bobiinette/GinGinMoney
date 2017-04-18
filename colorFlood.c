@@ -105,8 +105,8 @@ void jouer(SDL_Surface *ecran) {
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
+	solveurTableau2(tabCC, cc);
 	solveur("./solution.txt", tabCC	,grille);
-	/*solveurTableau2(tabCC, cc);*/
 	/*On lance les deux solveurs comme ça plus de problèmes.*/
 	/*afficheGrille(grille, taille);*/
 	sprintf(nbCoupsStr, "Il vous reste %d coups", nbrCoups);
