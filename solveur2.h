@@ -9,7 +9,7 @@
 /*! \fn void solveur(char *chemin,TabComposanteConnexe tab, Case **grille)
  *  \brief Permet de lancer le solveur
  *  \param chemin pointeur vers l'emplacement du fichier dans lequel le solveur donnera sa solution
- *  \param tab l'ensble des composante connexe
+ *  \param tab l'ensemble des composantes connexes
  *  \param grille grille de jeu
 */
 void solveur(char *chemin,TabComposanteConnexe tab, Case **grille);
@@ -24,29 +24,29 @@ void solveur(char *chemin,TabComposanteConnexe tab, Case **grille);
 ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccInitiale, TabComposanteConnexe *toutesComposantesConnexes, Couleur nouvelleCouleur);
 
 /*! \TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab)
- *  \brief Cré une copie une TabComposanteConnexe
+ *  \brief Crée une copie une TabComposanteConnexe
  *  \param tab la TabComposanteConnexe à copier
  *  \return une TabComposanteConnexe qui est la copie de tab
 */
 TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab);
 
 /*! \fn bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille)
- *  \brief Vérifie si une composante voisine posséde la couelur donnée en paramètre
- *  \param *tab pointeur vers la TabComposanteConnexe qui contient toute les composatantes connexe du plateau
+ *  \brief Vérifie si une composante voisine possède la couleur donnée en paramètre
+ *  \param *tab pointeur vers la TabComposanteConnexe qui contient toutes les composantes connexes du plateau
  *  \param c la couleur à tester
  *  \param grille la grille de jeu
- *  \return True si la couleur c est la couleur d'au moins une composante connexe voisine, False si non
+ *  \return True si la couleur c est la couleur d'au moins une composante connexe voisine, False sinon
 */
 bool couleurPresenteVoisin(TabComposanteConnexe *tab, Couleur c, Case **grille);
 
 /*! \fn void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *nbrCoupsMax, Case **grille, char *test)
- *  \brief teste toute les possibilité deu jeu et écrit dans un fichier la plus pertinante
+ *  \brief teste toutes les possibilités du jeu et écrit dans un fichier la plus pertinente
  *  \param tab pointeur vers l'ensemble des composantes connexes
  *  \param f pointeur vers le fichier
- *  \param nbrCoups nombre de coups jouer
+ *  \param nbrCoups nombre de coups joués
  *  \param nbrCoupsMax pointeur vers le nombre de coup optimal trouvé jusqu'à présent
  *  \param grille grille de jeu
- *  \param test chaine de caractère contenant la suite de couleur testée, c'est cette chaine de caractère qui si elle est optimale sera écirte dans le fichier f.
+ *  \param test chaine de caractère contenant la suite de couleur testée, c'est cette chaine de caractère qui si elle est optimale sera écrite dans le fichier f.
 */
 void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *nbrCoupsMax, Case **grille, char *test);
 
