@@ -91,13 +91,19 @@ ComposanteConnexe *changementCouleurComposanteConnexe(ComposanteConnexe *ccIniti
 }
 
 TabComposanteConnexe copieTabCompoConnexe(TabComposanteConnexe tab){
-  TabComposanteConnexe res;
+  TabComposanteConnexe tmp,res;
   ComposanteConnexe *t;
+  tmp=initTabComposanteConnexe();
   res=initTabComposanteConnexe();
   while(!estVideTabComposanteConnexe(tab)){
     t=getValeurTabComposanteConnexe(tab);
-    res=constructeurTabComposanteConnexep(t, res);
+    tmp=constructeurTabComposanteConnexep(t, res);
     tab=getSuivantTabComposanteConnexe(tab);
+  }
+  while(!estVideTabComposanteConnexe(tmp)){
+    t=getValeurTabComposanteConnexe(tmp);
+    res=constructeurTabComposanteConnexep(t, tmp);
+    tmp=getSuivantTabComposanteConnexe(tab);
   }
   /*destructeurComposanteConnexe(t);*/
   return res;
@@ -144,10 +150,10 @@ void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *
     for (i=1; i<7; i++){
       if (couleurPresenteVoisin(tab,i,grille)){
         copie = copieTabCompoConnexe(*tab);
-        composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), copie);
+        composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
         test[nbrCoups]=conversionEntierChar(i);
         test[nbrCoups + 1] = '\0';
-        changementCouleurComposanteConnexe(composantePrincipale, &copie, i);
+        composantePrincipale=changementCouleurComposanteConnexe(composantePrincipale, &copie, i);
         solveurDeuxRecursif(&copie,f, nbrCoups + 1, nbrCoupsMax, grille,test);
       }
     }
