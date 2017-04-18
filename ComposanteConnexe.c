@@ -533,6 +533,7 @@ ComposanteConnexe * getValeurTabComposanteConnexe(TabComposanteConnexe tabCC) {
 	return &(tabCC->composanteConnexe);
 }
 
+
 /**\fn TabComposanteConnexe getSuivantTabComposanteConnexe(TabComposanteConnexe tabCC)
  *\brief Permet d'obtenir la queue du TabComposanteConnexe.
  *\param tabCC Le TabComposanteConnexe dont on veut le suivant.
