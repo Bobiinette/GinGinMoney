@@ -436,7 +436,7 @@ int solveurTableau2(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 	for(i = 0; i < taille + 1; i ++) {
 		ccInitiale[i] = (ListeInt *)calloc(6, sizeof(ListeInt));
 	}
-	FILE *f = fopen("./solution.txt", "w+");
+	FILE *f = fopen("./solutionTableau.txt", "w+");
 	tailleMax = calloc(1, sizeof(int));
 	int **appartenance = calloc(taille + 1, sizeof(int *));
 	for(i = 0; i < taille + 1; i ++) {
