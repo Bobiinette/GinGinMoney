@@ -389,7 +389,7 @@ void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **apparten
 			if(nbrCoups < *tailleMax) {
 				*tailleMax = nbrCoups;
 				fclose(*f);
-				*f = fopen("./solution.txt", "w+");
+				*f = fopen("./solutionTableau.txt", "w+");
 				printf("Nouvelle solution en %d coups\n", nbrCoups);
 				fputs(str, *f);
 				fputc('\n', *f);
