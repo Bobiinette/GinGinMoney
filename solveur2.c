@@ -133,7 +133,7 @@ void solveurDeuxRecursif(TabComposanteConnexe *tab, FILE *f, int nbrCoups, int *
   ComposanteConnexe *composantePrincipale=NULL;
   composantePrincipale=rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille,0,0), *tab);
   if (composantePrincipale==NULL){
-    printf("erreur composantePrincipale solveur2");
+    printf("erreur composantePrincipale");
     exit(EXIT_FAILURE);
   }
   if (nbrCoups > *nbrCoupsMax){
