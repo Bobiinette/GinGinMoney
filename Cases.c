@@ -52,7 +52,9 @@ ListeCase constructeurListeCase(Case *d, ListeCase l){
  *  \return le premier élément de la liste.
  */
 Case* getValeurListeCase(ListeCase l){
-  return l->c;
+  if (!testListeCaseVide(l))
+    return l->c;
+  return NULL;
 }
 
 /*! \fn ListeCase getSuivantListeCase(ListeCase l)
@@ -151,7 +153,10 @@ ListeCase supprimeElementListeCase(Case *c, ListeCase l){
   temp = l;
   ListeCase nouveauSuivant = initListeCase();
   if (testListeCaseVide(l)){
-    printf("Impossible de supprimer car aucun element");
+    printf("Impossible de supprimer car aucun élément\n");
+  }
+  else if (c==NULL){
+    printf("L'élément à supprimer est NULL\n");
   }
   else {
     if(l->c == c) {

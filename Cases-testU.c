@@ -17,7 +17,7 @@ void testListe1(){
   /*Création d'une autre case*/
   Case * c2;
   c2=constructeurCase(4,5,R);
-  
+
   /*Remplissage de la liste de cases*/
   l=constructeurListeCase(c,l);  /*attention, si erreur, problème dans la partie 'Rajout'*/
   CU_ASSERT(!testListeCaseVide(l));
@@ -62,8 +62,8 @@ int verificationEgaliteListe(ListeCase l1,ListeCase l2){
 
   if (!testListeCaseVide(l2))
     res=0;
-  
-  return res;  
+
+  return res;
 }
 
 void testListe2(){
@@ -80,7 +80,7 @@ void testListe2(){
   /*Création d'une autre case*/
   Case * c3;
   c3=constructeurCase(6,7,J);
-  
+
   /*Remplissage de la liste de cases*/
   l=constructeurListeCase(c,l);
   l=constructeurListeCase(c2,l);
@@ -111,6 +111,47 @@ void testListe2(){
   free(c2);
 }
 
+/*Test sur une liste l NULL*/
+void testListeNULL(){
+  Case* c;
+  Case* c2;
+  Case* c3=NULL;
+  c2=constructeurCase(4,5,R);
+
+  int a1,a2;
+  ListeCase l=initListeCase();
+  ListeCase l2=initListeCase();
+  ListeCase l3,l4,l5,l6;
+
+  /*Obtenir le premier élément d'une liste vide*/
+  c=getValeurListeCase(l);
+  CU_ASSERT(c==NULL);
+  /*Présence d'un élément non NULL puis NULL dans une liste NULL*/
+  a1=estPresentDansListeCase(c2,l);
+  a2=estPresentDansListeCase(c3,l);
+  CU_ASSERT(a1==0);
+  CU_ASSERT(a2==0);
+  /*Concaténation de deux listes NULL*/
+  l3=concatenationListeCase(l,l2);
+  CU_ASSERT(verificationEgaliteListe(l3,NULL));
+  /*Suppression d'un élément NULL dans une liste NULL*/
+  l4=supprimeElementListeCase(c3,l);
+  CU_ASSERT(verificationEgaliteListe(l4,NULL));
+  /*Suppression d'un élément NULL dans une liste non NULL*/
+  l5=constructeurListeCase(c2,l);
+  CU_ASSERT(!testListeCaseVide(l5));
+  l6=supprimeElementListeCase(c3,l5);
+  CU_ASSERT(verificationEgaliteListe(l6,l5));
+
+  destructeurListeCase(l);
+  destructeurListeCase(l2);
+  destructeurListeCase(l3);
+  destructeurListeCase(l4);
+  destructeurListeCase(l5);
+  destructeurListeCase(l6);
+  free(c2);
+
+}
 
 int main() {
 	CU_pSuite pSuite = NULL;
@@ -119,10 +160,10 @@ int main() {
 
 	CU_add_test(pSuite,"test de testListe1",testListe1);
 	CU_add_test(pSuite,"test de testListe2",testListe2);
+  CU_add_test(pSuite,"test de testListeNULL",testListeNULL);
 
 	CU_basic_set_mode(CU_BRM_VERBOSE);
 	CU_basic_run_tests();
 	CU_cleanup_registry();
 	return 0;
 }
-

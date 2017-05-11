@@ -1,6 +1,11 @@
 #ifndef GRILLE_H
 #define GRILLE_H
 
+/*! *\file Grille.c
+ *   \brief Gestion des cases de la grille.
+ *   Initialisation de la grille à partir d'un fichier ou aléatoirement.
+ */
+
 typedef enum Couleur {H = 0,B,V,R,J,M,G} Couleur;
 
 /*! \struct Case
