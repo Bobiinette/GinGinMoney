@@ -1,7 +1,7 @@
 #ifndef COLORFLOOD_H
 #define COLORFLOOD_H
 
-/**\file colorFlood.c
+/**\file colorFlood.h
  *\brief Execution d'une partie.
  *		Module permettant l'execution d'une partie, mise en place d'une grille de jeu, affichage et déroulement d'une partie.
  */
