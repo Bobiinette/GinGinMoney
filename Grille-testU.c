@@ -44,7 +44,7 @@ void testRemplissageFichier(){ /*test de a fonction remplissageFichier. Pour tes
   CU_ASSERT(getCouleurCase(getCaseGrille(grille,3,0))==J);
   CU_ASSERT(getCouleurCase(getCaseGrille(grille,4,0))==R);
   CU_ASSERT(getCouleurCase(getCaseGrille(grille,5,0))==G);
-  /*en testant le première ligne et la première colonne on a fait des testes avec toutes les couleurs qui peuvent exister dans la grille*/
+  /*en testant le première ligne et la première colonne on a fait des tests avec toutes les couleurs qui peuvent exister dans la grille*/
   liberationGrille(grille,taille);/*libération de l'espace mémoire*/
 
 }

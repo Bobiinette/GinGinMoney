@@ -1,38 +1,20 @@
-#ifndef SOLVEUR_TABLEAU_H
-#define SOLVEUR_TABLEAU_H
+#ifndef SOLVEUR_TABLEAU3_H
+#define SOLVEUR_TABLEAU3_H
 
 #include "ComposanteConnexe.h"
 #include "Grille.h"
+#include "solveurTableau2.h"
 
-typedef struct t_CelluleListeInt CelluleListeInt;
-typedef CelluleListeInt *ListeInt;
+/**\file solveurTableau3.h
+ *\brief Solveur à base de tableaux d'entiers
+ *	Solution proposée pour le solveur, à base de tableaux de listes d'entiers.
+ *	On attribue ici un numéro à chaque composante connexe, et on voit une composante connexe comme un tableau avec 1 colonne et 6 lignes, chaque ligne représantant une couleur de la composante connexe.
+ *	Dans chaque ligne, on a une liste de voisins correspondant aux voisins de la composante connexe, avec la couleur correspondant à la ligne sélectionnée.
+ */
 
-typedef struct t_CelluleListeVerif CelluleListeVerif;
-typedef CelluleListeVerif *ListeVerif;
-
-ListeInt initListeInt();
-ListeInt constructeurListeInt(int v, ListeInt l);
-void destructeurCelluleListeInt(CelluleListeInt *c);
-void destructeurListeInt(ListeInt l);
-int estPresentDansListeInt(int v, ListeInt l);
-ListeInt concatenationListeInt(ListeInt l1, ListeInt l2);
-ListeInt concatenationListeIntDecalage(ListeInt l1, ListeInt l2, int *decalage);
-int longueurListeInt(ListeInt l);
-
-ListeVerif constructeurListeVerif(int *v, int t, ListeVerif l);
-void destructeurCelluleListeVerif(CelluleListeVerif *c);
-void destructeurListeVerif(ListeVerif l);
-int estEgal(char *c1, char *c2, int taille);
-int estPresentDansListeVerif(int *v, int taille, ListeVerif l);
-
-ListeInt **creeTabVoisins(TabComposanteConnexe tabCC, int taille);
-void detruitTabVoisins(ListeInt **tab, int taille);
-ListeInt **miseAjourCC(ListeInt **ccInitiale, const int taille, int a);
-int **miseAzero(int **deplacement, const int taille, int a);
-int *copieTabInt(int *deplacement, const int taille);
-int nombreVoisinsNonNull(ListeInt *ccPrincipale);
-ListeInt **changementCouleurSolveur(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacement, const int taille, int couleur, int nombreCoups);
-void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **deplacement, int taille, int *tailleMax, FILE **f, char *str, int nbrCoups);
-void solveur(TabComposanteConnexe tabCC, ComposanteConnexe *cc);
+int nombreVoisinsCouleur(ListeInt** tabVoisins, ListeInt* ccPrincipale, int* appartenance, int couleur, const int taille);
+int couleurAChoisir(ListeInt** tabVoisins, ListeInt* ccPrincipale, int* appartenance, const int taille);
+char* solveurEtape3(ListeInt **tabVoisins, ListeInt *ccPrincipale, int *appartenance, const int taille, char *str);
+int solveurTableau3(TabComposanteConnexe tabCC, ComposanteConnexe *cc);
 
 #endif

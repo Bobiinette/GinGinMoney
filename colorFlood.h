@@ -66,7 +66,6 @@ void afficheInterLigneDessus(int taille);
  *\param taille Entier qui correspond à la taille de la grille.
  */
 void afficheGrille(Case **grille, int taille);
-void setGrilleTest(Case **grille, ComposanteConnexe *cc);
 
 /**\fn int saisirTaille2D(SDL_Surface *ecran, char *str1, int min, int max)
  *\brief Demande à l'utilisateur de saisir la taille de la grille de jeu, pour une partie avec une feêntre SDL. Cette taille dois être comprise entre 3 et 25.
