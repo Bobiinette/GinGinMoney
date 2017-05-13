@@ -73,7 +73,19 @@ void afficheGrille(Case **grille, int taille);
  *\param str1 pointeur vers la phrase à dire au joueur
  *\param min taille minimale de la grille
  *\param man taille maximale de la grille
+ *\return la taille saisie par le joueur
  */
 int saisirTaille2D(SDL_Surface *ecran, char *str1, int min, int max);
+
+/**\fn int changeTaille(SDL_Surface *ecran, char *str1, char *str2, int entierSaisi, int taille, int min, int max)
+ *\brief Affiche la fenêtre de dialogue qui demande la taille à l'utilisateu avec la SDL
+ *\param ecran pointeur vers la fenêtre de jeu
+ *\param str1 un pointeur de char où l'on rentrera la demande de la taille de la grille.
+ *\param str2 un pointeur de char où l'on rentrera la réponse à la question précédente.
+ *\param taille la taille de la grille
+ *\param min taille minimale de la grille
+ *\param man taille maximale de la grille
+ *\return la taille
+ */
 int changeTaille(SDL_Surface *ecran, char *str1, char *str2, int entierSaisi, int taille, int min, int max);
 #endif

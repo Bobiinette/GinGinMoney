@@ -370,6 +370,7 @@ int saisirTaille2D(SDL_Surface *ecran, char *str1, int min, int max) {
     return taille;
 }
 
+
 int changeTaille(SDL_Surface *ecran, char *str1, char *str2, int entierSaisi, int taille, int min, int max) {
 	taille = 10 * taille + entierSaisi;
 	if(taille <= max) {
