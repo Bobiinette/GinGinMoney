@@ -115,40 +115,33 @@ void testListe2(){
 void testListeNULL(){
   Case* c;
   Case* c2;
-  Case* c3=NULL;
   c2=constructeurCase(4,5,R);
 
   int a1,a2;
   ListeCase l=initListeCase();
   ListeCase l2=initListeCase();
-  ListeCase l3,l4,l5,l6;
+  ListeCase l3,l4;
 
   /*Obtenir le premier élément d'une liste vide*/
   c=getValeurListeCase(l);
   CU_ASSERT(c==NULL);
   /*Présence d'un élément non NULL puis NULL dans une liste NULL*/
   a1=estPresentDansListeCase(c2,l);
-  a2=estPresentDansListeCase(c3,l);
+  a2=estPresentDansListeCase(NULL,l);
   CU_ASSERT(a1==0);
   CU_ASSERT(a2==0);
   /*Concaténation de deux listes NULL*/
   l3=concatenationListeCase(l,l2);
   CU_ASSERT(verificationEgaliteListe(l3,NULL));
-  /*Suppression d'un élément NULL dans une liste NULL*/
-  l4=supprimeElementListeCase(c3,l);
+  /*Suppression d'un élément non NULL dans une liste NULL*/
+  l4=supprimeElementListeCase(c2,l);
   CU_ASSERT(verificationEgaliteListe(l4,NULL));
-  /*Suppression d'un élément NULL dans une liste non NULL*/
-  l5=constructeurListeCase(c2,l);
-  CU_ASSERT(!testListeCaseVide(l5));
-  l6=supprimeElementListeCase(c3,l5);
-  CU_ASSERT(verificationEgaliteListe(l6,l5));
+
 
   destructeurListeCase(l);
   destructeurListeCase(l2);
   destructeurListeCase(l3);
   destructeurListeCase(l4);
-  destructeurListeCase(l5);
-  destructeurListeCase(l6);
   free(c2);
 
 }
