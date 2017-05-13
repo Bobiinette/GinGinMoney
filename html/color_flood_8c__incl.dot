@@ -32,7 +32,7 @@ digraph "colorFlood.c"
   Node13 [label="termios.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
   Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node14 [label="colorFlood_SDL.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$color_flood___s_d_l_8h_source.html"];
+  Node14 [label="colorFlood_SDL.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$color_flood___s_d_l_8h.html",tooltip="Création de la grille sous la forme 2D. Module permettant la création de la grille sous forme 2D..."];
   Node14 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node14 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
