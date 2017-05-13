@@ -68,7 +68,7 @@ void liberationGrille(Case ** tab, int taille){
 }
 
 
-static Couleur aleatoire(){
+Couleur aleatoire(){
     Couleur res;
 
     res=random()%6;
@@ -94,7 +94,7 @@ Case ** remplissageAleatoire(int n, Case **tab){
 }
 
 
-static void erreurOuverture(int check){
+void erreurOuverture(int check){
     if (check){
         perror("Erreur ouverture du fichier. ");
         exit(EXIT_FAILURE);
@@ -102,7 +102,7 @@ static void erreurOuverture(int check){
 }
 
 
-static void erreurLongueur(int check){
+void erreurLongueur(int check){
     if (check){
         perror("Erreur longueur de la chaîne de caractères dans le fichier ");
         exit(EXIT_FAILURE);
@@ -110,7 +110,7 @@ static void erreurLongueur(int check){
 }
 
 
-static void erreurFinFichier(int check){
+void erreurFinFichier(int check){
     if (check){
         perror("Erreur fin du fichier : tableau non remplie ");
         exit(EXIT_FAILURE);
@@ -118,7 +118,7 @@ static void erreurFinFichier(int check){
 }
 
 
-static void checkCouleur(char buff){
+void checkCouleur(char buff){
     int check = 0;    /*1 si buff est bien une couleur, 0 sinon*/
 
     check = (buff=='B' || buff=='V' || buff=='R');

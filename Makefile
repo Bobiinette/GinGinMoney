@@ -4,8 +4,13 @@ CC = gcc
 LIBRARIES = -lcunit -lm -g -O0 -lSDL -lSDLmain -lSDL_ttf
 CFLAGS = -Wall -Wextra -ansi
 SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c solveurTableau2.c solveur2.c
+<<<<<<< HEAD
 HEADERS = Grille.h Cases.h ComposanteConnexe.h ListeComposanteConnexe.h solveurTableau2.h solveur2.h colorFlood_SDL.h colorFlood.h 
 DOXYSRC = $(HEADERS)
+=======
+HEADERS = Grille.h Cases.h ComposanteConnexe.h ListeComposanteConnexe.h solveurTableau2.h solveur2.h
+DOXYSRC = $(HEADERS) colorFlood.h
+>>>>>>> e73c6dd6deab7ab6e3cac1652353d4b8617d3156
 OBJ = ${SRC: .c = .o}
 
 .c.o:
@@ -49,4 +54,3 @@ clean :
 
 doc : Doxyfile $(DOXYSRC)
 	doxygen Doxyfile
-	@echo $(DOXYSRC)

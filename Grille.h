@@ -64,11 +64,11 @@ Case ** tableauVide(int n);
  */
 void liberationGrille(Case ** tab, int taille);
 
-/*! \fn static Couleur aleatoire()
+/*! \fn Couleur aleatoire()
  *  \brief Renvoie une couleur aléatoirement
  *  \return Une couleur aléatoire
  */
-static Couleur aleatoire();
+Couleur aleatoire();
 
 /*! \fn Case ** remplissageAleatoire(int n, Case **tab)
  *  \brief Fonction de remplissage aléatoire du tableau
@@ -78,29 +78,29 @@ static Couleur aleatoire();
  */
 Case ** remplissageAleatoire(int n, Case **tab);
 
-/*! \fn static void erreurOuverture(int check)
+/*! \fn void erreurOuverture(int check)
  *  \brief Vérifie qu'il n'y a pas d'erreur d'ouverture du fichier : si ce n'est pas le cas, le programme s'arrête avec une erreur
  *  \param check est la vérification à faire
  */
-static void erreurOuverture(int check);
+void erreurOuverture(int check);
 
-/*! \fn static void erreurLongueur(int check)
+/*! \fn void erreurLongueur(int check)
  *  \brief Vérifie la longueur des chaines de caractères dans le fichier : si ce n'est pas le cas, le programme s'arrête avec une erreur
  *  \param check est la vérification à faire
  */
-static void erreurLongueur(int check);
+void erreurLongueur(int check);
 
-/*! \fn static void erreurFinFichier(int check)
+/*! \fn void erreurFinFichier(int check)
  *  \brief Vérifie qu'on n'est pas à la fin du fichier : si ce n'est pas le cas, le programme s'arrête avec une erreur
  *  \param check est la vérification à faire
  */
-static void erreurFinFichier(int check);
+void erreurFinFichier(int check);
 
-/*! \fn static void checkCouleur(char buff)
+/*! \fn void checkCouleur(char buff)
  *  \brief Vérifie que la couleur existe : si ce n'est pas le cas, le programme s'arrête avec une erreur
  *  \param buff est le caractère à vérifier
  */
-static void checkCouleur(char buff);
+void checkCouleur(char buff);
 
 /*! \fn Couleur conversionCharCouleur(char c)
  *  \brief Transforme un char en couleur
