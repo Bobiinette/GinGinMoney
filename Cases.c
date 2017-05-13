@@ -155,9 +155,6 @@ ListeCase supprimeElementListeCase(Case *c, ListeCase l){
   if (testListeCaseVide(l)){
     printf("Impossible de supprimer car aucun élément\n");
   }
-  else if (c==NULL){
-    printf("L'élément à supprimer est NULL\n");
-  }
   else {
     if(l->c == c) {
       l = l->suivant;
