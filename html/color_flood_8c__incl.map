@@ -1,10 +1,11 @@
 <map id="colorFlood.c" name="colorFlood.c">
-<area shape="rect" id="node2" href="$_composante_connexe_8h_source.html" title="ComposanteConnexe.h" alt="" coords="816,155,975,181"/>
-<area shape="rect" id="node3" href="$_liste_composante_connexe_8h_source.html" title="ListeComposanteConnexe.h" alt="" coords="666,229,853,256"/>
-<area shape="rect" id="node4" href="$_grille_8h_source.html" title="Grille.h" alt="" coords="932,304,995,331"/>
-<area shape="rect" id="node10" href="$color_flood_8h_source.html" title="colorFlood.h" alt="" coords="157,80,250,107"/>
-<area shape="rect" id="node14" href="$color_flood___s_d_l_8h_source.html" title="colorFlood_SDL.h" alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node15" href="$solveur2_8h_source.html" title="solveur2.h" alt="" coords="674,80,757,107"/>
-<area shape="rect" id="node17" href="$solveur_tableau2_8h.html" title="Solveur à base de tableaux d&#39;entiers Solution proposée pour le solveur, à base de tableaux de listes ..." alt="" coords="933,80,1061,107"/>
-<area shape="rect" id="node5" href="$_cases_8h_source.html" title="Cases.h" alt="" coords="928,229,999,256"/>
+<area shape="rect" id="node2" href="$_composante_connexe_8h_source.html" title="ComposanteConnexe.h" alt="" coords="215,229,374,256"/>
+<area shape="rect" id="node3" href="$_liste_composante_connexe_8h_source.html" title="ListeComposanteConnexe.h" alt="" coords="65,304,252,331"/>
+<area shape="rect" id="node4" href="$_grille_8h_source.html" title="Grille.h" alt="" coords="317,379,379,405"/>
+<area shape="rect" id="node10" href="$color_flood_8h_source.html" title="colorFlood.h" alt="" coords="823,80,916,107"/>
+<area shape="rect" id="node14" href="$color_flood___s_d_l_8h_source.html" title="colorFlood_SDL.h" alt="" coords="941,80,1067,107"/>
+<area shape="rect" id="node15" href="$solveur2_8h_source.html" title="solveur2.h" alt="" coords="68,155,151,181"/>
+<area shape="rect" id="node17" href="$solveur_tableau3_8h.html" title="Solveur à base de tableaux d&#39;entiers Solution proposée pour le solveur, à base de tableaux de listes ..." alt="" coords="147,80,275,107"/>
+<area shape="rect" id="node18" href="$solveur_tableau2_8h.html" title="Solveur à base de tableaux d&#39;entiers Solution proposée pour le solveur, à base de tableaux de listes ..." alt="" coords="321,155,449,181"/>
+<area shape="rect" id="node5" href="$_cases_8h_source.html" title="Cases.h" alt="" coords="277,304,347,331"/>
 </map>

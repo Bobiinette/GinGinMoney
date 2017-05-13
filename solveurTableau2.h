@@ -1,5 +1,5 @@
-#ifndef SOLVEUR_TABLEAU_H
-#define SOLVEUR_TABLEAU_H
+#ifndef SOLVEUR_TABLEAU2_H
+#define SOLVEUR_TABLEAU2_H
 
 #include "ComposanteConnexe.h"
 #include "Grille.h"
@@ -23,6 +23,10 @@ typedef CelluleListeInt *ListeInt;
  *\return NULL
  */
  ListeInt initListeInt();
+
+void afficheListeInt(ListeInt l);
+int getValeurListeInt(ListeInt l);
+ListeInt getSuivantListeInt(ListeInt l);
 
 /**\fn  ListeInt constructeurListeInt(int v, ListeInt l)
  *\brief Alloue la mmoire pour un nouvel ellement et ajoute un élément en tête de la liste.

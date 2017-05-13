@@ -10,6 +10,7 @@
 #include "colorFlood_SDL.h"
 #include "solveur2.h"
 #include "solveurTableau3.h"
+#include "solveurTableau2.h"
 
 #define MIN_TAILLE_GRILLE 3
 #define MAX_TAILLE_GRILLE 30
@@ -101,8 +102,8 @@ void jouer(SDL_Surface *ecran) {
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
-	solveurTableau3(tabCC, cc);
-	/*solveurTableau2(tabCC, cc);*/
+	printf("Solveur tableau 3 %d", solveurTableau3(tabCC, cc));
+	printf("Solveur tableau 2 %d", solveurTableau2(tabCC, cc));
 	/*solveur("./solution.txt", tabCC	,grille);*/
 	/*On lance les deux solveurs comme ça plus de problèmes.*/
 	/*afficheGrille(grille, taille);*/
@@ -278,24 +279,6 @@ void afficheGrille(Case **grille, int taille) {
 	}
 	afficheInterLigneDessus(taille);
 	printf("\n");
-}
-
-void setGrilleTest(Case **grille, ComposanteConnexe *cc) {
-	ListeCase tmp = getCasesComposanteConnexe(cc);
-	ListeComposanteConnexe voisins = getComposantesVoisinesComposanteConnexe(cc);
-	while(!testListeCaseVide(tmp)) {
-		setCouleur(getCaseGrille(grille, getXCase(getValeurListeCase(tmp)), getYCase(getValeurListeCase(tmp))), getCouleurCase(getValeurListeCase(tmp)));
-		tmp = getSuivantListeCase(tmp);
-	}
-	while(!estVideListeComposanteConnexe(voisins)) {
-		tmp = getCasesComposanteConnexe(getValeurListeComposanteConnexe(voisins));
-		while(!testListeCaseVide(tmp)) {
-			setCouleur(getCaseGrille(grille, getXCase(getValeurListeCase(tmp)), getYCase(getValeurListeCase(tmp))), getCouleurCase(getValeurListeCase(tmp)));
-			tmp = getSuivantListeCase(tmp);
-		}
-
-		voisins = getSuivantListeComposanteConnexe(voisins);
-	}
 }
 
 int saisirTaille2D(SDL_Surface *ecran, char *str1, int min, int max) {

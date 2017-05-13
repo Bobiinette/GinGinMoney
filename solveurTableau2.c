@@ -53,6 +53,14 @@ ListeInt initListeInt() {
 	return NULL;
 }
 
+int getValeurListeInt(ListeInt l) {
+	return l->valeur;
+}
+
+ListeInt getSuivantListeInt(ListeInt l) {
+	return l->suivant;
+}
+
 ListeInt constructeurListeInt(int v, ListeInt l) {
 	if(v == -1) {
 		return l;
@@ -320,7 +328,7 @@ int solveurTableau2(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 		ccInitiale[0][i] = concatenationListeInt(ccInitiale[0][i], tabVoisins[taille - 1][i]);
 	}
 
-
+	printf("\n\n");
 	solveurEtape(tabVoisins, ccInitiale, appartenance, taille, tailleMax, &f, str, 0);
 
 	res = *tailleMax;

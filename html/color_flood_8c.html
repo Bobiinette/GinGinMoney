@@ -79,20 +79,22 @@ $(function() {
 <code>#include &quot;ListeComposanteConnexe.h&quot;</code><br />
 <code>#include &quot;colorFlood_SDL.h&quot;</code><br />
 <code>#include &quot;solveur2.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="solveur_tableau3_8h_source.html">solveurTableau3.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="solveur_tableau2_8h_source.html">solveurTableau2.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for colorFlood.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="color_flood_8c__incl.png" border="0" usemap="#color_flood_8c" alt=""/></div>
 <map name="color_flood_8c" id="color_flood_8c">
-<area shape="rect" id="node2" href="_composante_connexe_8h_source.html" title="ComposanteConnexe.h" alt="" coords="816,155,975,181"/>
-<area shape="rect" id="node3" href="_liste_composante_connexe_8h_source.html" title="ListeComposanteConnexe.h" alt="" coords="666,229,853,256"/>
-<area shape="rect" id="node4" href="_grille_8h_source.html" title="Grille.h" alt="" coords="932,304,995,331"/>
-<area shape="rect" id="node10" href="color_flood_8h_source.html" title="colorFlood.h" alt="" coords="157,80,250,107"/>
-<area shape="rect" id="node14" href="color_flood___s_d_l_8h_source.html" title="colorFlood_SDL.h" alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node15" href="solveur2_8h_source.html" title="solveur2.h" alt="" coords="674,80,757,107"/>
-<area shape="rect" id="node17" href="solveur_tableau2_8h.html" title="Solveur à base de tableaux d&#39;entiers Solution proposée pour le solveur, à base de tableaux de listes ..." alt="" coords="933,80,1061,107"/>
-<area shape="rect" id="node5" href="_cases_8h_source.html" title="Cases.h" alt="" coords="928,229,999,256"/>
+<area shape="rect" id="node2" href="_composante_connexe_8h_source.html" title="ComposanteConnexe.h" alt="" coords="215,229,374,256"/>
+<area shape="rect" id="node3" href="_liste_composante_connexe_8h_source.html" title="ListeComposanteConnexe.h" alt="" coords="65,304,252,331"/>
+<area shape="rect" id="node4" href="_grille_8h_source.html" title="Grille.h" alt="" coords="317,379,379,405"/>
+<area shape="rect" id="node10" href="color_flood_8h_source.html" title="colorFlood.h" alt="" coords="823,80,916,107"/>
+<area shape="rect" id="node14" href="color_flood___s_d_l_8h_source.html" title="colorFlood_SDL.h" alt="" coords="941,80,1067,107"/>
+<area shape="rect" id="node15" href="solveur2_8h_source.html" title="solveur2.h" alt="" coords="68,155,151,181"/>
+<area shape="rect" id="node17" href="solveur_tableau3_8h.html" title="Solveur à base de tableaux d&#39;entiers Solution proposée pour le solveur, à base de tableaux de listes ..." alt="" coords="147,80,275,107"/>
+<area shape="rect" id="node18" href="solveur_tableau2_8h.html" title="Solveur à base de tableaux d&#39;entiers Solution proposée pour le solveur, à base de tableaux de listes ..." alt="" coords="321,155,449,181"/>
+<area shape="rect" id="node5" href="_cases_8h_source.html" title="Cases.h" alt="" coords="277,304,347,331"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -113,8 +115,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top"><a id="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad213c186f0cdc96ff9980238c752ac7c"><td class="memItemLeft" align="right" valign="top"><a id="ad213c186f0cdc96ff9980238c752ac7c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>jouer</b> (SDL_Surface *ecran)</td></tr>
+<tr class="memitem:ad213c186f0cdc96ff9980238c752ac7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#ad213c186f0cdc96ff9980238c752ac7c">jouer</a> (SDL_Surface *ecran)</td></tr>
+<tr class="memdesc:ad213c186f0cdc96ff9980238c752ac7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de générer la fenêtre de jeu et ses modifications au cours de la partie  <a href="#ad213c186f0cdc96ff9980238c752ac7c">More...</a><br /></td></tr>
 <tr class="separator:ad213c186f0cdc96ff9980238c752ac7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadf7975398ecc96b06dbe9ed342103e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#aadf7975398ecc96b06dbe9ed342103e5">getche</a> (void)</td></tr>
 <tr class="memdesc:aadf7975398ecc96b06dbe9ed342103e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">C'est la fonction qui permet de gèrer ce que tape l'utilisateur sur le clavier.  <a href="#aadf7975398ecc96b06dbe9ed342103e5">More...</a><br /></td></tr>
@@ -122,29 +124,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>jouer</b> (SDL_Surfac
 <tr class="memitem:ad8d8a0cebcb7838ee762dd1793a45dd5"><td class="memItemLeft" align="right" valign="top"><a id="ad8d8a0cebcb7838ee762dd1793a45dd5"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>saisirCouleur</b> (int nbrCoup)</td></tr>
 <tr class="separator:ad8d8a0cebcb7838ee762dd1793a45dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a294587294111bfede1e11bdf876b6d10"><td class="memItemLeft" align="right" valign="top"><a id="a294587294111bfede1e11bdf876b6d10"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>viderBuffer</b> ()</td></tr>
+<tr class="memitem:a294587294111bfede1e11bdf876b6d10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#a294587294111bfede1e11bdf876b6d10">viderBuffer</a> ()</td></tr>
+<tr class="memdesc:a294587294111bfede1e11bdf876b6d10"><td class="mdescLeft">&#160;</td><td class="mdescRight">vider le buffer clavier  <a href="#a294587294111bfede1e11bdf876b6d10">More...</a><br /></td></tr>
 <tr class="separator:a294587294111bfede1e11bdf876b6d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2fbf7ef5466d3dbd85946bc958b94a7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#aa2fbf7ef5466d3dbd85946bc958b94a7">saisirTaille</a> ()</td></tr>
-<tr class="memdesc:aa2fbf7ef5466d3dbd85946bc958b94a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Demande à l'utilisateur de saisir la taille de la grille de jeu. Cette taille dois être comprise entre 3 et 25.  <a href="#aa2fbf7ef5466d3dbd85946bc958b94a7">More...</a><br /></td></tr>
+<tr class="memdesc:aa2fbf7ef5466d3dbd85946bc958b94a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Demande à l'utilisateur de saisir la taille de la grille de jeu, pour une partie en console. Cette taille dois être comprise entre 3 et 25.  <a href="#aa2fbf7ef5466d3dbd85946bc958b94a7">More...</a><br /></td></tr>
 <tr class="separator:aa2fbf7ef5466d3dbd85946bc958b94a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a504da14213c8af3b2d486a68b477bcc9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#a504da14213c8af3b2d486a68b477bcc9">testTaille</a> (int taille)</td></tr>
 <tr class="memdesc:a504da14213c8af3b2d486a68b477bcc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Teste si la taille de grille demandé est bien comprise entre 3 et 25.  <a href="#a504da14213c8af3b2d486a68b477bcc9">More...</a><br /></td></tr>
 <tr class="separator:a504da14213c8af3b2d486a68b477bcc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a684ab2d525d0983f7ac24cf89f68f491"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#a684ab2d525d0983f7ac24cf89f68f491">afficheInterLigneDessus</a> (int taille)</td></tr>
-<tr class="memdesc:a684ab2d525d0983f7ac24cf89f68f491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les lignes délimitant les cases du tableau.  <a href="#a684ab2d525d0983f7ac24cf89f68f491">More...</a><br /></td></tr>
+<tr class="memdesc:a684ab2d525d0983f7ac24cf89f68f491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les lignes délimitant les cases du tableau pour le jeu en console.  <a href="#a684ab2d525d0983f7ac24cf89f68f491">More...</a><br /></td></tr>
 <tr class="separator:a684ab2d525d0983f7ac24cf89f68f491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7fee1de9efbc4986897783c8b6769c4"><td class="memItemLeft" align="right" valign="top"><a id="ac7fee1de9efbc4986897783c8b6769c4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>afficheLigneDessus</b> (<a class="el" href="struct_case.html">Case</a> **grille, int taille, int ligne)</td></tr>
 <tr class="separator:ac7fee1de9efbc4986897783c8b6769c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02552c4b6ce95d339e1545763443e461"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#a02552c4b6ce95d339e1545763443e461">afficheGrille</a> (<a class="el" href="struct_case.html">Case</a> **grille, int taille)</td></tr>
-<tr class="memdesc:a02552c4b6ce95d339e1545763443e461"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche la grille en appelant les fonction afficheLigneDessus() et <a class="el" href="color_flood_8c.html#a684ab2d525d0983f7ac24cf89f68f491" title="Affiche les lignes délimitant les cases du tableau. ">afficheInterLigneDessus()</a>.  <a href="#a02552c4b6ce95d339e1545763443e461">More...</a><br /></td></tr>
+<tr class="memdesc:a02552c4b6ce95d339e1545763443e461"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche la grille en console en appelant les fonction afficheLigneDessus() et <a class="el" href="color_flood_8c.html#a684ab2d525d0983f7ac24cf89f68f491" title="Affiche les lignes délimitant les cases du tableau pour le jeu en console. ">afficheInterLigneDessus()</a>.  <a href="#a02552c4b6ce95d339e1545763443e461">More...</a><br /></td></tr>
 <tr class="separator:a02552c4b6ce95d339e1545763443e461"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5873426638e9495638bd9236695f671"><td class="memItemLeft" align="right" valign="top"><a id="ac5873426638e9495638bd9236695f671"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setGrilleTest</b> (<a class="el" href="struct_case.html">Case</a> **grille, <a class="el" href="struct_composante_connexe.html">ComposanteConnexe</a> *cc)</td></tr>
-<tr class="separator:ac5873426638e9495638bd9236695f671"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47bcdd5af5d0776301e1efd04fda76d8"><td class="memItemLeft" align="right" valign="top"><a id="a47bcdd5af5d0776301e1efd04fda76d8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>saisirTaille2D</b> (SDL_Surface *ecran, char *str1, int min, int max)</td></tr>
+<tr class="memitem:a47bcdd5af5d0776301e1efd04fda76d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_flood_8c.html#a47bcdd5af5d0776301e1efd04fda76d8">saisirTaille2D</a> (SDL_Surface *ecran, char *str1, int min, int max)</td></tr>
+<tr class="memdesc:a47bcdd5af5d0776301e1efd04fda76d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Demande à l'utilisateur de saisir la taille de la grille de jeu, pour une partie avec une feêntre SDL. Cette taille dois être comprise entre 3 et 25.  <a href="#a47bcdd5af5d0776301e1efd04fda76d8">More...</a><br /></td></tr>
 <tr class="separator:a47bcdd5af5d0776301e1efd04fda76d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a650ea387b8831d95056d30066f1592c2"><td class="memItemLeft" align="right" valign="top"><a id="a650ea387b8831d95056d30066f1592c2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>changeTaille</b> (SDL_Surface *ecran, char *str1, char *str2, int entierSaisi, int taille, int min, int max)</td></tr>
@@ -179,7 +178,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>changeTaille</b> (SDL_
       </table>
 </div><div class="memdoc">
 
-<p>Affiche la grille en appelant les fonction afficheLigneDessus() et <a class="el" href="color_flood_8c.html#a684ab2d525d0983f7ac24cf89f68f491" title="Affiche les lignes délimitant les cases du tableau. ">afficheInterLigneDessus()</a>. </p>
+<p>Affiche la grille en console en appelant les fonction afficheLigneDessus() et <a class="el" href="color_flood_8c.html#a684ab2d525d0983f7ac24cf89f68f491" title="Affiche les lignes délimitant les cases du tableau pour le jeu en console. ">afficheInterLigneDessus()</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">grille</td><td>Pointeur vers la grille de jeu. </td></tr>
@@ -206,8 +205,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>changeTaille</b> (SDL_
       </table>
 </div><div class="memdoc">
 
-<p>Affiche les lignes délimitant les cases du tableau. </p>
-<p>Affiche les cases du tableau.</p>
+<p>Affiche les lignes délimitant les cases du tableau pour le jeu en console. </p>
+<p>Affiche les cases du tableau pour le jeu en console.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">taille</td><td>Entier qui correspond à la taille de la grille.</td></tr>
@@ -241,6 +240,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>changeTaille</b> (SDL_
 
 </div>
 </div>
+<a id="ad213c186f0cdc96ff9980238c752ac7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad213c186f0cdc96ff9980238c752ac7c">&#9670;&nbsp;</a></span>jouer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void jouer </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Surface *&#160;</td>
+          <td class="paramname"><em>ecran</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet de générer la fenêtre de jeu et ses modifications au cours de la partie </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ecran</td><td>un pointeur vers la fenêtre de jeu </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa2fbf7ef5466d3dbd85946bc958b94a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2fbf7ef5466d3dbd85946bc958b94a7">&#9670;&nbsp;</a></span>saisirTaille()</h2>
 
@@ -256,7 +281,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>changeTaille</b> (SDL_
       </table>
 </div><div class="memdoc">
 
-<p>Demande à l'utilisateur de saisir la taille de la grille de jeu. Cette taille dois être comprise entre 3 et 25. </p>
+<p>Demande à l'utilisateur de saisir la taille de la grille de jeu, pour une partie en console. Cette taille dois être comprise entre 3 et 25. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">aucun</td><td>paramettre </td></tr>
@@ -264,6 +289,57 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>changeTaille</b> (SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>la taille de la grille saisi par le joueur. </dd></dl>
+
+</div>
+</div>
+<a id="a47bcdd5af5d0776301e1efd04fda76d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47bcdd5af5d0776301e1efd04fda76d8">&#9670;&nbsp;</a></span>saisirTaille2D()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int saisirTaille2D </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Surface *&#160;</td>
+          <td class="paramname"><em>ecran</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Demande à l'utilisateur de saisir la taille de la grille de jeu, pour une partie avec une feêntre SDL. Cette taille dois être comprise entre 3 et 25. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ecran</td><td>pointeur vers la fenêtre de jeu </td></tr>
+    <tr><td class="paramname">str1</td><td>pointeur vers la phrase à dire au joueur </td></tr>
+    <tr><td class="paramname">min</td><td>taille minimale de la grille </td></tr>
+    <tr><td class="paramname">man</td><td>taille maximale de la grille </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -291,6 +367,31 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>changeTaille</b> (SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 si la taille est comprise entre 3 et 25, 0 sinon. </dd></dl>
+
+</div>
+</div>
+<a id="a294587294111bfede1e11bdf876b6d10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a294587294111bfede1e11bdf876b6d10">&#9670;&nbsp;</a></span>viderBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void viderBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>vider le buffer clavier </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">auncun</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
