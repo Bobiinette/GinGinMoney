@@ -153,7 +153,7 @@ ListeInt getSuivantListeInt(ListeInt l);
  *\brief Effectue une étape du solveur. Fait un changement de couleur, ou met à jour la solution si on trouve une meilleure solution.
  *\param tabVoisins Le tableau des voisins. Il n'est pas modifié par la fonction.
  *\param ccPrincipale Le tableau qui correspond à la composanteConnexe principale à plusieurs étapes. L'étape nbrCoups est modifiée par la fonction.
- *\param appartenance La tableau qui répertorie les composantes connexes qui appartiennent à la composante connexe principale.
+ *\param appartenance Le tableau qui répertorie les composantes connexes qui appartiennent à la composante connexe principale.
  *\param taille Le nombre de composantes connexes en tout, le nombre de colonnes des différents tableaux.
  *\param tailleMax Un pointeur vers la meilleure solution trouvée.
  *\param str Le tableau de char contenant la solution étudiée à l'étape actuelle.
