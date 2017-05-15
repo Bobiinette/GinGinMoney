@@ -39,22 +39,20 @@ void testFonctionsDiversesListeComposanteConnexe(){
   ComposanteConnexe *d = creeComposanteConnexe(getCaseGrille(grille,5,0),grille,taille);
   ComposanteConnexe *e = creeComposanteConnexe(getCaseGrille(grille,1,1),grille,taille);
   ComposanteConnexe *f = creeComposanteConnexe(getCaseGrille(grille,1,4),grille,taille);
-  ComposanteConnexe *copy = e;
   l = initListeComposanteConnexe();
   l = constructeurListeComposanteConnexe(l, re);
   l = constructeurListeComposanteConnexe(l, cc);
   l = constructeurListeComposanteConnexe(l, d);
   l = constructeurListeComposanteConnexe(l, e);
   CU_ASSERT(longueurListeComposanteConnexe(l)==4); /*on teste la longueur de la liste*/
-  ComposanteConnexe *res = rechercheElementListeComposanteConnexe(l,re);
-  /*CU_ASSERT(res!=NULL); /*on vérifie si la composante connexe cc qui est dans la liste est bien trouvée par la fonction*/
-  /*res = rechercheElementListeComposanteConnexe(l,f);
-  /*CU_ASSERT(res==NULL); /*on vérifie que la composante connexe f ne se trouvant pas dans la liste n'est pas trouvée par la fonction et renvoie bien NULL*/
-  supprimeElementListeComposanteConnexe(&l, e);
+  /*CU_ASSERT(res!=NULL);*/ /*on vérifie si la composante connexe cc qui est dans la liste est bien trouvée par la fonction*/
+  /*res = rechercheElementListeComposanteConnexe(l,f);*/
+  /*CU_ASSERT(res==NULL);*/ /*on vérifie que la composante connexe f ne se trouvant pas dans la liste n'est pas trouvée par la fonction et renvoie bien NULL*/
+  supprimeElementListeComposanteConnexe(l, e);
   CU_ASSERT(longueurListeComposanteConnexe(l)==3); /*une composante connexe ayant été supprimée, on regarde si la longueur de la liste a été soustraite de 1*/
-  /*res = rechercheElementListeComposanteConnexe(l,copy);
-  /*CU_ASSERT(res==NULL); /*on regarde si la composante connexe supprimée n'est pas trouvée par la fonction de recherche afin de vérifier si l'élément supprimé est bien celui choisi par la fonction*/
-  supprimeElementListeComposanteConnexe(&l, f);
+  /*res = rechercheElementListeComposanteConnexe(l,copy);*/
+  /*CU_ASSERT(res==NULL);*/ /*on regarde si la composante connexe supprimée n'est pas trouvée par la fonction de recherche afin de vérifier si l'élément supprimé est bien celui choisi par la fonction*/
+  supprimeElementListeComposanteConnexe(l, f);
   CU_ASSERT(longueurListeComposanteConnexe(l)==3); /*on regarde si lorsqu'on veut supprimer un élément qui n'est pas dans la liste, celle-ci ne bouge pas, c'est-à-dire que la longueur de la liste est restée inchangée*/
 
   destructeurListeComposanteConnexe(l);
@@ -63,8 +61,6 @@ void testFonctionsDiversesListeComposanteConnexe(){
   destructeurComposanteConnexe(e);
   destructeurComposanteConnexe(f);
   destructeurComposanteConnexe(re);
-  destructeurComposanteConnexe(res);
-  free(res);
   free(cc);
   free(re);
   free(d);
@@ -73,7 +69,7 @@ void testFonctionsDiversesListeComposanteConnexe(){
   liberationGrille(grille, taille);
 }
 
-int main(int argc, char const *argv[]) {
+int main() {
   /* code */
   CU_pSuite pSuite = NULL;
 	CU_initialize_registry();

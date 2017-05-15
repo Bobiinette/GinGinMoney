@@ -158,7 +158,7 @@ ListeInt getSuivantListeInt(ListeInt l);
  *\param tailleMax Un pointeur vers la meilleure solution trouvée.
  *\param str Le tableau de char contenant la solution étudiée à l'étape actuelle.
  *\param nbrCoups Le nombre de coups de la solution actuelle.
- *\return Le tableau de composantes connexes modifié.
+ *\return void
  */
  void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **appartenance, const int taille, int *tailleMax, FILE **f, char *str, int nbrCoups);
 

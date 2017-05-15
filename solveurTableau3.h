@@ -51,9 +51,16 @@ ListeInt *changementCouleurSolveur3(ListeInt **tabVoisins, ListeInt *ccPrincipal
  *\param appartenance Le tableau qui répertorie les composantes connexes qui appartiennent à la composante connexe principale.
  *\param taille Le nombre de composantes connexes en tout, le nombre de colonnes des différents tableaux.
  *\param str Le tableau de char contenant la solution étudiée à l'étape actuelle.
- *\return Le nombre de coups nécessaires pour trouver la solution.
+ *\return La chaine de caractères contenant la solution.
  */
 char* solveurEtape3(ListeInt **tabVoisins, ListeInt *ccPrincipale, int *appartenance, const int taille, char *str);
+
+/**\fn  int solveurTableau3(TabComposanteConnexe tabCC, ComposanteConnexe *cc)
+ *\brief Trouve une solution pour résoudre le colorFlood rapidement. Sert de fonction d'initialisation et appel solveurEtape3.
+ *\param tabCC Le tabComposanteConnexe qui contient toutes les composantes connexes de la grille à résoudre.
+ *\param cc Un pointeur vers la composante connexe principale.
+ *\return Le nombre de coups pour résoudre la grille.
+ */
 int solveurTableau3(TabComposanteConnexe tabCC, ComposanteConnexe *cc);
 
 #endif

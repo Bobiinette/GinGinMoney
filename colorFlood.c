@@ -89,7 +89,7 @@ void jouer(SDL_Surface *ecran) {
 		exit(0);
 	}
 
-	/*nbrCoups = saisirTaille2D(ecran, "Nombre coups max,", 0, MAX_COUPS);
+	/*nbrCoups = saisirTaille2D(ecran, "Nombre coups max,", 0, MAX_COUPS);*/
 
 	/*Si on a quité pendant la saisie*/
 	/*if(taille == -1) {

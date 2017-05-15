@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 
-/*void testCreationTabComposanteConnexe() {
+void testCreationTabComposanteConnexe() {
 	printf("\n");
 	Case **grille;
 	int taille = 6;
@@ -20,7 +20,7 @@
 	int sommeCases = 0;
 	int i = 0;
 	int tabCases[17] =    {1,2,1,1,2,3,1,2,5,1,3,4,4,1,1,3,1};
-	int tabCouleurs[17] = {2,1,5,5,2,3,1,3,4,2,0,5,3,4,1,2,0};
+	unsigned int tabCouleurs[17] = {2,1,5,5,2,3,1,3,4,2,0,5,3,4,1,2,0};
 	int tabVoisins[17] =  {1,4,2,4,4,5,4,2,5,4,7,5,4,2,3,4,2};
 
 	CU_ASSERT(estVideTabComposanteConnexe(tabCC));
@@ -31,7 +31,7 @@
 
 	while(!estVideTabComposanteConnexe(tabCC)) {
 		CU_ASSERT(estVideListeComposanteConnexe(getComposantesVoisinesComposanteConnexe(getValeurTabComposanteConnexe(tabCC)))); /*Les vosins doivent tous être vides*/
-		/*tabCC = getSuivantTabComposanteConnexe(tabCC);
+		/*tabCC = getSuivantTabComposanteConnexe(tabCC);*/
 	}
 
 	tabCC = save;
@@ -62,12 +62,12 @@
 
 	destructeurTabComposanteConnexe(save);
 	liberationGrille(grille, taille);
-}*/
+}
 
-int main(int argc, char const *argv[])
+int main()
 {
 	srand(time(NULL));
-	/*CU_pSuite pSuite = NULL;
+	CU_pSuite pSuite = NULL;
 	CU_initialize_registry();
 	pSuite = CU_add_suite("Suite", NULL, NULL);
 
@@ -75,7 +75,7 @@ int main(int argc, char const *argv[])
 
 	CU_basic_set_mode(CU_BRM_VERBOSE);
 	CU_basic_run_tests();
-	CU_cleanup_registry();*/
+	CU_cleanup_registry();
 
 	Case **grille;
 	int taille = 6;

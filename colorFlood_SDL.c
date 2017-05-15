@@ -48,7 +48,10 @@ void menu(SDL_Surface *ecran) {
   SDL_Surface *choixMenu = NULL;
   SDL_Surface *choixMenuBack = NULL;
   TTF_Font *police = NULL;
-  SDL_Color couleurNoire = {0, 0, 0};
+  SDL_Color couleurNoire;
+  couleurNoire.r = 0;
+  couleurNoire.g = 0;
+  couleurNoire.b = 0;
   choixMenu = SDL_CreateRGBSurface(SDL_HWSURFACE, 140, 40, 32, 0, 0, 0, 0);
   choixMenuBack = SDL_CreateRGBSurface(SDL_HWSURFACE, 150, 50, 32, 0, 0, 0, 0);
   police = TTF_OpenFont("LinLibertine.ttf", 32);
@@ -95,7 +98,10 @@ void saisieTaille2D(SDL_Surface *ecran, char *str1, char *str2) {
   SDL_Surface *texte = NULL;
   SDL_Surface *cacheTexte = NULL;
   TTF_Font *police = NULL;
-  SDL_Color couleurNoire = {0, 0, 0};
+  SDL_Color couleurNoire;
+  couleurNoire.r = 0;
+  couleurNoire.g = 0;
+  couleurNoire.b = 0;
   cacheTexte = SDL_CreateRGBSurface(SDL_HWSURFACE, 450, 50, 32, 0, 0, 0, 0);
   police = TTF_OpenFont("LinLibertine.ttf", 32);
   if(!police) {
@@ -159,7 +165,10 @@ void afficheGrille2D(int tailleGrille, Case **tab, SDL_Surface *ecran, char *str
   SDL_Surface *cacheTexte = NULL;
   TTF_Font *police = NULL;
   /*SDL_Color fond = {255,255,255};*/
-  SDL_Color couleurNoire = {0, 0, 0};
+  SDL_Color couleurNoire;
+  couleurNoire.r = 0;
+  couleurNoire.g = 0;
+  couleurNoire.b = 0;
   carre = SDL_CreateRGBSurface(SDL_HWSURFACE, tailleCarre, tailleCarre, 32, 0, 0, 0, 0);
   cacheTexte = SDL_CreateRGBSurface(SDL_HWSURFACE, 450, 50, 32, 0, 0, 0, 0);
   police = TTF_OpenFont("LinLibertine.ttf", 32);
