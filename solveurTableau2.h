@@ -25,7 +25,19 @@ typedef CelluleListeInt *ListeInt;
  ListeInt initListeInt();
 
 void afficheListeInt(ListeInt l);
+
+/**\fn int getValeurListeInt(ListeInt l)
+ *\brief Getter pour obtenir le premier entier de la liste.
+ *\param l ListeInt dont on veut le premier élèment
+ *\return le premier élèment de le liste d'entier
+ */
 int getValeurListeInt(ListeInt l);
+
+/**\fn ListeInt getSuivantListeInt(ListeInt l)
+ *\brief Getter pour obtenir la queue de la liste d'entier
+ *\param l ListeInt dont on veut la queue
+ *\return la queue de la liste
+ */
 ListeInt getSuivantListeInt(ListeInt l);
 
 /**\fn  ListeInt constructeurListeInt(int v, ListeInt l)
@@ -53,7 +65,7 @@ ListeInt getSuivantListeInt(ListeInt l);
 /**\fn  int estPresentDansListeInt(int v, ListeInt l)
  *\brief Permet de savoir si un élément est présent dans un ListeInt ou non.
  *\param v L'entier dont on veut savoir la présence ou non.
- *\param l Le ListeInt dans lequel on fait la recherche. 
+ *\param l Le ListeInt dans lequel on fait la recherche.
  *\return 1 si l'élément est présent dans la liste, 0 sinon.
  */
  int estPresentDansListeInt(int v, ListeInt l);
@@ -129,7 +141,7 @@ ListeInt getSuivantListeInt(ListeInt l);
  *\brief Effectue les opérations nécessaires qu changement de couleur. Modifie la colone nombreCoups de ccPrincipale en lui affectant les nouveaux voisins qu'elle obtient avec le changement de couleur.
  *\param tabVoisins Le tableau des voisins. Il n'est pas modifié par la fonction.
  *\param ccPrincipale Le tableau qui correspond à la composanteConnexe principale à plusieurs étapes. L'étape nombreCoups est modifiée par la fonction.
- *\param appartenance La tableau qui répertorie les composantes connexes qui appartiennent à la composante connexe principale. On modifie le tableau en ajoutant les nouvelle composantes connexes qui sont absorbées.
+ *\param appartenance Le tableau qui répertorie les composantes connexes qui appartiennent à la composante connexe principale. On modifie le tableau en ajoutant les nouvelle composantes connexes qui sont absorbées.
  *\param taille Le nombre de composantes connexes en tout, le nombre de colonnes des différents tableaux.
  *\param couleur La couleur choisie pour le changement de couleur.
  *\param nombreCoups L'étape actuelle. Sert pour se placer dans les taleaux.
