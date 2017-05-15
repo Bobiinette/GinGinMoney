@@ -58,26 +58,34 @@ int couleurAChoisir(ListeInt** tabVoisins, ListeInt* ccPrincipale, int* apparten
 	int a = 0;
 	for(i = 0; i < 6; i ++) {
 		a = nombreVoisinsCouleur(tabVoisins, ccPrincipale, appartenance, i, taille);
-		if(a > max && ccPrincipale[i] != NULL) {
-			max = a;
-			couleurMax = i;
+		if(ccPrincipale[i] != NULL) {
+			if(ccPrincipale[couleurMax] == NULL) {
+				max = a;
+				couleurMax = i;
+			}
+			else if(a > max) {
+				max = a;
+				couleurMax = i;
+			}
 		}
-		else if(max > a && ccPrincipale[couleurMax] == NULL) {
-			max = a;
-			couleurMax = i;
-		}
-		afficheListeInt(ccPrincipale[i]);
 	}
 	return couleurMax;
 }
 
-int couleurAChoisir2(ListeInt** tabVoisins, ListeInt* ccPrincipale, int* appartenance, const int taille) {
+/*int couleurAChoisir2(ListeInt** tabVoisins, ListeInt* ccPrincipale, int* appartenance, const int taille) {
 	int i = 0;
+	int j = 0;
 	int couleurMax = 0;
 	int max = 0;
 	int a = 0;
+	int *testAppartenance = calloc(taille, sizeof(int));
+	ListeInt *tmp = NULL;
 	for(i = 0; i < 6; i ++) {
-		a = nombreVoisinsCouleur(tabVoisins, ccPrincipale, appartenance, i, taille);
+		for(i = 0; i < taille; i ++) {
+			testAppartenance[i] = appartenance[i];
+		}
+		tmp = changementCouleurSolveur3(tabVoisins, ccPrincipale, testAppartenance, taille, i);
+		a = couleurAChoisir(tabVoisins, tmp, testAppartenance, taille);
 		if(a > max && ccPrincipale[i] != NULL) {
 			max = a;
 			couleurMax = i;
@@ -86,17 +94,20 @@ int couleurAChoisir2(ListeInt** tabVoisins, ListeInt* ccPrincipale, int* apparte
 			max = a;
 			couleurMax = i;
 		}
-		afficheListeInt(ccPrincipale[i]);
+		for(j = 0; j < 6; j ++) {
+			destructeurListeInt(tmp[j]);
+		}
+		free(tmp);
 	}
 	return couleurMax;
-}
+}*/
 
 ListeInt *changementCouleurSolveur3(ListeInt **tabVoisins, ListeInt *ccPrincipale, int *appartenance, const int taille, int couleur) {
 	ListeInt ccBonneCouleur = ccPrincipale[couleur];
-	ListeInt save = ccBonneCouleur;
-	ccPrincipale[couleur] = NULL;
+	ListeInt save = NULL;
 	ListeInt *res = calloc(taille, sizeof(ListeInt));
 	int i = 0;
+	int j = 0;
 	int val = 0;
 	for(i = 0; i < 6; i++) {
 		if(i != couleur) {
@@ -113,6 +124,8 @@ ListeInt *changementCouleurSolveur3(ListeInt **tabVoisins, ListeInt *ccPrincipal
 		}
 		ccBonneCouleur = getSuivantListeInt(ccBonneCouleur);
 	}
+	save = res[couleur];
+	res[couleur] = NULL;
 	destructeurListeInt(save);
 	return res;
 }
@@ -120,14 +133,25 @@ ListeInt *changementCouleurSolveur3(ListeInt **tabVoisins, ListeInt *ccPrincipal
 char* solveurEtape3(ListeInt **tabVoisins, ListeInt *ccPrincipale, int *appartenance, const int taille, char *str) {
 	int couleur = 0;
 	int nbrCoups = 0;
-	while(nombreVoisinsNonNull(ccPrincipale) != 0) {
+	int j = 0;
+	ListeInt *tmp = ccPrincipale;
+	while(nombreVoisinsNonNull(ccPrincipale) != 0 && nbrCoups < taille) {
 		couleur = couleurAChoisir(tabVoisins, ccPrincipale, appartenance, taille);
-		printf("COULEUR : %d\n", couleur);
+		tmp = ccPrincipale;
 		ccPrincipale = changementCouleurSolveur3(tabVoisins, ccPrincipale, appartenance, taille, couleur);
+
+		for(j = 0; j < 6; j ++) {
+			destructeurListeInt(tmp[j]);
+		}
+		free(tmp);
 		str[nbrCoups] = conversionEntierChar(couleur + 1);
 		str[nbrCoups + 1] = '\0';
 		nbrCoups += 1;
 	}
+	for(j = 0; j < 6; j ++) {
+		destructeurListeInt(ccPrincipale[j]);
+	}
+	free(ccPrincipale);
 	return str;
 }
 
@@ -159,11 +183,7 @@ int solveurTableau3(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 		printf("Solution : %s\n", str);
 	}
 	free(appartenance);
-	for(j = 0; j < 6; j ++) {
-		destructeurListeInt(ccInitiale[j]);
-	}
 	free(str);
-	free(ccInitiale);
 	fclose(f);
 	detruitTabVoisins(tabVoisins, taille);
 	return res;

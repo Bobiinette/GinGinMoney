@@ -267,11 +267,11 @@ void solveurEtape(ListeInt **tabVoisins, ListeInt **ccPrincipale, int **apparten
 			/*printf("Solution trouvée\n");*/
 			if(nbrCoups < *tailleMax) {
 				*tailleMax = nbrCoups;
-				fclose(*f);
+				/*fclose(*f);
 				*f = fopen("./solutionTableau.txt", "w+");
-				printf("Nouvelle solution en %d coups\n", nbrCoups);
-				fputs(str, *f);
-				fputc('\n', *f);
+				/*printf("Nouvelle solution en %d coups\n", nbrCoups);*/
+				/*fputs(str, *f);
+				fputc('\n', *f);*/
 			}
 			return;
 		}
@@ -332,10 +332,7 @@ int solveurTableau2(TabComposanteConnexe tabCC, ComposanteConnexe *cc) {
 	solveurEtape(tabVoisins, ccInitiale, appartenance, taille, tailleMax, &f, str, 0);
 
 	res = *tailleMax;
-	if(fgets(str, taille, f) != NULL) {
-		printf("Solution : %s\n", str);
-	}
-	printf("Nombre appels %llu\n", nombreAppelsRecursifs);
+	/*printf("Nombre appels %llu\n", nombreAppelsRecursifs);*/
 	for(i = 0; i < taille + 1; i ++) {
 		free(appartenance[i]);
 	}

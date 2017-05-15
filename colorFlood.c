@@ -89,21 +89,21 @@ void jouer(SDL_Surface *ecran) {
 		exit(0);
 	}
 
-	nbrCoups = saisirTaille2D(ecran, "Nombre coups max,", 0, MAX_COUPS);
+	/*nbrCoups = saisirTaille2D(ecran, "Nombre coups max,", 0, MAX_COUPS);
 
 	/*Si on a quité pendant la saisie*/
-	if(taille == -1) {
+	/*if(taille == -1) {
 		quitter();
 		exit(0);
-	}
+	}*/
 
 	grille = tableauVide(taille);
 	grille = remplissageAleatoire(taille, grille);
 	tabCC = listeComposanteConnexeGrille(grille, taille);
 	tabCC = creeVoisins(tabCC, grille, taille);
 	cc = rechercheElementTabComposanteConnexeAvecCase(getCaseGrille(grille, 0, 0), tabCC);
-	printf("Solveur tableau 3 %d", solveurTableau3(tabCC, cc));
-	printf("Solveur tableau 2 %d", solveurTableau2(tabCC, cc));
+	nbrCoups = solveurTableau3(tabCC, cc);
+	/*printf("Solveur tableau 2 %d", solveurTableau2(tabCC, cc));*/
 	/*solveur("./solution.txt", tabCC	,grille);*/
 	/*On lance les deux solveurs comme ça plus de problèmes.*/
 	/*afficheGrille(grille, taille);*/

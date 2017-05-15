@@ -3,13 +3,13 @@ APPLIS = composanteConnexe cases grille listeComposanteConnexe colorFlood
 CC = gcc
 LIBRARIES = -lcunit -lm -g -O0 -lSDL -lSDLmain -lSDL_ttf
 CFLAGS = -Wall -Wextra -ansi
-SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c solveurTableau2.c solveur2.c
+SRC = Grille.c Cases.c ComposanteConnexe.c ListeComposanteConnexe.c solveurTableau2.c solveurTableau3.c solveur2.c
 HEADERS = Grille.h Cases.h ComposanteConnexe.h ListeComposanteConnexe.h solveurTableau2.h solveur2.h colorFlood_SDL.h colorFlood.h 
 DOXYSRC = $(HEADERS)
 OBJ = ${SRC: .c = .o}
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< $(LIBRARIES)
+	$(CC) $(CFLAGS) -c $<
 
 composanteConnexe : $(OBJ) ComposanteConnexe-testU.o
 	$(CC) $(OBJ) ComposanteConnexe-testU.o -o composanteConnexe $(LIBRARIES)
@@ -28,6 +28,12 @@ grille : $(OBJ) Grille-testU.o
 
 Grille-testU.o : Grille-testU.c
 	$(CC) $(CFLAGS) Grille-testU.c -c
+
+solveurTableau : $(OBJ) solveurTableau-testU.o
+	$(CC) $(OBJ) solveurTableau-testU.o -o solveurTableau $(LIBRARIES)
+
+solveurTableau-testU.o : solveurTableau-testU.c
+	$(CC) $(CFLAGS) solveurTableau-testU.c -c
 
 listeComposanteConnexe : $(OBJ) ListeComposanteConnexe-testU.o
 	$(CC) $(OBJ) ListeComposanteConnexe-testU.o -o listeComposanteConnexe $(LIBRARIES)
