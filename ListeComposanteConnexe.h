@@ -1,6 +1,6 @@
 #ifndef LISTE_COMPOSANTE_CONNEXE_H
 #define LISTE_COMPOSANTE_CONNEXE_H
-/*! *\file ListeComposanteConnexe.c
+/*! *\file ListeComposanteConnexe.h
  *   \brief Gestion des listes de pointeurs de composantes connexes.
  *		Module permettant la gestion des listes de pointeurs de composantes connexes.
  */

@@ -33,14 +33,14 @@ Il est possible de lancer le jeu avec la prise en charge de valgrind pour la ges
 Il y a actuellement des fuites mémoires dues à l'utilisation de la SDL que nous ne pouvons pas résoudre.
 
 
-#=======================================Comment jouer=====================================================
+#=======================================solveur=====================================================
 
-Au lancement du jeu, il sera demandé à l'utilisateur de rentrer dans la console la taille de grille qu'il veut obtenir (exemple 10 pour une grille 10*10), et le nombre de coups qu'il s'impose pour faire la grille (max 70).
-A tout moment, le joueur peut quitter le jeu en appuyant sur la touche Echap.
+Au lancement du jeu, une nouvelle fenêtre apparait et demande à l'utilisateur de rentrer la taille de grille qu'il veut obtenir (exemple 10 pour une grille 10*10), et le nombre de coups qu'il s'impose pour faire la grille (max 70).
+A tout moment, le joueur peut quitter le jeu en appuyant la petite croix en haut à gauche.
 
-Le joueur doit remplir toute la grille de la même couleur. Pour cela on part du coin en haut à gauche, et le joueur doit cliquer sur les composantes connexes (emsemble de cases adjacentes de la même couleur) adjacentes à la composante connexe en haut à gauche pour changer la couleur de celle ci et la faire grandir. Ainsi, à chaque clic, l'utilisateur agrandi la taille de sa composante connexe en absobant toutes les composantes connexes adjacentes à celle en haut à gauche de la même couleur que la couleur sélectionnée. A chaque clic cepandant, le nombre de coups restants diminue de 1.
+Une fois que le joueur a entré les paramètre de configuration du jeu, deux solveur sont lancés. Le premier donne sa solution obtimale dans solutionTableau.txt. Le deuxième dans solution.txt. Il suffit d'ouvrir les fichier pour pouvoir voir les solutions proposées.
 
-Lorsque le joueur a réussit à remplir toute la grille de la même couleur, un message de victoire est affichée. Sinon un message de défaite est affiché. Le joueur doit alors appuyé sur Echap pour quitter le jeu.
+Le solveur tableau donne aussi en console le nombre de coups minimal trouvé et le nombre d'appel effectué.
 
 
 
